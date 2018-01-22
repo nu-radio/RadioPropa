@@ -1,6 +1,8 @@
 #include "radiopropa/PhotonBackground.h"
 #include "radiopropa/Common.h"
 
+#include "kiss/logger.h"
+
 #include <vector>
 #include <fstream>
 #include <stdexcept>
@@ -19,8 +21,7 @@ struct PhotonFieldScaling {
 		std::ifstream infile(path.c_str());
 
 		if (!infile.good())
-			throw std::runtime_error(
-					"radiopropa: could not open file " + filename);
+      KISS_LOG_WARNING << "radiopropa: could not open file "<< "  filename";
 
 		double z, s;
 		while (infile.good()) {

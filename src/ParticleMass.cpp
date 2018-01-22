@@ -3,6 +3,7 @@
 #include "radiopropa/Common.h"
 
 #include <kiss/convert.h>
+#include <kiss/logger.h>
 
 #include <vector>
 #include <fstream>
@@ -19,7 +20,8 @@ struct NuclearMassTable {
 		std::ifstream infile(filename.c_str());
 
 		if (!infile.good())
-			throw std::runtime_error("radiopropa: could not open file " + filename);
+      KISS_LOG_WARNING << "radiopropa: could not open file "<< "  filename";
+			//throw std::runtime_error("radiopropa: could not open file " + filename);
 
 		int Z, N;
 		double mass;
