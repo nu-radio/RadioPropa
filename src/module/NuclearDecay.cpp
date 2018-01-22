@@ -1,15 +1,15 @@
-#include "crpropa/module/NuclearDecay.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/ParticleMass.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/NuclearDecay.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/ParticleMass.h"
+#include "radiopropa/Random.h"
 
 #include <fstream>
 #include <limits>
 #include <cmath>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 NuclearDecay::NuclearDecay(bool electrons, bool photons, bool neutrinos, double l) {
 	haveElectrons = electrons;
@@ -23,7 +23,7 @@ NuclearDecay::NuclearDecay(bool electrons, bool photons, bool neutrinos, double 
 	std::ifstream infile(filename.c_str());
 	if (!infile.good())
 		throw std::runtime_error(
-				"crpropa::NuclearDecay: could not open file " + filename);
+				"radiopropa::NuclearDecay: could not open file " + filename);
 
 	decayTable.resize(27 * 31);
 	std::string line;
@@ -272,4 +272,4 @@ double NuclearDecay::meanFreePath(int id, double gamma) {
 	return 1. / totalRate;
 }
 
-} // namespace crpropa
+} // namespace radiopropa

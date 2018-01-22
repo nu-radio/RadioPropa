@@ -1,15 +1,15 @@
-#include "crpropa/ParticleState.h"
-#include "crpropa/Units.h"
-#include "crpropa/Common.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/ParticleMass.h"
+#include "radiopropa/ParticleState.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Common.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/ParticleMass.h"
 
 #include <HepPID/ParticleIDMethods.hh>
 
 #include <stdlib.h>
 #include <sstream>
 
-namespace crpropa {
+namespace radiopropa {
 
 ParticleState::ParticleState(int id, double E, Vector3d pos, Vector3d dir) {
 	setId(id);
@@ -98,4 +98,4 @@ std::string ParticleState::getDescription() const {
 	return ss.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

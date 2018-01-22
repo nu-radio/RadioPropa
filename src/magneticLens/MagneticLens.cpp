@@ -20,15 +20,15 @@
 //  along with this program. If not, see <http://www.gnu.org/licenses/>.
 //----------------------------------------------------------------------
 
-#include "crpropa/magneticLens/MagneticLens.h"
+#include "radiopropa/magneticLens/MagneticLens.h"
 
-#include "crpropa/Random.h"
-#include "crpropa/Units.h"
+#include "radiopropa/Random.h"
+#include "radiopropa/Units.h"
 
 // needed for memcpy in gcc 4.3.2
 #include <cstring>
 
-namespace crpropa 
+namespace radiopropa 
 {
 
 void MagneticLens::loadLens(const string &filename)

@@ -20,11 +20,11 @@
 //  along with this program. If not, see <http://www.gnu.org/licenses/>.
 //----------------------------------------------------------------------
 
-#include "crpropa/magneticLens/ModelMatrix.h"
+#include "radiopropa/magneticLens/ModelMatrix.h"
 #include <ctime>
 
 #include <Eigen/Core>
-namespace crpropa 
+namespace radiopropa 
 {
 
 void serialize(const string &filename, const ModelMatrixType& matrix)

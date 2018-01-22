@@ -1,5 +1,5 @@
-#include "crpropa/PhotonBackground.h"
-#include "crpropa/Common.h"
+#include "radiopropa/PhotonBackground.h"
+#include "radiopropa/Common.h"
 
 #include <vector>
 #include <fstream>
@@ -7,7 +7,7 @@
 #include <limits>
 #include <cmath>
 
-namespace crpropa {
+namespace radiopropa {
 
 // Class to handle global evolution of IRB models (cf. CRPropa3-data/calc_scaling.py)
 struct PhotonFieldScaling {
@@ -20,7 +20,7 @@ struct PhotonFieldScaling {
 
 		if (!infile.good())
 			throw std::runtime_error(
-					"crpropa: could not open file " + filename);
+					"radiopropa: could not open file " + filename);
 
 		double z, s;
 		while (infile.good()) {
@@ -112,4 +112,4 @@ std::string photonFieldName(PhotonField photonField) {
 	}
 }
 
-} // namespace crpropa
+} // namespace radiopropa

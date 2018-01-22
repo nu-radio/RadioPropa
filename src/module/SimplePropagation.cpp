@@ -1,9 +1,9 @@
-#include "crpropa/module/SimplePropagation.h"
+#include "radiopropa/module/SimplePropagation.h"
 
 #include <sstream>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 SimplePropagation::SimplePropagation(double minStep, double maxStep) :
 		minStep(minStep), maxStep(maxStep) {
@@ -51,4 +51,4 @@ std::string SimplePropagation::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

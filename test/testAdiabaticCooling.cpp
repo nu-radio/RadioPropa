@@ -1,13 +1,13 @@
-#include "crpropa/Candidate.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/advectionField/AdvectionField.h"
-#include "crpropa/module/AdiabaticCooling.h"
+#include "radiopropa/Candidate.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/advectionField/AdvectionField.h"
+#include "radiopropa/module/AdiabaticCooling.h"
 #include "gtest/gtest.h"
 
 //#include <fstream>
 
-namespace crpropa {
+namespace radiopropa {
 
 // AdiabaticCooling ---------------------------------------------------------------
 
@@ -52,4 +52,4 @@ TEST (AdiabaticCooling, ConstantSphericalField) {
 }
 
 
-} // namespace crpropa
+} // namespace radiopropa

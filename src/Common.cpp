@@ -1,4 +1,4 @@
-#include "crpropa/Common.h"
+#include "radiopropa/Common.h"
 
 #include "kiss/path.h"
 #include "kiss/logger.h"
@@ -11,7 +11,7 @@
 
 #define index(i,j) ((j)+(i)*Y.size())
 
-namespace crpropa {
+namespace radiopropa {
 
 std::string getDataPath(std::string filename) {
 	static std::string dataPath;
@@ -30,7 +30,7 @@ std::string getDataPath(std::string filename) {
 
 #ifdef CRPROPA_INSTALL_PREFIX
 	{
-		std::string _path = CRPROPA_INSTALL_PREFIX "/share/crpropa";
+		std::string _path = CRPROPA_INSTALL_PREFIX "/share/radiopropa";
 		if (is_directory(_path)) {
 			dataPath = _path;
 			KISS_LOG_INFO
@@ -132,5 +132,5 @@ size_t closestIndex(double x, const std::vector<double> &X) {
 		return i1;
 }
 
-} // namespace crpropa
+} // namespace radiopropa
 

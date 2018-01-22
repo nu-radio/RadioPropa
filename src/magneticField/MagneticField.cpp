@@ -1,6 +1,6 @@
-#include "crpropa/magneticField/MagneticField.h"
+#include "radiopropa/magneticField/MagneticField.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 PeriodicMagneticField::PeriodicMagneticField(ref_ptr<MagneticField> field,
 		const Vector3d &extends) :
@@ -109,4 +109,4 @@ Vector3d RenormalizeMagneticField::getField(const Vector3d &position) {
 }
 #endif
 
-} // namespace crpropa
+} // namespace radiopropa

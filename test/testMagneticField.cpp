@@ -1,14 +1,14 @@
 #include <stdexcept>
 
-#include "crpropa/magneticField/MagneticFieldGrid.h"
-#include "crpropa/Grid.h"
-#include "crpropa/GridTools.h"
-#include "crpropa/Units.h"
-#include "crpropa/Common.h"
+#include "radiopropa/magneticField/MagneticFieldGrid.h"
+#include "radiopropa/Grid.h"
+#include "radiopropa/GridTools.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Common.h"
 
 #include "gtest/gtest.h"
 
-using namespace crpropa;
+using namespace radiopropa;
 
 TEST(testUniformMagneticField, SimpleTest) {
 	UniformMagneticField B(Vector3d(-1, 5, 3));

@@ -1,12 +1,12 @@
-#include "crpropa/advectionField/AdvectionField.h"
-#include "crpropa/Units.h"
-#include "crpropa/Common.h"
+#include "radiopropa/advectionField/AdvectionField.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Common.h"
 
 #include "gtest/gtest.h"
 #include <stdexcept>
 #include <cmath>
 
-namespace crpropa {
+namespace radiopropa {
 
 TEST(testUniformAdvectionField, SimpleTest) {
 	UniformAdvectionField A(Vector3d(-1, 5, 3));
@@ -166,4 +166,4 @@ TEST(testSphericalAdvectionShock, SimpleTest) {
 	
 }
 
-} //namespace crpropa
+} //namespace radiopropa

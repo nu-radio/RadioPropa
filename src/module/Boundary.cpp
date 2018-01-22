@@ -1,9 +1,9 @@
-#include "crpropa/module/Boundary.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/Boundary.h"
+#include "radiopropa/Units.h"
 
 #include <sstream>
 
-namespace crpropa {
+namespace radiopropa {
 
 PeriodicBox::PeriodicBox() :
 		origin(Vector3d(0, 0, 0)), size(Vector3d(0, 0, 0)) {
@@ -291,4 +291,4 @@ std::string CylindricalBoundary::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

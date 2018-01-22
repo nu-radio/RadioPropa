@@ -1,11 +1,11 @@
-#include "crpropa/module/PropagationCK.h"
+#include "radiopropa/module/PropagationCK.h"
 
 #include <limits>
 #include <sstream>
 #include <stdexcept>
 #include <vector>
 
-namespace crpropa {
+namespace radiopropa {
 
 // Cash-Karp coefficients
 const double cash_karp_a[] = { 0., 0., 0., 0., 0., 0., 1. / 5., 0., 0., 0., 0.,
@@ -161,4 +161,4 @@ std::string PropagationCK::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

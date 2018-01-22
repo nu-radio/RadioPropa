@@ -1,13 +1,13 @@
-#include "crpropa/module/EMInverseComptonScattering.h"
-#include "crpropa/Units.h"
-#include "crpropa/Random.h"
-#include "crpropa/Common.h"
+#include "radiopropa/module/EMInverseComptonScattering.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Random.h"
+#include "radiopropa/Common.h"
 
 #include <fstream>
 #include <limits>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 static const double mec2 = mass_electron * c_squared;
 
@@ -220,4 +220,4 @@ void EMInverseComptonScattering::process(Candidate *candidate) const {
 		candidate->limitNextStep(limit / rate);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

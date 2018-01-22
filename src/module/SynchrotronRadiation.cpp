@@ -1,12 +1,12 @@
-#include "crpropa/module/SynchrotronRadiation.h"
-#include "crpropa/Units.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/SynchrotronRadiation.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Random.h"
 
 #include <fstream>
 #include <limits>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 SynchrotronRadiation::SynchrotronRadiation(ref_ptr<MagneticField> field, bool havePhotons, double limit) {
 	Brms = 0.;
@@ -165,4 +165,4 @@ std::string SynchrotronRadiation::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

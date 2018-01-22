@@ -1,7 +1,7 @@
-#include "crpropa/module/PhotoPionProduction.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/PhotoPionProduction.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/Random.h"
 
 #include <kiss/convert.h>
 #include "sophia.h"
@@ -12,7 +12,7 @@
 #include <fstream>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 PhotoPionProduction::PhotoPionProduction(PhotonField field, bool photons, bool neutrinos, bool antiNucleons, double l, bool redshift) {
 	havePhotons = photons;
@@ -305,4 +305,4 @@ double PhotoPionProduction::lossLength(int id, double gamma, double z) {
 	return 1. / lossRate;
 }
 
-} // namespace crpropa
+} // namespace radiopropa

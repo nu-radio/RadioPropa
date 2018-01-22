@@ -36,13 +36,13 @@ __WITHNUMPY = False
 %template(DoubleVector) std::vector<double>;
 
 %{
-#include "crpropa/magneticLens/ModelMatrix.h"
-#include "crpropa/magneticLens/Pixelization.h"
-#include "crpropa/magneticLens/MagneticLens.h"
-#include "crpropa/magneticLens/ParticleMapsContainer.h"
+#include "radiopropa/magneticLens/ModelMatrix.h"
+#include "radiopropa/magneticLens/Pixelization.h"
+#include "radiopropa/magneticLens/MagneticLens.h"
+#include "radiopropa/magneticLens/ParticleMapsContainer.h"
 %}
 
-%include "crpropa/magneticLens/ModelMatrix.h"
+%include "radiopropa/magneticLens/ModelMatrix.h"
 %apply double &INOUT {double &longitude, double &latitude};
 %typemap(in,numinputs=0) double& longitude (double temp) "$1 = &temp;"
 %typemap(in,numinputs=0) double& latitude (double temp) "$1 = &temp;"
@@ -55,17 +55,17 @@ __WITHNUMPY = False
 
 
 
-%include "crpropa/magneticLens/Pixelization.h"
+%include "radiopropa/magneticLens/Pixelization.h"
 
-%ignore crpropa::Pixelization::nPix( uint8_t order );
+%ignore radiopropa::Pixelization::nPix( uint8_t order );
 
 %apply double &INOUT {double &phi, double &theta};
 %ignore MagneticLens::transformModelVector(double *,double) const;
-%include "crpropa/magneticLens/MagneticLens.h"
-%template(LenspartVector) std::vector< crpropa::LensPart *>;
+%include "radiopropa/magneticLens/MagneticLens.h"
+%template(LenspartVector) std::vector< radiopropa::LensPart *>;
 
 #ifdef WITHNUMPY
-%extend crpropa::MagneticLens{
+%extend radiopropa::MagneticLens{
     PyObject * transformModelVector_numpyArray(PyObject *input, double rigidity)
     {
       PyArrayObject *arr = NULL;
@@ -88,7 +88,7 @@ __WITHNUMPY = False
     }
 };
 #else
-%extend crpropa::MagneticLens{
+%extend radiopropa::MagneticLens{
     PyObject * transformModelVector_numpyArray(PyObject *input, double rigidity)
     {
       std::cerr << "ERROR: PARSEC was compiled without numpy support!" << std::endl;
@@ -105,10 +105,10 @@ __WITHNUMPY = False
 %ignore ParticleMapsContainer::getParticleIds;
 %ignore ParticleMapsContainer::getEnergies;
 %ignore ParticleMapsContainer::getRandomParticles;
-%include "crpropa/magneticLens/ParticleMapsContainer.h"
+%include "radiopropa/magneticLens/ParticleMapsContainer.h"
 
 #ifdef WITHNUMPY
-%extend crpropa::ParticleMapsContainer{
+%extend radiopropa::ParticleMapsContainer{
         PyObject *addParticles(PyObject *particleIds,
                 PyObject *energies,
                 PyObject *galacticLongitudes,
@@ -302,28 +302,28 @@ __WITHNUMPY = False
 
 };
 #else // with numpy
-%extend crpropa::ParticleMapsContainer{
+%extend radiopropa::ParticleMapsContainer{
   PyObject *getMap_numpyArray(const int particleId, double energy)
   {
       std::cerr << "ERROR: PARSEC was compiled without numpy support!" << std::endl;
       Py_RETURN_NONE;
   }
 };
-%extend crpropa::ParticleMapsContainer{
+%extend radiopropa::ParticleMapsContainer{
   PyObject *getParticleIds_numpyArray()
   {
       std::cerr << "ERROR: PARSEC was compiled without numpy support!" << std::endl;
       Py_RETURN_NONE;
   }
 };
-%extend crpropa::ParticleMapsContainer{
+%extend radiopropa::ParticleMapsContainer{
   PyObject *getEnergies_numpyArray(const int pid)
   {
       std::cerr << "ERROR: PARSEC was compiled without numpy support!" << std::endl;
       Py_RETURN_NONE;
   }
 };
-%extend crpropa::ParticleMapsContainer{
+%extend radiopropa::ParticleMapsContainer{
   PyObject *getRandomParticles_numpyArray(size_t N)
   {
       std::cerr << "ERROR: PARSEC was compiled without numpy support!" << std::endl;

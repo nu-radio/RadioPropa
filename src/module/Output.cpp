@@ -1,9 +1,9 @@
-#include "crpropa/module/Output.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/Output.h"
+#include "radiopropa/Units.h"
 
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 Output::Output() : outputName(OutputTypeName(Everything)), lengthScale(Mpc), energyScale(EeV), oneDimensional(false), count(0) {
 	enableAll();
@@ -133,4 +133,4 @@ void Output::enableProperty(const std::string &property, const Variant &defaultV
 	properties.push_back(prop);
 }
 ;
-} // namespace crpropa
+} // namespace radiopropa

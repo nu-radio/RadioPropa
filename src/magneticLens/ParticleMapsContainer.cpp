@@ -1,11 +1,11 @@
 #include "HepPID/ParticleIDMethods.hh"
-#include "crpropa/Random.h"
-#include "crpropa/magneticLens/ParticleMapsContainer.h"
-#include "crpropa/Units.h"
+#include "radiopropa/Random.h"
+#include "radiopropa/magneticLens/ParticleMapsContainer.h"
+#include "radiopropa/Units.h"
 
 #include <iostream>
 #include <fstream>
-namespace crpropa 
+namespace radiopropa 
 {
 
 ParticleMapsContainer::~ParticleMapsContainer()

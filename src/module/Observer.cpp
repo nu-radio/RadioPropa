@@ -1,11 +1,11 @@
-#include "crpropa/module/Observer.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/Cosmology.h"
+#include "radiopropa/module/Observer.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/Cosmology.h"
 
 #include <iostream>
 
-namespace crpropa {
+namespace radiopropa {
 
 // Observer -------------------------------------------------------------------
 Observer::Observer() :
@@ -372,4 +372,4 @@ std::string ObserverTimeEvolution::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

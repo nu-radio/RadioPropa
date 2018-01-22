@@ -1,8 +1,8 @@
-#include "crpropa/PhotonPropagation.h"
-#include "crpropa/Common.h"
-#include "crpropa/Units.h"
-#include "crpropa/Cosmology.h"
-#include "crpropa/ProgressBar.h"
+#include "radiopropa/PhotonPropagation.h"
+#include "radiopropa/Common.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Cosmology.h"
+#include "radiopropa/ProgressBar.h"
 
 #include "EleCa/Propagation.h"
 #include "EleCa/Particle.h"
@@ -20,7 +20,7 @@
 #include <limits>
 #include <cmath>
 
-namespace crpropa {
+namespace radiopropa {
 
 void ElecaPropagation(
 		const std::string &inputfile,
@@ -448,4 +448,4 @@ void DintElecaPropagation(
 	Delete_dCVector(&energyWidth);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

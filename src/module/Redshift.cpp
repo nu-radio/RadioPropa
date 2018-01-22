@@ -1,10 +1,10 @@
-#include "crpropa/module/Redshift.h"
-#include "crpropa/Units.h"
-#include "crpropa/Cosmology.h"
+#include "radiopropa/module/Redshift.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Cosmology.h"
 
 #include <limits>
 
-namespace crpropa {
+namespace radiopropa {
 
 void Redshift::process(Candidate *c) const {
 	double z = c->getRedshift();
@@ -59,4 +59,4 @@ std::string FutureRedshift::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

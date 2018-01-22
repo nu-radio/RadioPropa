@@ -1,5 +1,5 @@
-#include "crpropa/module/PhotonOutput1D.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/PhotonOutput1D.h"
+#include "radiopropa/Units.h"
 
 #include <iostream>
 #include <sstream>
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace crpropa {
+namespace radiopropa {
 
 PhotonOutput1D::PhotonOutput1D(const string &filename) :
 		filename(filename), output(filename.c_str()) {
@@ -64,4 +64,4 @@ string PhotonOutput1D::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

@@ -1,6 +1,6 @@
-#include "crpropa/magneticField/ArchimedeanSpiralField.h"
+#include "radiopropa/magneticField/ArchimedeanSpiralField.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 ArchimedeanSpiralField::ArchimedeanSpiralField(double B_0, double R_0, double Omega, double V_w) {
 	setB0(B_0);
@@ -83,4 +83,4 @@ double ArchimedeanSpiralField::getVw() const {
 }
 
 
-} //end namespace crpropa
+} //end namespace radiopropa

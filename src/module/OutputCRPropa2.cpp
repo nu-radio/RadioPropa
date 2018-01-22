@@ -1,9 +1,9 @@
-#include "crpropa/module/OutputCRPropa2.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/Cosmology.h"
+#include "radiopropa/module/OutputCRPropa2.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/Cosmology.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 CRPropa2EventOutput3D::CRPropa2EventOutput3D(std::string filename) {
 	setDescription("Event output (3D, CRPropa2 format), Filename: " + filename);
@@ -160,4 +160,4 @@ void CRPropa2EventOutput1D::close() {
 	outfile.flush();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

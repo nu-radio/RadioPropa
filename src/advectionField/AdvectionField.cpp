@@ -1,7 +1,7 @@
-#include "crpropa/advectionField/AdvectionField.h"
+#include "radiopropa/advectionField/AdvectionField.h"
 
 
-namespace crpropa {
+namespace radiopropa {
 
 
 
@@ -282,4 +282,4 @@ std::string SphericalAdvectionShock::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

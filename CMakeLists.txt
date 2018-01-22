@@ -302,13 +302,13 @@ endif()
 ## ----------------------------------------------------------------------------
 #OPTION(DOWNLOAD_DATA "Download CRProap Data files" ON)
 #if(DOWNLOAD_DATA)
-#	message("-- Downloading data file from crpropa.desy.de ~ 50 MB")
+#	message("-- Downloading data file from radiopropa.desy.de ~ 50 MB")
 #	file(DOWNLOAD
-#		https://www.desy.de/~crpropa/data/interaction_data/data.tar.gz-CHECKSUM
+#		https://www.desy.de/~radiopropa/data/interaction_data/data.tar.gz-CHECKSUM
 #		${CMAKE_BINARY_DIR}/data.tar.gz-CHECKSUM)
 #	file(STRINGS ${CMAKE_BINARY_DIR}/data.tar.gz-CHECKSUM DATA_CHECKSUM LIMIT_COUNT 1 LENGTH_MINIMUM 32 LENGTH_MAXIMUM 32)
 #	file(DOWNLOAD
-#		https://www.desy.de/~crpropa/data/interaction_data/data.tar.gz
+#		https://www.desy.de/~radiopropa/data/interaction_data/data.tar.gz
 #		${CMAKE_BINARY_DIR}/data.tar.gz
 #		EXPECTED_MD5 "${DATA_CHECKSUM}")
 #	message("-- Extracting data file")
@@ -328,7 +328,7 @@ endif()
 file(GLOB_RECURSE CRPROPA_INCLUDES RELATIVE ${CMAKE_SOURCE_DIR} include/*.h)
 include_directories(include ${CRPROPA_EXTRA_INCLUDES})
 
-add_library(crpropa SHARED
+add_library(radiopropa SHARED
 	src/Candidate.cpp
 	src/Clock.cpp
 	src/Common.cpp
@@ -383,7 +383,7 @@ add_library(crpropa SHARED
 	src/advectionField/AdvectionField.cpp
 	${CRPROPA_EXTRA_SOURCES}
 )
-target_link_libraries(crpropa ${CRPROPA_EXTRA_LIBRARIES})
+target_link_libraries(radiopropa ${CRPROPA_EXTRA_LIBRARIES})
 
 # ----------------------------------------------------------------------------
 # Python
@@ -429,20 +429,20 @@ if(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 	endif(numpyIncludePath)
 
 	file(GLOB_RECURSE CRPROPA_SWIG_INPUTS python/*.i)
-	set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/crpropa_wrap.cxx PROPERTIES GENERATED true )
-	add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/crpropa_wrap.cxx
-		COMMAND swig ${BUILTIN} -c++ -python ${PY3} -I${CMAKE_SOURCE_DIR}/include ${CRPROPA_SWIG_DEFINES} -dirprot -o ${CMAKE_CURRENT_BINARY_DIR}/crpropa_wrap.cxx -outdir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/python/crpropa${BUILTIN}.i
+	set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx PROPERTIES GENERATED true )
+	add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx
+		COMMAND swig ${BUILTIN} -c++ -python ${PY3} -I${CMAKE_SOURCE_DIR}/include ${CRPROPA_SWIG_DEFINES} -dirprot -o ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx -outdir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/python/radiopropa${BUILTIN}.i
 		DEPENDS ${CRPROPA_SWIG_INPUTS} ${CRPROPA_INCLUDES} )
 
-	add_library(crpropa-swig MODULE ${CMAKE_CURRENT_BINARY_DIR}/crpropa_wrap.cxx)
-	set_target_properties(crpropa-swig PROPERTIES PREFIX "")
-	set_target_properties(crpropa-swig PROPERTIES OUTPUT_NAME "_crpropa")
-	target_link_libraries(crpropa-swig crpropa ${PYTHON_LIBRARIES})
+	add_library(radiopropa-swig MODULE ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx)
+	set_target_properties(radiopropa-swig PROPERTIES PREFIX "")
+	set_target_properties(radiopropa-swig PROPERTIES OUTPUT_NAME "_radiopropa")
+	target_link_libraries(radiopropa-swig radiopropa ${PYTHON_LIBRARIES})
 
-	install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/crpropa" DESTINATION "${PYTHON_SITE_PACKAGES}")
-	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/crpropa.py" DESTINATION "${PYTHON_SITE_PACKAGES}/crpropa")
-	install(TARGETS crpropa-swig LIBRARY DESTINATION "${PYTHON_SITE_PACKAGES}/crpropa")
-  install(FILES ${CRPROPA_SWIG_INPUTS} DESTINATION share/crpropa/swig_interface)
+	install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/radiopropa" DESTINATION "${PYTHON_SITE_PACKAGES}")
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/radiopropa.py" DESTINATION "${PYTHON_SITE_PACKAGES}/radiopropa")
+	install(TARGETS radiopropa-swig LIBRARY DESTINATION "${PYTHON_SITE_PACKAGES}/radiopropa")
+  install(FILES ${CRPROPA_SWIG_INPUTS} DESTINATION share/radiopropa/swig_interface)
 endif(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 
 
@@ -450,10 +450,10 @@ endif(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 # Install
 # ----------------------------------------------------------------------------
 add_definitions(-DCRPROPA_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
-install(TARGETS crpropa DESTINATION lib)
+install(TARGETS radiopropa DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY ${CMAKE_BINARY_DIR}/include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY ${CMAKE_BINARY_DIR}/data/ DESTINATION share/crpropa/ PATTERN ".git" EXCLUDE)
+#install(DIRECTORY ${CMAKE_BINARY_DIR}/data/ DESTINATION share/radiopropa/ PATTERN ".git" EXCLUDE)
 
 
 # ----------------------------------------------------------------------------
@@ -463,63 +463,63 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/data/ DESTINATION share/crpropa/ PATTERN "
 if(ENABLE_TESTING)
 	enable_testing()
 	add_executable(testCore test/testCore.cpp)
-	target_link_libraries(testCore  crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testCore  radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testCore testCore)
 
 	add_executable(testVector3 test/testVector3.cpp)
-	target_link_libraries(testVector3 crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testVector3 radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testVector3 testVector3)
 
 	add_executable(testModuleList test/testModuleList.cpp)
-	target_link_libraries(testModuleList crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testModuleList radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testModuleList testModuleList)
 
 	add_executable(testMagneticField test/testMagneticField.cpp)
-	target_link_libraries(testMagneticField crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testMagneticField radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testMagneticField testMagneticField)
 
 	add_executable(testAdvectionField test/testAdvectionField.cpp)
-	target_link_libraries(testAdvectionField crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testAdvectionField radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testAdvectionField testAdvectionField)
 
 	add_executable(testDINT test/testDINT.cpp)
-	target_link_libraries(testDINT crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testDINT radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testDINT testDINT)
 
 	add_executable(testPropagation test/testPropagation.cpp)
-	target_link_libraries(testPropagation crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testPropagation radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testPropagation testPropagation)
 
 	add_executable(testBreakCondition test/testBreakCondition.cpp)
-	target_link_libraries(testBreakCondition crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testBreakCondition radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testBreakCondition testBreakCondition)
 
 	add_executable(testInteraction test/testInteraction.cpp)
-	target_link_libraries(testInteraction crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testInteraction radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testInteraction testInteraction)
 
 	add_executable(testSource test/testSource.cpp)
-	target_link_libraries(testSource crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testSource radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testSource testSource)
 
 	add_executable(testOutput test/testOutput.cpp)
-	target_link_libraries(testOutput crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testOutput radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testOutput testOutput)
 
 
 	CONFIGURE_FILE(test/testFunctionalGroups.cpp.in testFunctionalGroups.cpp)
 	add_executable(testFunctionalGroups testFunctionalGroups.cpp)
-	target_link_libraries(testFunctionalGroups crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testFunctionalGroups radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testFunctionalGroups testFunctionalGroups)
 
 	add_executable(testAdiabaticCooling test/testAdiabaticCooling.cpp)
-	target_link_libraries(testAdiabaticCooling crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	target_link_libraries(testAdiabaticCooling radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testAdiabaticCooling testAdiabaticCooling)
 
 
 	if(WITH_GALACTIC_LENSES)
 		add_executable(testGalacticMagneticLens test/testMagneticLens.cpp)
-		target_link_libraries(testGalacticMagneticLens crpropa gtest gtest_main pthread ${COVERAGE_LIBS})
+		target_link_libraries(testGalacticMagneticLens radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 		add_test(testGalacticMagneticLens testGalacticMagneticLens)
 	endif(WITH_GALACTIC_LENSES)
 

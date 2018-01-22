@@ -1,8 +1,8 @@
-#include "crpropa/Module.h"
+#include "radiopropa/Module.h"
 
 #include <typeinfo>
 
-namespace crpropa {
+namespace radiopropa {
 
 Module::Module() {
 	const std::type_info &info = typeid(*this);
@@ -77,4 +77,4 @@ void AbstractCondition::setAcceptFlag(std::string key, std::string value) {
 	acceptFlagValue = value;
 }
 
-} // namespace crpropa
+} // namespace radiopropa

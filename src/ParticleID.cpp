@@ -1,4 +1,4 @@
-#include "crpropa/ParticleID.h"
+#include "radiopropa/ParticleID.h"
 
 #include <HepPID/ParticleIDMethods.hh>
 #include <HepPID/ParticleName.hh>
@@ -6,20 +6,20 @@
 
 #include <string>
 
-namespace crpropa {
+namespace radiopropa {
 
 int nucleusId(int a, int z) {
 	if (z < 0)
 		throw std::runtime_error(
-				"crpropa::Nucleus: no nucleus with Z < 0, A=" + kiss::str(a) + " Z="
+				"radiopropa::Nucleus: no nucleus with Z < 0, A=" + kiss::str(a) + " Z="
 						+ kiss::str(z));
 	if (a < 1)
 		throw std::runtime_error(
-				"crpropa::Nucleus: no nucleus with A < 1, A=" + kiss::str(a) + " Z="
+				"radiopropa::Nucleus: no nucleus with A < 1, A=" + kiss::str(a) + " Z="
 						+ kiss::str(z));
 	if (a < z)
 		throw std::runtime_error(
-				"crpropa::Nucleus: no nucleus with A < Z, A=" + kiss::str(a) + " Z="
+				"radiopropa::Nucleus: no nucleus with A < Z, A=" + kiss::str(a) + " Z="
 						+ kiss::str(z));
 	return 1000000000 + z * 10000 + a * 10;
 }

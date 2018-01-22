@@ -1,9 +1,9 @@
-#include "crpropa/ProgressBar.h"
+#include "radiopropa/ProgressBar.h"
 
 #include <cstdio>
 #include <iostream>
 
-namespace crpropa {
+namespace radiopropa {
 
 /// Initialize a ProgressBar with [steps] number of steps, updated at [updateSteps] intervalls
 ProgressBar::ProgressBar(unsigned long steps, unsigned long updateSteps) :
@@ -75,4 +75,4 @@ void ProgressBar::setError() {
 			int(tElapsed) % 60, s.c_str());
 }
 
-} // namespace crpropa
+} // namespace radiopropa

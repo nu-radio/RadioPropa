@@ -1,10 +1,10 @@
-#include "crpropa/module/BreakCondition.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/BreakCondition.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/Units.h"
 
 #include <sstream>
 
-namespace crpropa {
+namespace radiopropa {
 
 MaximumTrajectoryLength::MaximumTrajectoryLength(double maxLength) :
 		maxLength(maxLength) {
@@ -187,4 +187,4 @@ void DetectionLength::process(Candidate *c) const {
 }
 
 
-} // namespace crpropa
+} // namespace radiopropa

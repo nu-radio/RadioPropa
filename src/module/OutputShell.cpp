@@ -1,9 +1,9 @@
-#include "crpropa/module/OutputShell.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/OutputShell.h"
+#include "radiopropa/Units.h"
 
 #include <iomanip>
 
-namespace crpropa {
+namespace radiopropa {
 
 void ShellOutput::process(Candidate* c) const {
 #pragma omp critical
@@ -55,4 +55,4 @@ std::string ShellPropertyOutput::getDescription() const {
 	return "Shell property output";
 }
 
-} // namespace crpropa
+} // namespace radiopropa

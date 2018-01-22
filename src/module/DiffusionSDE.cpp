@@ -1,7 +1,7 @@
-#include "crpropa/module/DiffusionSDE.h"
+#include "radiopropa/module/DiffusionSDE.h"
 
 
-using namespace crpropa;
+using namespace radiopropa;
 
 // Defining Cash-Karp coefficients
 const double a[] = { 0., 0., 0., 0., 0., 0., 1. / 5., 0., 0., 0., 0.,

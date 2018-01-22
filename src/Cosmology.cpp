@@ -1,12 +1,12 @@
-#include "crpropa/Cosmology.h"
-#include "crpropa/Units.h"
-#include "crpropa/Common.h"
+#include "radiopropa/Cosmology.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Common.h"
 
 #include <vector>
 #include <cmath>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 /**
  @class Cosmology
@@ -167,4 +167,4 @@ double lightTravel2ComovingDistance(double d) {
 	return interpolate(d, cosmology.Dt, cosmology.Dc);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

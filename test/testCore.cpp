@@ -1,24 +1,24 @@
-/** Unit tests for core features of CRPropa
+/** Unit tests for core features of RadioPropa
   	Candidate
   	ParticleState
   	Random
   	Common functions
  */
 
-#include "crpropa/Candidate.h"
-#include "crpropa/Common.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/ParticleMass.h"
-#include "crpropa/Random.h"
-#include "crpropa/Grid.h"
-#include "crpropa/GridTools.h"
-#include "crpropa/EmissionMap.h"
+#include "radiopropa/Candidate.h"
+#include "radiopropa/Common.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/ParticleMass.h"
+#include "radiopropa/Random.h"
+#include "radiopropa/Grid.h"
+#include "radiopropa/GridTools.h"
+#include "radiopropa/EmissionMap.h"
 
 #include <HepPID/ParticleIDMethods.hh>
 #include "gtest/gtest.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 TEST(ParticleState, position) {
 	ParticleState particle;
@@ -241,8 +241,8 @@ TEST(common, interpolateEquidistant) {
 	EXPECT_EQ(9, interpolateEquidistant(3.1, 1, 3, yD));
 }
 
-TEST(NucleusId, crpropaScheme) {
-	// test conversion to and from the CRPropa2 naming scheme
+TEST(NucleusId, radiopropaScheme) {
+	// test conversion to and from the RadioPropa2 naming scheme
 	EXPECT_EQ(nucleusId(56, 26), convertFromCRPropa2NucleusId(26056));
 	EXPECT_EQ(26056, convertToCRPropa2NucleusId(nucleusId(56, 26)));
 }
@@ -566,4 +566,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

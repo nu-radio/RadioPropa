@@ -1,11 +1,11 @@
-#include "crpropa/Source.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
+#include "radiopropa/Source.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
 
 #include "gtest/gtest.h"
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 TEST(SourcePosition, simpleTest) {
 	Vector3d position(1, 2, 3);
@@ -383,4 +383,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

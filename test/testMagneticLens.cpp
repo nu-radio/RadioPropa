@@ -12,14 +12,14 @@
 #include <string>
 #include "gtest/gtest.h"
 
-#include "crpropa/magneticLens/MagneticLens.h"
-#include "crpropa/magneticLens/ModelMatrix.h"
-#include "crpropa/magneticLens/Pixelization.h"
-#include "crpropa/magneticLens/ParticleMapsContainer.h"
-#include "crpropa/Common.h"
+#include "radiopropa/magneticLens/MagneticLens.h"
+#include "radiopropa/magneticLens/ModelMatrix.h"
+#include "radiopropa/magneticLens/Pixelization.h"
+#include "radiopropa/magneticLens/ParticleMapsContainer.h"
+#include "radiopropa/Common.h"
 
 using namespace std;
-using namespace crpropa;
+using namespace radiopropa;
 
 TEST(MagneticLens, Deflection)
 {

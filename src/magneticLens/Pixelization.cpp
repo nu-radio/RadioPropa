@@ -20,10 +20,10 @@
 //  along with this program. If not, see <http://www.gnu.org/licenses/>.
 //----------------------------------------------------------------------
 
-#include "crpropa/magneticLens/Pixelization.h"
-#include "crpropa/Random.h"
+#include "radiopropa/magneticLens/Pixelization.h"
+#include "radiopropa/Random.h"
 
-namespace crpropa 
+namespace radiopropa 
 {
 
 	healpix::T_Healpix_Base<healpix::int64> Pixelization::_healpix_nest = healpix::T_Healpix_Base<healpix::int64>(29, healpix::NEST);

@@ -1,5 +1,5 @@
-#include "crpropa/module/PhotonEleCa.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/PhotonEleCa.h"
+#include "radiopropa/Units.h"
 
 #include "EleCa/Propagation.h"
 #include "EleCa/Particle.h"
@@ -7,7 +7,7 @@
 
 #include <vector>
 
-namespace crpropa {
+namespace radiopropa {
 
 PhotonEleCa::PhotonEleCa(const std::string background,
 		const std::string &outputFilename) :
@@ -77,4 +77,4 @@ std::string PhotonEleCa::getDescription() const {
 	return s.str();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

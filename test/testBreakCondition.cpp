@@ -1,14 +1,14 @@
 /** Unit tests for break condition, observer, boundary and tool modules */
 
-#include "crpropa/module/BreakCondition.h"
-#include "crpropa/module/Observer.h"
-#include "crpropa/module/Boundary.h"
-#include "crpropa/module/Tools.h"
-#include "crpropa/ParticleID.h"
+#include "radiopropa/module/BreakCondition.h"
+#include "radiopropa/module/Observer.h"
+#include "radiopropa/module/Boundary.h"
+#include "radiopropa/module/Tools.h"
+#include "radiopropa/ParticleID.h"
 
 #include "gtest/gtest.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 //** ========================= Break conditions ============================= */
 TEST(MinimumEnergy, test) {
@@ -417,4 +417,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

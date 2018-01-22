@@ -1,21 +1,21 @@
-#include "crpropa/Candidate.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/module/ElectronPairProduction.h"
-#include "crpropa/module/NuclearDecay.h"
-#include "crpropa/module/PhotoDisintegration.h"
-#include "crpropa/module/ElasticScattering.h"
-#include "crpropa/module/PhotoPionProduction.h"
-#include "crpropa/module/Redshift.h"
-#include "crpropa/module/EMPairProduction.h"
-#include "crpropa/module/EMDoublePairProduction.h"
-#include "crpropa/module/EMTripletPairProduction.h"
-#include "crpropa/module/EMInverseComptonScattering.h"
+#include "radiopropa/Candidate.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/module/ElectronPairProduction.h"
+#include "radiopropa/module/NuclearDecay.h"
+#include "radiopropa/module/PhotoDisintegration.h"
+#include "radiopropa/module/ElasticScattering.h"
+#include "radiopropa/module/PhotoPionProduction.h"
+#include "radiopropa/module/Redshift.h"
+#include "radiopropa/module/EMPairProduction.h"
+#include "radiopropa/module/EMDoublePairProduction.h"
+#include "radiopropa/module/EMTripletPairProduction.h"
+#include "radiopropa/module/EMInverseComptonScattering.h"
 #include "gtest/gtest.h"
 
 #include <fstream>
 
-namespace crpropa {
+namespace radiopropa {
 
 // ElectronPairProduction -----------------------------------------------------
 TEST(ElectronPairProduction, allBackgrounds) {
@@ -754,4 +754,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

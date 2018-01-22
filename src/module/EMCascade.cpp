@@ -1,6 +1,6 @@
-#include "crpropa/module/EMCascade.h"
-#include "crpropa/Cosmology.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/EMCascade.h"
+#include "radiopropa/Cosmology.h"
+#include "radiopropa/Units.h"
 
 #include "dint/DintEMCascade.h"
 
@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <cmath>
 
-namespace crpropa {
+namespace radiopropa {
 
 EMCascade::EMCascade() : nE(170), logEmin(7), logEmax(24), dlogE(0.1) {
 	setDistanceBinning(1000 * Mpc, 1000);
@@ -179,4 +179,4 @@ void EMCascade::runCascade(const std::string &filename, int IRBFlag,
 	DeleteSpectrum(&inputSpectrum);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

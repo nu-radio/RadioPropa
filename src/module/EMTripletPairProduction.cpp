@@ -1,12 +1,12 @@
-#include "crpropa/module/EMTripletPairProduction.h"
-#include "crpropa/Units.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/EMTripletPairProduction.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Random.h"
 
 #include <fstream>
 #include <limits>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 static const double mec2 = mass_electron * c_squared;
 
@@ -153,4 +153,4 @@ void EMTripletPairProduction::process(Candidate *candidate) const {
 		candidate->limitNextStep(limit / rate);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

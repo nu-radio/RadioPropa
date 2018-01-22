@@ -1,8 +1,8 @@
-#include "crpropa/module/PhotoDisintegration.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/ParticleMass.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/PhotoDisintegration.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/ParticleMass.h"
+#include "radiopropa/Random.h"
 
 #include <cmath>
 #include <limits>
@@ -10,7 +10,7 @@
 #include <fstream>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 const double PhotoDisintegration::lgmin = 6;  // minimum log10(Lorentz-factor)
 const double PhotoDisintegration::lgmax = 14; // maximum log10(Lorentz-factor)
@@ -307,4 +307,4 @@ double PhotoDisintegration::lossLength(int id, double gamma, double z) {
 	return 1 / lossRate;
 }
 
-} // namespace crpropa
+} // namespace radiopropa

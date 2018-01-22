@@ -1,5 +1,5 @@
-#include "crpropa/ModuleList.h"
-#include "crpropa/ProgressBar.h"
+#include "radiopropa/ModuleList.h"
+#include "radiopropa/ProgressBar.h"
 
 #if _OPENMP
 #include <omp.h>
@@ -13,11 +13,11 @@ typedef void (*sighandler_t)(int);
 
 using namespace std;
 
-namespace crpropa {
+namespace radiopropa {
 
 bool g_cancel_signal_flag = false;
 void g_cancel_signal_callback(int sig) {
-	std::cerr << "crpropa::ModuleList: SIGINT/SIGTERM received" << std::endl;
+	std::cerr << "radiopropa::ModuleList: SIGINT/SIGTERM received" << std::endl;
 	g_cancel_signal_flag = true;
 }
 
@@ -95,7 +95,7 @@ void ModuleList::run(candidate_vector_t &candidates, bool recursive, bool second
 	size_t count = candidates.size();
 
 #if _OPENMP
-	std::cout << "crpropa::ModuleList: Number of Threads: " << omp_get_max_threads() << std::endl;
+	std::cout << "radiopropa::ModuleList: Number of Threads: " << omp_get_max_threads() << std::endl;
 #endif
 
 	ProgressBar progressbar(count);
@@ -118,7 +118,7 @@ void ModuleList::run(candidate_vector_t &candidates, bool recursive, bool second
 		try {
 			run(candidates[i], recursive);
 		} catch (std::exception &e) {
-			std::cerr << "Exception in crpropa::ModuleList::run: " << std::endl;
+			std::cerr << "Exception in radiopropa::ModuleList::run: " << std::endl;
 			std::cerr << e.what() << std::endl;
 		}
 
@@ -134,7 +134,7 @@ void ModuleList::run(candidate_vector_t &candidates, bool recursive, bool second
 void ModuleList::run(SourceInterface *source, size_t count, bool recursive, bool secondariesFirst) {
 
 #if _OPENMP
-	std::cout << "crpropa::ModuleList: Number of Threads: " << omp_get_max_threads() << std::endl;
+	std::cout << "radiopropa::ModuleList: Number of Threads: " << omp_get_max_threads() << std::endl;
 #endif
 
 	ProgressBar progressbar(count);
@@ -157,7 +157,7 @@ void ModuleList::run(SourceInterface *source, size_t count, bool recursive, bool
 		try {
 			candidate = source->getCandidate();
 		} catch (std::exception &e) {
-			std::cerr << "Exception in crpropa::ModuleList::run: source->getCandidate" << std::endl;
+			std::cerr << "Exception in radiopropa::ModuleList::run: source->getCandidate" << std::endl;
 			std::cerr << e.what() << std::endl;
 			g_cancel_signal_flag = true;
 		}
@@ -166,7 +166,7 @@ void ModuleList::run(SourceInterface *source, size_t count, bool recursive, bool
 			try {
 				run(candidate, recursive);
 			} catch (std::exception &e) {
-				std::cerr << "Exception in crpropa::ModuleList::run: " << std::endl;
+				std::cerr << "Exception in radiopropa::ModuleList::run: " << std::endl;
 				std::cerr << e.what() << std::endl;
 				g_cancel_signal_flag = true;
 			}
@@ -199,7 +199,7 @@ ModuleList::const_iterator ModuleList::end() const {
 std::string ModuleList::getDescription() const {
 	std::stringstream ss;
 	ss << "ModuleList\n";
-	crpropa::ModuleList::module_list_t::const_iterator m;
+	radiopropa::ModuleList::module_list_t::const_iterator m;
 	for (m = modules.begin(); m != modules.end(); m++)
 		ss << "  " << (*m)->getDescription() << "\n";
 	return ss.str();
@@ -225,4 +225,4 @@ std::string ModuleListRunner::getDescription() const {
 	return ss.str();
 };
 
-} // namespace crpropa
+} // namespace radiopropa

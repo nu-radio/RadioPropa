@@ -1,12 +1,12 @@
-#include "crpropa/ModuleList.h"
-#include "crpropa/Source.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/module/SimplePropagation.h"
-#include "crpropa/module/BreakCondition.h"
+#include "radiopropa/ModuleList.h"
+#include "radiopropa/Source.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/module/SimplePropagation.h"
+#include "radiopropa/module/BreakCondition.h"
 
 #include "gtest/gtest.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 TEST(ModuleList, process) {
 	ModuleList modules;
@@ -76,4 +76,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

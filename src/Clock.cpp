@@ -1,4 +1,4 @@
-#include "crpropa/Clock.h"
+#include "radiopropa/Clock.h"
 
 #if defined(WIN32) || defined(_WIN32)
 
@@ -24,7 +24,7 @@
 #include <stdexcept>
 #endif
 
-namespace crpropa {
+namespace radiopropa {
 
 #ifdef WIN32
 class Clock::Impl {
@@ -142,7 +142,7 @@ Clock &Clock::getInstance() {
 #endif
 	int i = omp_get_thread_num();
 	if (i >= MAX_THREAD)
-	throw std::runtime_error("crpropa::Clock: more than MAX_THREAD threads!");
+	throw std::runtime_error("radiopropa::Clock: more than MAX_THREAD threads!");
 	return tls[i].r;
 }
 #else

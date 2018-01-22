@@ -1,8 +1,8 @@
-#include "crpropa/module/ParticleCollector.h"
-#include "crpropa/module/TextOutput.h"
-#include "crpropa/Units.h"
+#include "radiopropa/module/ParticleCollector.h"
+#include "radiopropa/module/TextOutput.h"
+#include "radiopropa/Units.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 ParticleCollector::ParticleCollector() : nBuffer(10e6), clone(false), recursive(false)  {
         container.reserve(nBuffer); // for 1e6 candidates ~ 500MB of RAM
@@ -110,4 +110,4 @@ void ParticleCollector::getTrajectory(ref_ptr<ModuleList> mlist, std::size_t i, 
 	ParticleCollector::getTrajectory((ModuleList*) mlist, i, (Module*) output);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

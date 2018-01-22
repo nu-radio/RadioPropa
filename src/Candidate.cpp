@@ -1,10 +1,10 @@
-#include "crpropa/Candidate.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/Units.h"
+#include "radiopropa/Candidate.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/Units.h"
 
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, double weight) :
 		redshift(z), trajectoryLength(0), weight(1), currentStep(0), nextStep(0), active(true), parent(0) {
@@ -231,4 +231,4 @@ void Candidate::restart() {
 	current = source;
 }
 
-} // namespace crpropa
+} // namespace radiopropa

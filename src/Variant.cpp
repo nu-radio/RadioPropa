@@ -3,11 +3,11 @@
 // http://vispa.physik.rwth-aachen.de/                        -
 // Licensed under a LGPL-2 or later license                   -
 //-------------------------------------------------------------
-#include "crpropa/Variant.h"
+#include "radiopropa/Variant.h"
 
 #include <algorithm>
 
-namespace crpropa
+namespace radiopropa
 {
 
 Variant::Variant() :

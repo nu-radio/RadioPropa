@@ -1,17 +1,17 @@
 /* 3. Pretty print for Python */
 /*  __repr__ << getDescription */
 
-__REPR__( crpropa::ParticleState );
-__REPR__( crpropa::Candidate );
-__REPR__( crpropa::Module );
-__REPR__( crpropa::ModuleList );
-__REPR__( crpropa::Source );
-__REPR__( crpropa::SourceList );
-__REPR__( crpropa::SourceFeature );
-__REPR__( crpropa::Observer );
-__REPR__( crpropa::ObserverFeature );
+__REPR__( radiopropa::ParticleState );
+__REPR__( radiopropa::Candidate );
+__REPR__( radiopropa::Module );
+__REPR__( radiopropa::ModuleList );
+__REPR__( radiopropa::Source );
+__REPR__( radiopropa::SourceList );
+__REPR__( radiopropa::SourceFeature );
+__REPR__( radiopropa::Observer );
+__REPR__( radiopropa::ObserverFeature );
 
-VECTOR3__REPR__( crpropa::Vector3 );
+VECTOR3__REPR__( radiopropa::Vector3 );
 
 %pythoncode %{
     DeflectionCK = PropagationCK  # legacy name

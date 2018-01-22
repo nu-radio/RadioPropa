@@ -1,6 +1,6 @@
-#include "crpropa/module/AdiabaticCooling.h"
+#include "radiopropa/module/AdiabaticCooling.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 AdiabaticCooling::AdiabaticCooling(ref_ptr<AdvectionField> advectionField) :
 	advectionField(advectionField) {
@@ -51,4 +51,4 @@ double AdiabaticCooling::getLimit() const {
 
 
 
-} // end namespace crpropa
+} // end namespace radiopropa

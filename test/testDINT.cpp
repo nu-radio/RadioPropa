@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 #include <math.h>
 
-namespace crpropa {
+namespace radiopropa {
 
 class GaussLegendreIntegrationTest : public testing::Test {
 protected:
@@ -94,4 +94,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

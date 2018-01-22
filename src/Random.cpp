@@ -57,11 +57,11 @@
 // Parts of this file are modified beginning in 29.10.09 for adaption in PXL.
 // Parts of this file are modified beginning in 10.02.12 for adaption in CRPropa.
 
-#include "crpropa/Random.h"
+#include "radiopropa/Random.h"
 
 #include <cstdio>
 
-namespace crpropa {
+namespace radiopropa {
 
 Random::Random(const uint32& oneSeed) {
 	seed(oneSeed);
@@ -443,7 +443,7 @@ __attribute__ ((aligned(64))) static RANDOM_TLS_ITEM _tls[MAX_THREAD];
 Random &Random::instance() {
 	int i = omp_get_thread_num();
 	if (i >= MAX_THREAD)
-	throw std::runtime_error("crpropa::Random: more than MAX_THREAD threads!");
+	throw std::runtime_error("radiopropa::Random: more than MAX_THREAD threads!");
 	return _tls[i].r;
 }
 
@@ -461,5 +461,5 @@ void Random::seedThreads(const uint32 oneSeed) {
 }
 #endif
 
-} // namespace crpropa
+} // namespace radiopropa
 

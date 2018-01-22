@@ -1,11 +1,11 @@
-#include "crpropa/Candidate.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/module/SimplePropagation.h"
-#include "crpropa/module/PropagationCK.h"
+#include "radiopropa/Candidate.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/module/SimplePropagation.h"
+#include "radiopropa/module/PropagationCK.h"
 
 #include "gtest/gtest.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 TEST(testSimplePropagation, step) {
 	double minStep = 20;
@@ -97,4 +97,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

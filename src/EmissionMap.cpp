@@ -1,10 +1,10 @@
-#include "crpropa/EmissionMap.h"
-#include "crpropa/Random.h"
-#include "crpropa/Units.h"
+#include "radiopropa/EmissionMap.h"
+#include "radiopropa/Random.h"
+#include "radiopropa/Units.h"
 
 #include <fstream>
 
-namespace crpropa {
+namespace radiopropa {
 
 CylindricalProjectionMap::CylindricalProjectionMap() : nPhi(360), nTheta(180), dirty(false), pdf(nPhi* nTheta, 0), cdf(nPhi* nTheta, 0) {
 	sPhi = 2. * M_PI / nPhi;
@@ -287,4 +287,4 @@ void EmissionMap::load(const std::string &filename) {
 
 }
 
-} // namespace crpropa
+} // namespace radiopropa

@@ -1,4 +1,4 @@
-#include "crpropa/Version.h"
+#include "radiopropa/Version.h"
 #include "kiss/logger.h"
 
 #include <cstring>

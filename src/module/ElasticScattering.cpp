@@ -1,8 +1,8 @@
-#include "crpropa/module/ElasticScattering.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/ParticleMass.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/ElasticScattering.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/ParticleMass.h"
+#include "radiopropa/Random.h"
 
 #include <cmath>
 #include <limits>
@@ -10,7 +10,7 @@
 #include <fstream>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 const double ElasticScattering::lgmin = 6.;  // minimum log10(Lorentz-factor)
 const double ElasticScattering::lgmax = 14.; // maximum log10(Lorentz-factor)
@@ -125,4 +125,4 @@ void ElasticScattering::process(Candidate *candidate) const {
 	}
 }
 
-} // namespace crpropa
+} // namespace radiopropa

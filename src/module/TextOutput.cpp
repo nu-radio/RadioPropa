@@ -1,7 +1,7 @@
-#include "crpropa/module/TextOutput.h"
-#include "crpropa/module/ParticleCollector.h"
-#include "crpropa/Units.h"
-#include "crpropa/Version.h"
+#include "radiopropa/module/TextOutput.h"
+#include "radiopropa/module/ParticleCollector.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Version.h"
 
 #include <cstdio>
 #include <stdexcept>
@@ -13,7 +13,7 @@
 #include <ozstream.hpp>
 #endif
 
-namespace crpropa {
+namespace radiopropa {
 
 TextOutput::TextOutput() : Output(), out(&std::cout) {
 }
@@ -263,7 +263,7 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 	double energyScale = EeV; // default EeV
 
 	if (!infile.good())
-		throw std::runtime_error("crpropa::TextOutput: could not open file " + filename);
+		throw std::runtime_error("radiopropa::TextOutput: could not open file " + filename);
 	in = &infile;
 	
 	if (kiss::ends_with(filename, ".gz")){
@@ -350,4 +350,4 @@ void TextOutput::gzip() {
 #endif
 }
 
-} // namespace crpropa
+} // namespace radiopropa

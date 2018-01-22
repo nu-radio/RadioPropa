@@ -1,14 +1,14 @@
-#include "crpropa/module/ElectronPairProduction.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/ParticleMass.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/ElectronPairProduction.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/ParticleMass.h"
+#include "radiopropa/Random.h"
 
 #include <fstream>
 #include <limits>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 ElectronPairProduction::ElectronPairProduction(PhotonField photonField,
 		bool haveElectrons, double limit) {
@@ -139,4 +139,4 @@ void ElectronPairProduction::process(Candidate *c) const {
 	c->limitNextStep(limit * losslen);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

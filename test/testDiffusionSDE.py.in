@@ -20,10 +20,10 @@ except:
     sys.exit(-1)
 
 try:
-    import crpropa
-    from crpropa import nG, kpc, pc, GeV, TeV, PeV, c_light
+    import radiopropa
+    from radiopropa import nG, kpc, pc, GeV, TeV, PeV, c_light
 except Exception as e:
-    print("*** CRPropa import failed")
+    print("*** RadioPropa import failed")
     print(type(e), str(e))
     sys.exit(-2)
 
@@ -143,16 +143,16 @@ def Anderson(x):
 
 class DiffusionOneDirection(unittest.TestCase):
 
-    ConstMagVec = crpropa.Vector3d(0*nG,0*nG,1*nG)
-    BField = crpropa.UniformMagneticField(ConstMagVec)
+    ConstMagVec = radiopropa.Vector3d(0*nG,0*nG,1*nG)
+    BField = radiopropa.UniformMagneticField(ConstMagVec)
     
     precision = 1e-4
     minStep = 1*pc
     maxStep = 10*kpc
     epsilon = 0.
     
-    Dif = crpropa.DiffusionSDE(BField, precision, minStep, maxStep, epsilon)
-    DifAdv = crpropa.DiffusionSDE(BField, precision, minStep, maxStep, epsilon)
+    Dif = radiopropa.DiffusionSDE(BField, precision, minStep, maxStep, epsilon)
+    DifAdv = radiopropa.DiffusionSDE(BField, precision, minStep, maxStep, epsilon)
     
     def test_Simple(self):
         self.assertEqual(self.Dif.getTolerance(), self.precision)
@@ -163,10 +163,10 @@ class DiffusionOneDirection(unittest.TestCase):
         self.assertEqual(self.Dif.getScale(), 1.) # default D(4GeV) = 6.1e28 cm^2/s
         
     def test_NeutralPropagation(self):
-        c = crpropa.Candidate()
-        c.current.setId(crpropa.nucleusId(1,0))
+        c = radiopropa.Candidate()
+        c.current.setId(radiopropa.nucleusId(1,0))
         c.current.setEnergy(10*TeV)
-        c.current.setDirection(crpropa.Vector3d(1,0,0))
+        c.current.setDirection(radiopropa.Vector3d(1,0,0))
         
         # check for position
         self.Dif.process(c)
@@ -180,19 +180,19 @@ class DiffusionOneDirection(unittest.TestCase):
         
     def test_NoBFieldPropagation(self):
         
-        ConstMagVec = crpropa.Vector3d(0.)
-        BField = crpropa.UniformMagneticField(ConstMagVec)
+        ConstMagVec = radiopropa.Vector3d(0.)
+        BField = radiopropa.UniformMagneticField(ConstMagVec)
         
         precision = 1e-4
         minStep = 1*pc
         maxStep = 10*kpc
         epsilon = 0.
     
-        Dif = crpropa.DiffusionSDE(BField, precision, minStep, maxStep, epsilon)
-        c = crpropa.Candidate()
-        c.current.setId(crpropa.nucleusId(1,1))
+        Dif = radiopropa.DiffusionSDE(BField, precision, minStep, maxStep, epsilon)
+        c = radiopropa.Candidate()
+        c.current.setId(radiopropa.nucleusId(1,1))
         c.current.setEnergy(10*TeV)
-        c.current.setDirection(crpropa.Vector3d(1,0,0))
+        c.current.setDirection(radiopropa.Vector3d(1,0,0))
         
         # check for position
         Dif.process(c)
@@ -207,22 +207,22 @@ class DiffusionOneDirection(unittest.TestCase):
     
     def test_AdvectivePropagation(self):
         
-        ConstMagVec = crpropa.Vector3d(0.)
-        BField = crpropa.UniformMagneticField(ConstMagVec)
+        ConstMagVec = radiopropa.Vector3d(0.)
+        BField = radiopropa.UniformMagneticField(ConstMagVec)
         
-        ConstAdvVec = crpropa.Vector3d(0., 1e6, 0.)
-        AdvField = crpropa.UniformAdvectionField(ConstAdvVec)
+        ConstAdvVec = radiopropa.Vector3d(0., 1e6, 0.)
+        AdvField = radiopropa.UniformAdvectionField(ConstAdvVec)
         
         precision = 1e-4
         minStep = 1*pc
         maxStep = 10*kpc
         epsilon = 0.
     
-        Dif = crpropa.DiffusionSDE(BField, AdvField, precision, minStep, maxStep, epsilon)
-        c = crpropa.Candidate()
-        c.current.setId(crpropa.nucleusId(1,1))
+        Dif = radiopropa.DiffusionSDE(BField, AdvField, precision, minStep, maxStep, epsilon)
+        c = radiopropa.Candidate()
+        c.current.setId(radiopropa.nucleusId(1,1))
         c.current.setEnergy(10*TeV)
-        c.current.setDirection(crpropa.Vector3d(1,0,0))
+        c.current.setDirection(radiopropa.Vector3d(1,0,0))
         
         # check for position
         Dif.process(c)
@@ -245,11 +245,11 @@ class DiffusionOneDirection(unittest.TestCase):
         mean_exp = 0.
         N = 10**4
         
-        maxTra = crpropa.MaximumTrajectoryLength(L_max)
+        maxTra = radiopropa.MaximumTrajectoryLength(L_max)
         
         for i in range(N):
-            c = crpropa.Candidate()
-            c.current.setId(crpropa.nucleusId(1,1))
+            c = radiopropa.Candidate()
+            c.current.setId(radiopropa.nucleusId(1,1))
             c.current.setEnergy(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)
@@ -286,11 +286,11 @@ class DiffusionOneDirection(unittest.TestCase):
         mean_exp = 0.
         N = 10**4
         
-        maxTra = crpropa.MaximumTrajectoryLength(L_max)
+        maxTra = radiopropa.MaximumTrajectoryLength(L_max)
         
         for i in range(N):
-            c = crpropa.Candidate()
-            c.current.setId(crpropa.nucleusId(1,1))
+            c = radiopropa.Candidate()
+            c.current.setId(radiopropa.nucleusId(1,1))
             c.current.setEnergy(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)
@@ -326,11 +326,11 @@ class DiffusionOneDirection(unittest.TestCase):
         mean_exp = 0.
         N = 10**4
         
-        maxTra = crpropa.MaximumTrajectoryLength(L_max)
+        maxTra = radiopropa.MaximumTrajectoryLength(L_max)
         
         for i in range(N):
-            c = crpropa.Candidate()
-            c.current.setId(crpropa.nucleusId(1,1))
+            c = radiopropa.Candidate()
+            c.current.setId(radiopropa.nucleusId(1,1))
             c.current.setEnergy(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)
@@ -375,24 +375,24 @@ class DiffusionOneDirection(unittest.TestCase):
         
         N = 10**4
         
-        maxTra = crpropa.MaximumTrajectoryLength(L_max)
+        maxTra = radiopropa.MaximumTrajectoryLength(L_max)
         
-        ConstMagVec = crpropa.Vector3d(0*nG,0*nG,1*nG)
-        BField = crpropa.UniformMagneticField(ConstMagVec)
+        ConstMagVec = radiopropa.Vector3d(0*nG,0*nG,1*nG)
+        BField = radiopropa.UniformMagneticField(ConstMagVec)
         
-        ConstAdvVec = crpropa.Vector3d(advSpeed, 0., 0.)
-        AdvField = crpropa.UniformAdvectionField(ConstAdvVec)
+        ConstAdvVec = radiopropa.Vector3d(advSpeed, 0., 0.)
+        AdvField = radiopropa.UniformAdvectionField(ConstAdvVec)
         
         precision = 1e-4
         minStep = 1*pc
         maxStep = 10*kpc
     
-        DifAdv = crpropa.DiffusionSDE(BField, AdvField, precision, minStep, maxStep, epsilon)
+        DifAdv = radiopropa.DiffusionSDE(BField, AdvField, precision, minStep, maxStep, epsilon)
         
         
         for i in range(N):
-            c = crpropa.Candidate()
-            c.current.setId(crpropa.nucleusId(1,1))
+            c = radiopropa.Candidate()
+            c.current.setId(radiopropa.nucleusId(1,1))
             c.current.setEnergy(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)

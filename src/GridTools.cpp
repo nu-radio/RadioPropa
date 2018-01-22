@@ -1,11 +1,11 @@
-#include "crpropa/GridTools.h"
-#include "crpropa/Random.h"
-#include "crpropa/magneticField/MagneticField.h"
+#include "radiopropa/GridTools.h"
+#include "radiopropa/Random.h"
+#include "radiopropa/magneticField/MagneticField.h"
 
 #include <fstream>
 #include <sstream>
 
-namespace crpropa {
+namespace radiopropa {
 
 void scaleGrid(ref_ptr<ScalarGrid> grid, double a) {
 	for (int ix = 0; ix < grid->getNx(); ix++)
@@ -490,4 +490,4 @@ void dumpGridToTxt(ref_ptr<ScalarGrid> grid, std::string filename, double c) {
 	fout.close();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

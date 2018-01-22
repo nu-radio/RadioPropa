@@ -1,7 +1,7 @@
 #ifdef CRPROPA_HAVE_HDF5
 
-#include "crpropa/module/HDF5Output.h"
-#include "crpropa/Version.h"
+#include "radiopropa/module/HDF5Output.h"
+#include "radiopropa/Version.h"
 #include "kiss/logger.h"
 
 #include <hdf5.h>
@@ -10,7 +10,7 @@
 const hsize_t RANK = 1;
 const hsize_t BUFFER_SIZE = 1024 * 16;
 
-namespace crpropa {
+namespace radiopropa {
 
 // map variant types to H5T_NATIVE 
 hid_t variantTypeToH5T_NATIVE(Variant::Type type) {
@@ -315,6 +315,6 @@ std::string HDF5Output::getDescription() const  {
 	return "HDF5Output";
 }
 
-} // namespace crpropa
+} // namespace radiopropa
 
 #endif // CRPROPA_HAVE_HDF5

@@ -1,12 +1,12 @@
-#include "crpropa/module/Tools.h"
-#include "crpropa/Clock.h"
+#include "radiopropa/module/Tools.h"
+#include "radiopropa/Clock.h"
 
 #include <iostream>
 #include <sstream>
 
 using namespace std;
 
-namespace crpropa {
+namespace radiopropa {
 
 PerformanceModule::~PerformanceModule() {
 	double total = 0;
@@ -120,4 +120,4 @@ string EmissionMapFiller::getDescription() const {
 	return "EmissionMapFiller";
 }
 
-} // namespace crpropa
+} // namespace radiopropa

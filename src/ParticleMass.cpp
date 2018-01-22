@@ -1,6 +1,6 @@
-#include "crpropa/ParticleMass.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/Common.h"
+#include "radiopropa/ParticleMass.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/Common.h"
 
 #include <kiss/convert.h>
 
@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <limits>
 
-namespace crpropa {
+namespace radiopropa {
 
 struct NuclearMassTable {
 	std::vector<double> table;
@@ -19,7 +19,7 @@ struct NuclearMassTable {
 		std::ifstream infile(filename.c_str());
 
 		if (!infile.good())
-			throw std::runtime_error("crpropa: could not open file " + filename);
+			throw std::runtime_error("radiopropa: could not open file " + filename);
 
 		int Z, N;
 		double mass;
@@ -50,4 +50,4 @@ double nuclearMass(int A, int Z) {
 	return nuclearMassTable.table[Z * 31 + N];
 }
 
-} // namespace crpropa
+} // namespace radiopropa

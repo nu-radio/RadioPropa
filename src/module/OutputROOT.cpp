@@ -1,13 +1,13 @@
-#include "crpropa/module/OutputROOT.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
-#include "crpropa/Cosmology.h"
+#include "radiopropa/module/OutputROOT.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
+#include "radiopropa/Cosmology.h"
 
 #ifdef CRPROPA_HAVE_ROOT
 
 #include <TObject.h>
 
-namespace crpropa {
+namespace radiopropa {
   
 const std::string rootDeprecationWarning = "!!! Deprecation Warning !!! Output to CERN ROOT will soon be removed from future CRPropa versions. Please switch to HDF5 or (compressed) txt output.\n";
 
@@ -493,6 +493,6 @@ void ROOTTrajectoryOutput3D::process(Candidate *c) const {
 }
 ////////////////////////////////////////////////////////////////////////////////
 
-} // namespace crpropa
+} // namespace radiopropa
 
 #endif // CRPROPA_HAVE_ROOT

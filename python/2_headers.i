@@ -24,7 +24,7 @@
 #endif
 
 %{
-#include "CRPropa.h"
+#include "RadioPropa.h"
 %}
 
 %{
@@ -35,45 +35,45 @@
 %ignore operator<<;
 %ignore operator>>;
 %ignore *::operator=;
-%ignore operator crpropa::Source*;
-%ignore operator crpropa::SourceList*;
-%ignore operator crpropa::SourceInterface*;
-%ignore operator crpropa::SourceFeature*;
-%ignore operator crpropa::Candidate*;
-%ignore operator crpropa::Module*;
-%ignore operator crpropa::ModuleList*;
-%ignore operator crpropa::Observer*;
-%ignore operator crpropa::ObserverFeature*;
-%ignore operator crpropa::MagneticField*;
-%ignore operator crpropa::AdvectionField*;
-%ignore operator crpropa::ParticleCollector*;
-%ignore crpropa::TextOutput::load;
+%ignore operator radiopropa::Source*;
+%ignore operator radiopropa::SourceList*;
+%ignore operator radiopropa::SourceInterface*;
+%ignore operator radiopropa::SourceFeature*;
+%ignore operator radiopropa::Candidate*;
+%ignore operator radiopropa::Module*;
+%ignore operator radiopropa::ModuleList*;
+%ignore operator radiopropa::Observer*;
+%ignore operator radiopropa::ObserverFeature*;
+%ignore operator radiopropa::MagneticField*;
+%ignore operator radiopropa::AdvectionField*;
+%ignore operator radiopropa::ParticleCollector*;
+%ignore radiopropa::TextOutput::load;
 
-%feature("ref")   crpropa::Referenced "$this->addReference();"
-%feature("unref") crpropa::Referenced "$this->removeReference();"
+%feature("ref")   radiopropa::Referenced "$this->addReference();"
+%feature("unref") radiopropa::Referenced "$this->removeReference();"
 
 
-%include "crpropa/Logging.h"
-%include "crpropa/Vector3.h"
-%include "crpropa/Referenced.h"
-%include "crpropa/Units.h"
-%include "crpropa/Common.h"
-%include "crpropa/Cosmology.h"
-%include "crpropa/PhotonBackground.h"
-%include "crpropa/PhotonPropagation.h"
-%include "crpropa/Random.h"
-%include "crpropa/ParticleState.h"
-%include "crpropa/ParticleID.h"
-%include "crpropa/ParticleMass.h"
-%include "crpropa/Version.h"
+%include "radiopropa/Logging.h"
+%include "radiopropa/Vector3.h"
+%include "radiopropa/Referenced.h"
+%include "radiopropa/Units.h"
+%include "radiopropa/Common.h"
+%include "radiopropa/Cosmology.h"
+%include "radiopropa/PhotonBackground.h"
+%include "radiopropa/PhotonPropagation.h"
+%include "radiopropa/Random.h"
+%include "radiopropa/ParticleState.h"
+%include "radiopropa/ParticleID.h"
+%include "radiopropa/ParticleMass.h"
+%include "radiopropa/Version.h"
 
-%import "crpropa/Variant.h"
+%import "radiopropa/Variant.h"
 
 /* override Candidate::getProperty() */
-%ignore crpropa::Candidate::getProperty(const std::string &) const;
+%ignore radiopropa::Candidate::getProperty(const std::string &) const;
 
 %nothread; /* disable threading for extend*/
-%extend crpropa::Candidate {
+%extend radiopropa::Candidate {
     PyObject * getProperty(PyObject * name){
 
         std::string input;
@@ -97,7 +97,7 @@
             return NULL;
         }
 
-        crpropa::Variant value = $self->getProperty(input);
+        radiopropa::Variant value = $self->getProperty(input);
 
         // implement this conversion here and not in the Variant as
         // __asPythonObject, as extensions cannot be called from extension.
@@ -199,7 +199,7 @@
 
         if (value == Py_None)
         {
-          $self->setProperty(input, crpropa::Variant());
+          $self->setProperty(input, radiopropa::Variant());
         Py_RETURN_TRUE;
         }
         else if (PyBool_Check(value))
@@ -216,17 +216,17 @@
         }
         else if (PyInt_Check(value))
         {
-          $self->setProperty(input, crpropa::Variant::fromInt32(PyInt_AsLong(value)));
+          $self->setProperty(input, radiopropa::Variant::fromInt32(PyInt_AsLong(value)));
           Py_RETURN_TRUE;
         }
         else if (PyLong_Check(value))
         {
-          $self->setProperty(input, crpropa::Variant::fromUInt64(PyLong_AsLong(value)));
+          $self->setProperty(input, radiopropa::Variant::fromUInt64(PyLong_AsLong(value)));
           Py_RETURN_TRUE;
         }
         else if (PyFloat_Check(value))
         {
-          $self->setProperty(input, crpropa::Variant::fromDouble(PyFloat_AsDouble(value)));
+          $self->setProperty(input, radiopropa::Variant::fromDouble(PyFloat_AsDouble(value)));
           Py_RETURN_TRUE;
         }
         else if (PyUnicode_Check(value)){
@@ -263,60 +263,60 @@
 %thread; /* reenable threading */
 
 
-%template(CandidateVector) std::vector< crpropa::ref_ptr<crpropa::Candidate> >;
-%template(CandidateRefPtr) crpropa::ref_ptr<crpropa::Candidate>;
-%include "crpropa/Candidate.h"
+%template(CandidateVector) std::vector< radiopropa::ref_ptr<radiopropa::Candidate> >;
+%template(CandidateRefPtr) radiopropa::ref_ptr<radiopropa::Candidate>;
+%include "radiopropa/Candidate.h"
 
 
-%template(ModuleRefPtr) crpropa::ref_ptr<crpropa::Module>;
-%template(stdModuleList) std::list< crpropa::ref_ptr<crpropa::Module> >;
-%feature("director") crpropa::Module;
-%feature("director") crpropa::AbstractCondition;
-%include "crpropa/Module.h"
+%template(ModuleRefPtr) radiopropa::ref_ptr<radiopropa::Module>;
+%template(stdModuleList) std::list< radiopropa::ref_ptr<radiopropa::Module> >;
+%feature("director") radiopropa::Module;
+%feature("director") radiopropa::AbstractCondition;
+%include "radiopropa/Module.h"
 
-%implicitconv crpropa::ref_ptr<crpropa::MagneticField>;
-%template(MagneticFieldRefPtr) crpropa::ref_ptr<crpropa::MagneticField>;
-%include "crpropa/magneticField/MagneticField.h"
+%implicitconv radiopropa::ref_ptr<radiopropa::MagneticField>;
+%template(MagneticFieldRefPtr) radiopropa::ref_ptr<radiopropa::MagneticField>;
+%include "radiopropa/magneticField/MagneticField.h"
 
-%implicitconv crpropa::ref_ptr<crpropa::AdvectionField>;
-%template(AdvectionFieldRefPtr) crpropa::ref_ptr<crpropa::AdvectionField>;
-%include "crpropa/advectionField/AdvectionField.h"
+%implicitconv radiopropa::ref_ptr<radiopropa::AdvectionField>;
+%template(AdvectionFieldRefPtr) radiopropa::ref_ptr<radiopropa::AdvectionField>;
+%include "radiopropa/advectionField/AdvectionField.h"
 
-%include "crpropa/Grid.h"
-%include "crpropa/GridTools.h"
+%include "radiopropa/Grid.h"
+%include "radiopropa/GridTools.h"
 
-%implicitconv crpropa::ref_ptr<crpropa::Grid<crpropa::Vector3<float> > >;
-%template(VectorGridRefPtr) crpropa::ref_ptr<crpropa::Grid<crpropa::Vector3<float> > >;
-%template(VectorGrid) crpropa::Grid<crpropa::Vector3<float> >;
+%implicitconv radiopropa::ref_ptr<radiopropa::Grid<radiopropa::Vector3<float> > >;
+%template(VectorGridRefPtr) radiopropa::ref_ptr<radiopropa::Grid<radiopropa::Vector3<float> > >;
+%template(VectorGrid) radiopropa::Grid<radiopropa::Vector3<float> >;
 
-%implicitconv crpropa::ref_ptr<crpropa::Grid<float> >;
-%template(ScalarGridRefPtr) crpropa::ref_ptr<crpropa::Grid<float> >;
-%template(ScalarGrid) crpropa::Grid<float>;
+%implicitconv radiopropa::ref_ptr<radiopropa::Grid<float> >;
+%template(ScalarGridRefPtr) radiopropa::ref_ptr<radiopropa::Grid<float> >;
+%template(ScalarGrid) radiopropa::Grid<float>;
 
-%include "crpropa/EmissionMap.h"
-%implicitconv crpropa::ref_ptr<crpropa::EmissionMap>;
-%template(EmissionMapRefPtr) crpropa::ref_ptr<crpropa::EmissionMap>;
-%implicitconv crpropa::ref_ptr<crpropa::CylindricalProjectionMap>;
-%template(CylindricalProjectionMapRefPtr) crpropa::ref_ptr<crpropa::CylindricalProjectionMap>;
+%include "radiopropa/EmissionMap.h"
+%implicitconv radiopropa::ref_ptr<radiopropa::EmissionMap>;
+%template(EmissionMapRefPtr) radiopropa::ref_ptr<radiopropa::EmissionMap>;
+%implicitconv radiopropa::ref_ptr<radiopropa::CylindricalProjectionMap>;
+%template(CylindricalProjectionMapRefPtr) radiopropa::ref_ptr<radiopropa::CylindricalProjectionMap>;
 
-%include "crpropa/magneticField/MagneticFieldGrid.h"
+%include "radiopropa/magneticField/MagneticFieldGrid.h"
 %feature("notabstract") QuimbyMagneticFieldAdapter;
-%include "crpropa/magneticField/QuimbyMagneticField.h"
-%include "crpropa/magneticField/AMRMagneticField.h"
-%include "crpropa/magneticField/JF12Field.h"
-%include "crpropa/magneticField/PshirkovField.h"
-%include "crpropa/magneticField/ArchimedeanSpiralField.h"
-%include "crpropa/module/BreakCondition.h"
-%include "crpropa/module/Boundary.h"
+%include "radiopropa/magneticField/QuimbyMagneticField.h"
+%include "radiopropa/magneticField/AMRMagneticField.h"
+%include "radiopropa/magneticField/JF12Field.h"
+%include "radiopropa/magneticField/PshirkovField.h"
+%include "radiopropa/magneticField/ArchimedeanSpiralField.h"
+%include "radiopropa/module/BreakCondition.h"
+%include "radiopropa/module/Boundary.h"
 
-%feature("director") crpropa::Observer;
-%feature("director") crpropa::ObserverFeature;
-%include "crpropa/module/Observer.h"
-%include "crpropa/module/SimplePropagation.h"
-%include "crpropa/module/PropagationCK.h"
+%feature("director") radiopropa::Observer;
+%feature("director") radiopropa::ObserverFeature;
+%include "radiopropa/module/Observer.h"
+%include "radiopropa/module/SimplePropagation.h"
+%include "radiopropa/module/PropagationCK.h"
 
-%ignore crpropa::Output::enableProperty(const std::string &property, const Variant& defaultValue, const std::string &comment = "");
-%extend crpropa::Output{
+%ignore radiopropa::Output::enableProperty(const std::string &property, const Variant& defaultValue, const std::string &comment = "");
+%extend radiopropa::Output{
   PyObject * enableProperty(const std::string &name, PyObject* defaultValue, const std::string &comment="")
   {
 
@@ -338,17 +338,17 @@
         }
         else if (PyInt_Check(defaultValue))
         {
-          $self->enableProperty(name, crpropa::Variant::fromInt32(PyInt_AsLong(defaultValue)), comment);
+          $self->enableProperty(name, radiopropa::Variant::fromInt32(PyInt_AsLong(defaultValue)), comment);
           Py_RETURN_TRUE;
         }
         else if (PyLong_Check(defaultValue))
         {
-          $self->enableProperty(name, crpropa::Variant::fromInt64(PyLong_AsLong(defaultValue)), comment);
+          $self->enableProperty(name, radiopropa::Variant::fromInt64(PyLong_AsLong(defaultValue)), comment);
           Py_RETURN_TRUE;
         }
         else if (PyFloat_Check(defaultValue))
         {
-          $self->enableProperty(name, crpropa::Variant::fromDouble(PyFloat_AsDouble(defaultValue)), comment);
+          $self->enableProperty(name, radiopropa::Variant::fromDouble(PyFloat_AsDouble(defaultValue)), comment);
           Py_RETURN_TRUE;
         }
         else if (PyUnicode_Check(defaultValue)){
@@ -387,57 +387,57 @@
 }
 
 
-%include "crpropa/module/Output.h"
-%include "crpropa/module/DiffusionSDE.h"
-%include "crpropa/module/TextOutput.h"
+%include "radiopropa/module/Output.h"
+%include "radiopropa/module/DiffusionSDE.h"
+%include "radiopropa/module/TextOutput.h"
 
-%include "crpropa/module/HDF5Output.h"
-%include "crpropa/module/OutputShell.h"
-%include "crpropa/module/OutputROOT.h"
-%include "crpropa/module/OutputCRPropa2.h"
-%include "crpropa/module/EMCascade.h"
-%include "crpropa/module/PhotonEleCa.h"
-%include "crpropa/module/PhotonOutput1D.h"
-%include "crpropa/module/NuclearDecay.h"
-%include "crpropa/module/ElectronPairProduction.h"
-%include "crpropa/module/PhotoPionProduction.h"
-%include "crpropa/module/PhotoDisintegration.h"
-%include "crpropa/module/ElasticScattering.h"
-%include "crpropa/module/Redshift.h"
-%include "crpropa/module/EMPairProduction.h"
-%include "crpropa/module/EMDoublePairProduction.h"
-%include "crpropa/module/EMTripletPairProduction.h"
-%include "crpropa/module/EMInverseComptonScattering.h"
-%include "crpropa/module/SynchrotronRadiation.h"
-%include "crpropa/module/AdiabaticCooling.h"
+%include "radiopropa/module/HDF5Output.h"
+%include "radiopropa/module/OutputShell.h"
+%include "radiopropa/module/OutputROOT.h"
+%include "radiopropa/module/OutputCRPropa2.h"
+%include "radiopropa/module/EMCascade.h"
+%include "radiopropa/module/PhotonEleCa.h"
+%include "radiopropa/module/PhotonOutput1D.h"
+%include "radiopropa/module/NuclearDecay.h"
+%include "radiopropa/module/ElectronPairProduction.h"
+%include "radiopropa/module/PhotoPionProduction.h"
+%include "radiopropa/module/PhotoDisintegration.h"
+%include "radiopropa/module/ElasticScattering.h"
+%include "radiopropa/module/Redshift.h"
+%include "radiopropa/module/EMPairProduction.h"
+%include "radiopropa/module/EMDoublePairProduction.h"
+%include "radiopropa/module/EMTripletPairProduction.h"
+%include "radiopropa/module/EMInverseComptonScattering.h"
+%include "radiopropa/module/SynchrotronRadiation.h"
+%include "radiopropa/module/AdiabaticCooling.h"
 
 %template(IntSet) std::set<int>;
-%include "crpropa/module/Tools.h"
+%include "radiopropa/module/Tools.h"
 
-%template(SourceInterfaceRefPtr) crpropa::ref_ptr<crpropa::SourceInterface>;
-%feature("director") crpropa::SourceInterface;
-%template(SourceFeatureRefPtr) crpropa::ref_ptr<crpropa::SourceFeature>;
-%feature("director") crpropa::SourceFeature;
-%include "crpropa/Source.h"
+%template(SourceInterfaceRefPtr) radiopropa::ref_ptr<radiopropa::SourceInterface>;
+%feature("director") radiopropa::SourceInterface;
+%template(SourceFeatureRefPtr) radiopropa::ref_ptr<radiopropa::SourceFeature>;
+%feature("director") radiopropa::SourceFeature;
+%include "radiopropa/Source.h"
 
 %inline %{
 class ModuleListIterator {
   public:
         ModuleListIterator(
-                crpropa::ModuleList::iterator _cur,
-                crpropa::ModuleList::iterator _end) : 
+                radiopropa::ModuleList::iterator _cur,
+                radiopropa::ModuleList::iterator _end) : 
                         cur(_cur), end(_end) {}
         ModuleListIterator* __iter__() { return this; }
-        crpropa::ModuleList::iterator cur;
-        crpropa::ModuleList::iterator end;
+        radiopropa::ModuleList::iterator cur;
+        radiopropa::ModuleList::iterator end;
   };
 %}
 
 %extend ModuleListIterator {
 #ifdef SWIG_PYTHON3
-  crpropa::ref_ptr<crpropa::Module>& __next__() {
+  radiopropa::ref_ptr<radiopropa::Module>& __next__() {
 #else
-  crpropa::ref_ptr<crpropa::Module>& next() {
+  radiopropa::ref_ptr<radiopropa::Module>& next() {
 #endif
     if ($self->cur != $self->end) {
         return *$self->cur++;
@@ -446,11 +446,11 @@ class ModuleListIterator {
   }
 }
 
-%extend crpropa::ModuleList {
+%extend radiopropa::ModuleList {
   ModuleListIterator __iter__() {
         return ModuleListIterator($self->begin(), $self->end()); 
   }
-  crpropa::ref_ptr<crpropa::Module> __getitem__(size_t i) {
+  radiopropa::ref_ptr<radiopropa::Module> __getitem__(size_t i) {
         if (i >= $self->size()) {
                 throw RangeError();
         }
@@ -461,29 +461,29 @@ class ModuleListIterator {
   }
 };
 
-%template(ModuleListRefPtr) crpropa::ref_ptr<crpropa::ModuleList>;
-%include "crpropa/ModuleList.h"
+%template(ModuleListRefPtr) radiopropa::ref_ptr<radiopropa::ModuleList>;
+%include "radiopropa/ModuleList.h"
 
-%template(ParticleCollectorRefPtr) crpropa::ref_ptr<crpropa::ParticleCollector>;
+%template(ParticleCollectorRefPtr) radiopropa::ref_ptr<radiopropa::ParticleCollector>;
 
 %inline %{
 class ParticleCollectorIterator {
   public:
         ParticleCollectorIterator(
-                crpropa::ParticleCollector::iterator _cur,
-                crpropa::ParticleCollector::iterator _end) : 
+                radiopropa::ParticleCollector::iterator _cur,
+                radiopropa::ParticleCollector::iterator _end) : 
                         cur(_cur), end(_end) {}
         ParticleCollectorIterator* __iter__() { return this; }
-        crpropa::ParticleCollector::iterator cur;
-        crpropa::ParticleCollector::iterator end;
+        radiopropa::ParticleCollector::iterator cur;
+        radiopropa::ParticleCollector::iterator end;
   };
 %}
 
 %extend ParticleCollectorIterator {
 #ifdef SWIG_PYTHON3
-  crpropa::ref_ptr<crpropa::Candidate>& __next__() {
+  radiopropa::ref_ptr<radiopropa::Candidate>& __next__() {
 #else
-  crpropa::ref_ptr<crpropa::Candidate>& next() {
+  radiopropa::ref_ptr<radiopropa::Candidate>& next() {
 #endif
     if ($self->cur != $self->end) {
         return *$self->cur++;
@@ -492,18 +492,18 @@ class ParticleCollectorIterator {
   }
 }
 
-%extend crpropa::ParticleCollector {
+%extend radiopropa::ParticleCollector {
   ParticleCollectorIterator __iter__() {
         return ParticleCollectorIterator($self->begin(), $self->end()); 
   }
-  crpropa::ref_ptr<crpropa::Candidate> __getitem__(size_t i) {
+  radiopropa::ref_ptr<radiopropa::Candidate> __getitem__(size_t i) {
         if (i >= $self->size()) {
                 throw RangeError();
         }
         return (*($self))[i];
   }
-  std::vector< crpropa::ref_ptr<crpropa::Candidate> > __getitem__(PyObject *param) {
-        std::vector< crpropa::ref_ptr<crpropa::Candidate> > result;
+  std::vector< radiopropa::ref_ptr<radiopropa::Candidate> > __getitem__(PyObject *param) {
+        std::vector< radiopropa::ref_ptr<radiopropa::Candidate> > result;
 
         if (PySlice_Check(param)) {
                 Py_ssize_t len = 0, start = 0, stop = 0, step = 0, slicelength = 0, i = 0;
@@ -515,7 +515,7 @@ class ParticleCollectorIterator {
                     PySlice_GetIndicesEx((PySliceObject*)param, len, &start, &stop, &step, &slicelength);
                 #endif
                 
-                for(crpropa::ParticleCollector::iterator itr = $self->begin(); itr != $self->end(); ++itr){
+                for(radiopropa::ParticleCollector::iterator itr = $self->begin(); itr != $self->end(); ++itr){
                         if( i >= start && i < stop){
                                 result.push_back(itr->get());
                         }
@@ -531,4 +531,4 @@ class ParticleCollectorIterator {
   }
 };
 
-%include "crpropa/module/ParticleCollector.h"
+%include "radiopropa/module/ParticleCollector.h"

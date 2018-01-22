@@ -10,9 +10,9 @@ except:
     sys.exit(0)
 
 try:
-    import crpropa as crp
+    import radiopropa as crp
 except Exception as e:
-    print("*** CRPropa import failed")
+    print("*** RadioPropa import failed")
     print(type(e), str(e))
     sys.exit(-1)
 

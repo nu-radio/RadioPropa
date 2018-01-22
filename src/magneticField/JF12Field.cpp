@@ -1,11 +1,11 @@
-#include "crpropa/magneticField/JF12Field.h"
-#include "crpropa/Units.h"
-#include "crpropa/GridTools.h"
-#include "crpropa/Random.h"
+#include "radiopropa/magneticField/JF12Field.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/GridTools.h"
+#include "radiopropa/Random.h"
 
 #include <iostream>
 
-namespace crpropa {
+namespace radiopropa {
 
 double logisticFunction(double x, double x0, double w) {
 	return 1. / (1. + exp(-2. * (fabs(x) - x0) / w));
@@ -291,4 +291,4 @@ Vector3d JF12Field::getField(const Vector3d& pos) const {
 	return b;
 }
 
-} // namespace crpropa
+} // namespace radiopropa

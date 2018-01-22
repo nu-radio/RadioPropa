@@ -1,9 +1,9 @@
-#include "crpropa/Source.h"
-#include "crpropa/Random.h"
-#include "crpropa/Cosmology.h"
-#include "crpropa/Common.h"
-#include "crpropa/Units.h"
-#include "crpropa/ParticleID.h"
+#include "radiopropa/Source.h"
+#include "radiopropa/Random.h"
+#include "radiopropa/Cosmology.h"
+#include "radiopropa/Common.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/ParticleID.h"
 
 #ifdef CRPROPA_HAVE_MUPARSER
 #include "muParser.h"
@@ -12,7 +12,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 // Source ---------------------------------------------------------------------
 void Source::add(SourceFeature* property) {
@@ -932,4 +932,4 @@ void SourceGenericComposition::setDescription() {
 
 #endif
 
-} // namespace crpropa
+} // namespace radiopropa

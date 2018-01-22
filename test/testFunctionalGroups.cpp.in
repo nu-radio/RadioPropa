@@ -1,7 +1,7 @@
-#include "CRPropa.h"
+#include "RadioPropa.h"
 #include "gtest/gtest.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 /*
  * Functional test which calculates particle's gyroradius in a uniform field
@@ -46,4 +46,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

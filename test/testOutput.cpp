@@ -1,10 +1,10 @@
-/** Unit tests for Output modules of CRPropa
+/** Unit tests for Output modules of RadioPropa
     Output
     TextOutput
     ParticleCollector
  */
 
-#include "CRPropa.h"
+#include "RadioPropa.h"
 
 #include <string>
 #include "gtest/gtest.h"
@@ -26,7 +26,7 @@ template<typename T, size_t size>
 	return ::testing::AssertionSuccess();
 }
 
-namespace crpropa {
+namespace radiopropa {
 
 //-- Output
 
@@ -128,7 +128,7 @@ TEST(TextOutput, printHeader_Version) {
 	std::string captured = testing::internal::GetCapturedStdout();
 
 	// length of the prefix is 19 chars
-	size_t version_pos = captured.find("# CRPropa version: ") + 19;
+	size_t version_pos = captured.find("# RadioPropa version: ") + 19;
 
 	EXPECT_EQ(
 		captured.substr(
@@ -237,4 +237,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa

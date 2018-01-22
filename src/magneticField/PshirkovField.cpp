@@ -1,9 +1,9 @@
-#include "crpropa/magneticField/PshirkovField.h"
-#include "crpropa/Units.h"
+#include "radiopropa/magneticField/PshirkovField.h"
+#include "radiopropa/Units.h"
 
 #include <algorithm>
 
-namespace crpropa {
+namespace radiopropa {
 
 PshirkovField::PshirkovField() : useASS(false), useBSS(true), useHalo(true) {
 	// disk parameters
@@ -107,4 +107,4 @@ Vector3d PshirkovField::getField(const Vector3d& pos) const {
 	return b;
 }
 
-} // namespace crpropa
+} // namespace radiopropa

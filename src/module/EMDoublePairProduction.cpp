@@ -1,12 +1,12 @@
-#include "crpropa/module/EMDoublePairProduction.h"
-#include "crpropa/Units.h"
-#include "crpropa/Random.h"
+#include "radiopropa/module/EMDoublePairProduction.h"
+#include "radiopropa/Units.h"
+#include "radiopropa/Random.h"
 
 #include <fstream>
 #include <limits>
 #include <stdexcept>
 
-namespace crpropa {
+namespace radiopropa {
 
 EMDoublePairProduction::EMDoublePairProduction(PhotonField photonField, bool haveElectrons, double limit) {
 	setPhotonField(photonField);
@@ -99,4 +99,4 @@ void EMDoublePairProduction::process(Candidate *candidate) const {
 		candidate->limitNextStep(limit / rate);
 }
 
-} // namespace crpropa
+} // namespace radiopropa

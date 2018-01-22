@@ -1,7 +1,7 @@
-#include "crpropa/Vector3.h"
+#include "radiopropa/Vector3.h"
 #include "gtest/gtest.h"
 
-namespace crpropa {
+namespace radiopropa {
 
 TEST(Vector3, comparison) {
 	EXPECT_TRUE(Vector3d(1, 2, 3) == Vector3d(1, 2, 3));
@@ -138,4 +138,4 @@ int main(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
-} // namespace crpropa
+} // namespace radiopropa
