@@ -1,4 +1,4 @@
-import crpropa
+import radiopropa
 import numpy as np
 #from ObserverPlane import ObserverPlane 
 
@@ -6,10 +6,10 @@ kilo = 1000.
 
 
 
-class RadioFrequency(crpropa.Module):
+class RadioFrequency(radiopropa.Module):
     """ Set the initial energy to 10 EeV """
     def __init__(self, frequency):
-        crpropa.Module.__init__(self)
+        radiopropa.Module.__init__(self)
         self.__frequency = frequency
     def process(self, candidate):
         print 'foo'
@@ -19,32 +19,32 @@ class RadioFrequency(crpropa.Module):
 
 
 # simulation setup
-sim = crpropa.ModuleList()
-sim.add(crpropa.SimplePropagation(1*crpropa.meter, 100*crpropa.meter))
+sim = radiopropa.ModuleList()
+sim.add(radiopropa.SimplePropagation(1*radiopropa.meter, 100*radiopropa.meter))
 
 
 
 
-#obs = crpropa.Observer()
-#obs.add(ObserverPlane(np.asarray([0.,0., 3. * kilo*crpropa.meter]),np.asarray([10.,0, 0]), np.asarray([0,10., 0])))
+#obs = radiopropa.Observer()
+#obs.add(ObserverPlane(np.asarray([0.,0., 3. * kilo*radiopropa.meter]),np.asarray([10.,0, 0]), np.asarray([0,10., 0])))
 
-obs = crpropa.Observer()
-obs.add(crpropa.ObserverLargeSphere(crpropa.Vector3d(0,0,0), 99*crpropa.meter))
-output = crpropa.HDF5Output('output.h5', crpropa.Output.Event3D)
+obs = radiopropa.Observer()
+obs.add(radiopropa.ObserverLargeSphere(radiopropa.Vector3d(0,0,0), 99*radiopropa.meter))
+output = radiopropa.HDF5Output('output.h5', radiopropa.Output.Event3D)
 output.enableProperty('frequency', 0., 'Frequency for RadioPropa')
 
 obs.onDetection(output)
 #obs.setDeactivateOnDetection(True)
 sim.add(obs)
 
-source = crpropa.Source()
-source.add(crpropa.SourcePosition(crpropa.Vector3d(0, 0, 0)))
-source.add(crpropa.SourceParticleType(crpropa.nucleusId(1, 1)))
-source.add(crpropa.SourceEnergy(1E16 * crpropa.eV))
-source.add(crpropa.SourceIsotropicEmission())
+source = radiopropa.Source()
+source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, 0)))
+source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
+source.add(radiopropa.SourceEnergy(1E16 * radiopropa.eV))
+source.add(radiopropa.SourceIsotropicEmission())
 
 
-boundary = crpropa.SphericalBoundary(crpropa.Vector3d(0, 0, 0), 100*kilo*crpropa.meter)
+boundary = radiopropa.SphericalBoundary(radiopropa.Vector3d(0, 0, 0), 100*kilo*radiopropa.meter)
 sim.add(boundary)
 
 
