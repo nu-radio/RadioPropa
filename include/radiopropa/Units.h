@@ -32,6 +32,17 @@ static const double joule = 1 * newton * meter;
 static const double tesla = 1 * newton / ampere / meter;
 static const double volt = 1 * kilogram * meter * meter / ampere / second / second / second;
 static const double coulomb = 1 * ampere * second;
+static const double hertz = 1 / second;
+
+// si prefixes
+static const double kilo = 1E3;
+static const double mega = 1E6;
+static const double giga = 1E9;
+static const double tera = 1E12;
+static const double peta = 1E15;
+static const double exa = 1E18;
+
+
 
 // physical constants
 static const double eplus = 1.602176487e-19 * ampere * second;
