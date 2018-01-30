@@ -340,47 +340,27 @@ add_library(radiopropa SHARED
 	src/ParticleID.cpp
 	src/ParticleMass.cpp
 	src/ParticleState.cpp
-	src/PhotonBackground.cpp
-	src/PhotonPropagation.cpp
 	src/ProgressBar.cpp
 	src/Random.cpp
 	src/Source.cpp
 	src/Variant.cpp
 	src/module/Boundary.cpp
 	src/module/BreakCondition.cpp
-	src/module/DiffusionSDE.cpp
-	src/module/EMCascade.cpp
-	src/module/EMDoublePairProduction.cpp
-	src/module/EMInverseComptonScattering.cpp
-	src/module/EMPairProduction.cpp
-	src/module/EMTripletPairProduction.cpp
-	src/module/ElasticScattering.cpp
-	src/module/ElectronPairProduction.cpp
 	src/module/HDF5Output.cpp
-	src/module/NuclearDecay.cpp
 	src/module/Observer.cpp
 	src/module/Output.cpp
 	src/module/OutputCRPropa2.cpp
 	src/module/OutputROOT.cpp
 	src/module/OutputShell.cpp
 	src/module/ParticleCollector.cpp
-	src/module/PhotoDisintegration.cpp
-	src/module/PhotoPionProduction.cpp
-	src/module/PhotonEleCa.cpp
-	src/module/PhotonOutput1D.cpp
 	src/module/PropagationCK.cpp
 	src/module/Redshift.cpp
 	src/module/SimplePropagation.cpp
-	src/module/SynchrotronRadiation.cpp
 	src/module/TextOutput.cpp
-	src/module/AdiabaticCooling.cpp
 	src/module/Tools.cpp
-	src/magneticField/JF12Field.cpp
 	src/magneticField/MagneticField.cpp
 	src/magneticField/MagneticFieldGrid.cpp
-	src/magneticField/PshirkovField.cpp
-	src/magneticField/ArchimedeanSpiralField.cpp
-	src/advectionField/AdvectionField.cpp
+
 	${CRPROPA_EXTRA_SOURCES}
 )
 target_link_libraries(radiopropa ${CRPROPA_EXTRA_LIBRARIES})
@@ -474,18 +454,6 @@ if(ENABLE_TESTING)
 	target_link_libraries(testModuleList radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testModuleList testModuleList)
 
-	add_executable(testMagneticField test/testMagneticField.cpp)
-	target_link_libraries(testMagneticField radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
-	add_test(testMagneticField testMagneticField)
-
-	add_executable(testAdvectionField test/testAdvectionField.cpp)
-	target_link_libraries(testAdvectionField radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
-	add_test(testAdvectionField testAdvectionField)
-
-	add_executable(testDINT test/testDINT.cpp)
-	target_link_libraries(testDINT radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
-	add_test(testDINT testDINT)
-
 	add_executable(testPropagation test/testPropagation.cpp)
 	target_link_libraries(testPropagation radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testPropagation testPropagation)
@@ -493,10 +461,6 @@ if(ENABLE_TESTING)
 	add_executable(testBreakCondition test/testBreakCondition.cpp)
 	target_link_libraries(testBreakCondition radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testBreakCondition testBreakCondition)
-
-	add_executable(testInteraction test/testInteraction.cpp)
-	target_link_libraries(testInteraction radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
-	add_test(testInteraction testInteraction)
 
 	add_executable(testSource test/testSource.cpp)
 	target_link_libraries(testSource radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
@@ -506,24 +470,6 @@ if(ENABLE_TESTING)
 	target_link_libraries(testOutput radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testOutput testOutput)
 
-
-	CONFIGURE_FILE(test/testFunctionalGroups.cpp.in testFunctionalGroups.cpp)
-	add_executable(testFunctionalGroups testFunctionalGroups.cpp)
-	target_link_libraries(testFunctionalGroups radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
-	add_test(testFunctionalGroups testFunctionalGroups)
-
-	add_executable(testAdiabaticCooling test/testAdiabaticCooling.cpp)
-	target_link_libraries(testAdiabaticCooling radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
-	add_test(testAdiabaticCooling testAdiabaticCooling)
-
-
-	if(WITH_GALACTIC_LENSES)
-		add_executable(testGalacticMagneticLens test/testMagneticLens.cpp)
-		target_link_libraries(testGalacticMagneticLens radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
-		add_test(testGalacticMagneticLens testGalacticMagneticLens)
-	endif(WITH_GALACTIC_LENSES)
-
-	# python tests
 	if(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 		CONFIGURE_FILE(test/testMagneticLensPythonInterface.py.in testMagneticLensPythonInterface.py)
 		if(numpyIncludePath AND WITH_GALACTIC_LENSES)

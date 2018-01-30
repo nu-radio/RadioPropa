@@ -42,10 +42,9 @@
 %ignore operator radiopropa::Candidate*;
 %ignore operator radiopropa::Module*;
 %ignore operator radiopropa::ModuleList*;
+%ignore operator radiopropa::MagneticField*;
 %ignore operator radiopropa::Observer*;
 %ignore operator radiopropa::ObserverFeature*;
-%ignore operator radiopropa::MagneticField*;
-%ignore operator radiopropa::AdvectionField*;
 %ignore operator radiopropa::ParticleCollector*;
 %ignore radiopropa::TextOutput::load;
 
@@ -59,8 +58,6 @@
 %include "radiopropa/Units.h"
 %include "radiopropa/Common.h"
 %include "radiopropa/Cosmology.h"
-%include "radiopropa/PhotonBackground.h"
-%include "radiopropa/PhotonPropagation.h"
 %include "radiopropa/Random.h"
 %include "radiopropa/ParticleState.h"
 %include "radiopropa/ParticleID.h"
@@ -270,6 +267,7 @@
 
 %template(ModuleRefPtr) radiopropa::ref_ptr<radiopropa::Module>;
 %template(stdModuleList) std::list< radiopropa::ref_ptr<radiopropa::Module> >;
+
 %feature("director") radiopropa::Module;
 %feature("director") radiopropa::AbstractCondition;
 %include "radiopropa/Module.h"
@@ -277,10 +275,6 @@
 %implicitconv radiopropa::ref_ptr<radiopropa::MagneticField>;
 %template(MagneticFieldRefPtr) radiopropa::ref_ptr<radiopropa::MagneticField>;
 %include "radiopropa/magneticField/MagneticField.h"
-
-%implicitconv radiopropa::ref_ptr<radiopropa::AdvectionField>;
-%template(AdvectionFieldRefPtr) radiopropa::ref_ptr<radiopropa::AdvectionField>;
-%include "radiopropa/advectionField/AdvectionField.h"
 
 %include "radiopropa/Grid.h"
 %include "radiopropa/GridTools.h"
@@ -299,13 +293,6 @@
 %implicitconv radiopropa::ref_ptr<radiopropa::CylindricalProjectionMap>;
 %template(CylindricalProjectionMapRefPtr) radiopropa::ref_ptr<radiopropa::CylindricalProjectionMap>;
 
-%include "radiopropa/magneticField/MagneticFieldGrid.h"
-%feature("notabstract") QuimbyMagneticFieldAdapter;
-%include "radiopropa/magneticField/QuimbyMagneticField.h"
-%include "radiopropa/magneticField/AMRMagneticField.h"
-%include "radiopropa/magneticField/JF12Field.h"
-%include "radiopropa/magneticField/PshirkovField.h"
-%include "radiopropa/magneticField/ArchimedeanSpiralField.h"
 %include "radiopropa/module/BreakCondition.h"
 %include "radiopropa/module/Boundary.h"
 
@@ -388,28 +375,12 @@
 
 
 %include "radiopropa/module/Output.h"
-%include "radiopropa/module/DiffusionSDE.h"
 %include "radiopropa/module/TextOutput.h"
 
 %include "radiopropa/module/HDF5Output.h"
 %include "radiopropa/module/OutputShell.h"
 %include "radiopropa/module/OutputROOT.h"
 %include "radiopropa/module/OutputCRPropa2.h"
-%include "radiopropa/module/EMCascade.h"
-%include "radiopropa/module/PhotonEleCa.h"
-%include "radiopropa/module/PhotonOutput1D.h"
-%include "radiopropa/module/NuclearDecay.h"
-%include "radiopropa/module/ElectronPairProduction.h"
-%include "radiopropa/module/PhotoPionProduction.h"
-%include "radiopropa/module/PhotoDisintegration.h"
-%include "radiopropa/module/ElasticScattering.h"
-%include "radiopropa/module/Redshift.h"
-%include "radiopropa/module/EMPairProduction.h"
-%include "radiopropa/module/EMDoublePairProduction.h"
-%include "radiopropa/module/EMTripletPairProduction.h"
-%include "radiopropa/module/EMInverseComptonScattering.h"
-%include "radiopropa/module/SynchrotronRadiation.h"
-%include "radiopropa/module/AdiabaticCooling.h"
 
 %template(IntSet) std::set<int>;
 %include "radiopropa/module/Tools.h"

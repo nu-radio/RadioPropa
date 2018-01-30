@@ -47,9 +47,11 @@ source.add(radiopropa.SourceIsotropicEmission())
 boundary = radiopropa.SphericalBoundary(radiopropa.Vector3d(0, 0, 0), 100*kilo*radiopropa.meter)
 sim.add(boundary)
 
-
-sim.add(RadioFrequency(1E6))
+# Not constructiong this outside the add method will cause segfault
+#rf = RadioFrequency(1E6)
+#sim.add(rf)
 print sim
 
 sim.setShowProgress(True)
 sim.run(source, 10000)
+#print rf
