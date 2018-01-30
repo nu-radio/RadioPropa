@@ -2,20 +2,16 @@ import radiopropa
 import numpy as np
 #from ObserverPlane import ObserverPlane 
 
-kilo = 1000.
 
 
-
-class RadioFrequency(radiopropa.Module):
+class RadioFrequency(radiopropa.SourceFeature):
     """ Set the initial energy to 10 EeV """
     def __init__(self, frequency):
-        radiopropa.Module.__init__(self)
+        radiopropa.SourceFeature.__init__(self)
         self.__frequency = frequency
-    def process(self, candidate):
-        print 'foo'
-        #candidate.setProperty("frequency", self.__frequency)
-    def getDescription(self):
-        return "FooBar"
+    def prepareCandidate(self, candidate):
+        radiopropa.SourceFeature.prepareCandidate(self, candidate)
+        candidate.setProperty("frequency", self.__frequency)
 
 
 # simulation setup
@@ -38,19 +34,19 @@ obs.onDetection(output)
 sim.add(obs)
 
 source = radiopropa.Source()
+
 source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, 0)))
 source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
 source.add(radiopropa.SourceEnergy(1E16 * radiopropa.eV))
 source.add(radiopropa.SourceIsotropicEmission())
+# Not constructiong this outside the add method will cause segfault
+rf = RadioFrequency(1E6)
+source.add(rf)
 
 
-boundary = radiopropa.SphericalBoundary(radiopropa.Vector3d(0, 0, 0), 100*kilo*radiopropa.meter)
+boundary = radiopropa.SphericalBoundary(radiopropa.Vector3d(0, 0, 0), 100*radiopropa.kilo*radiopropa.meter)
 sim.add(boundary)
 
-# Not constructiong this outside the add method will cause segfault
-#rf = RadioFrequency(1E6)
-#sim.add(rf)
-print sim
 
 sim.setShowProgress(True)
 sim.run(source, 10000)
