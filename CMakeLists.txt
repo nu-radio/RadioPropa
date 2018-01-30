@@ -471,17 +471,6 @@ if(ENABLE_TESTING)
 	add_test(testOutput testOutput)
 
 	if(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
-		CONFIGURE_FILE(test/testMagneticLensPythonInterface.py.in testMagneticLensPythonInterface.py)
-		if(numpyIncludePath AND WITH_GALACTIC_LENSES)
-			add_test(testMagneticLensPythonInterface ${PYTHON_EXECUTABLE} testMagneticLensPythonInterface.py)
-		endif(numpyIncludePath AND WITH_GALACTIC_LENSES)
-
-		CONFIGURE_FILE(test/testSimulationExecution.py.in testSimulationExecution.py)
-		add_test(testSimulationExecution ${PYTHON_EXECUTABLE} testSimulationExecution.py)
-
-		CONFIGURE_FILE(test/testDiffusionSDE.py.in testDiffusionSDE.py)
-		add_test(testDiffusionSDE ${PYTHON_EXECUTABLE} testDiffusionSDE.py)
-
 		CONFIGURE_FILE(test/testPythonExtension.py.in testPythonExtension.py)
 		add_test(testPythonExtension ${PYTHON_EXECUTABLE} testPythonExtension.py)
 	endif(ENABLE_PYTHON AND PYTHONLIBS_FOUND)

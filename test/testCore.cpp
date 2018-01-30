@@ -95,30 +95,6 @@ TEST(ParticleState, Rigidity) {
 	EXPECT_EQ(particle.getRigidity(), 1e18);
 }
 
-TEST(ParticleState, Mass) {
-	ParticleState particle;
-
-	particle.setId(nucleusId(1, 1)); // proton
-	EXPECT_DOUBLE_EQ(mass_proton, particle.getMass());
-
-	particle.setId(nucleusId(1, 0)); // neutron
-	EXPECT_DOUBLE_EQ(mass_neutron, particle.getMass());
-
-	int id = nucleusId(56, 26);
-	particle.setId(id); // iron
-	EXPECT_DOUBLE_EQ(nuclearMass(id), particle.getMass());
-
-	particle.setId(-id); // anti-iron
-	EXPECT_DOUBLE_EQ(nuclearMass(-id), particle.getMass());
-}
-
-TEST(ParticleState, lorentzFactor) {
-	ParticleState particle;
-	particle.setId(nucleusId(1, 1));
-	particle.setEnergy(1e12 * eV);
-	EXPECT_DOUBLE_EQ(particle.getLorentzFactor(),
-			1e12 * eV / mass_proton / c_squared);
-}
 
 TEST(Candidate, currentStep) {
 	Candidate candidate;
