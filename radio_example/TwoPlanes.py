@@ -21,10 +21,12 @@ class TransmissiveLayer(radiopropa.Module):
     Future propagation in scalar field will take care of directivity change automatically???
     """
     def __init__(self, X0, V1, V2, transmisionCoefficient):
-        self.__x0 = P0
-        self.__v1 = V1
-        self.__v2 = V2
-        self.__normal = v1.cross(v2)
+        radiopropa.Module.__init__(self)
+        self.__x0 = X0
+        self.__v1 = V1.getUnitVector()
+        self.__v2 = V2.getUnitVector()
+        n = V1.cross(V2)
+        self.__normal = n.getUnitVector()
         self.__transmisionCoefficient = transmisionCoefficient
 
     def distanceToPlane(self, X):
@@ -56,14 +58,22 @@ class TransmissiveLayer(radiopropa.Module):
 
 	    V = candidate.current.getDirection()
             u = self.__normal * (V.dot(self.__normal))
-            candidate.current.setDirection(V - 2*u)
+            new_direction = V - u*2
+            candidate.current.setDirection(new_direction)
+
+            # update position slightly to move on correct side of plane
+	    X = candidate.current.getPosition()
+
+            candidate.current.setPosition(X + new_direction * candidate.getCurrentStep())
+            # update position (this is a hack to avoid double scatter)
+            #candidate.previous.setPosition(candidate.current.getPosition())
 
 
 
 
 # simulation setup
 sim = radiopropa.ModuleList()
-sim.add(radiopropa.SimplePropagation(1*radiopropa.meter, 100*radiopropa.meter))
+sim.add(radiopropa.SimplePropagation(.1*radiopropa.meter, 1*radiopropa.meter))
 
 
 
@@ -71,30 +81,43 @@ sim.add(radiopropa.SimplePropagation(1*radiopropa.meter, 100*radiopropa.meter))
 #obs = radiopropa.Observer()
 #obs.add(ObserverPlane(np.asarray([0.,0., 3. * kilo*radiopropa.meter]),np.asarray([10.,0, 0]), np.asarray([0,10., 0])))
 
-obs = radiopropa.Observer()
-obs.add(radiopropa.ObserverLargeSphere(radiopropa.Vector3d(0,0,0), 99*radiopropa.meter))
-output = radiopropa.HDF5Output('output.h5', radiopropa.Output.Event3D)
+#obs = radiopropa.Observer()
+#obs.add(radiopropa.ObserverLargeSphere(radiopropa.Vector3d(0,0,0), 99*radiopropa.meter))
+output = radiopropa.HDF5Output('output_traj.h5', radiopropa.Output.Trajectory3D)
 output.enableProperty('frequency', 0., 'Frequency for RadioPropa')
 
-obs.onDetection(output)
+#obs.onDetection(output)
 #obs.setDeactivateOnDetection(True)
-sim.add(obs)
+sim.add(output)
 
 source = radiopropa.Source()
 
 source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, 0)))
 source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
 source.add(radiopropa.SourceEnergy(1E16 * radiopropa.eV))
-source.add(radiopropa.SourceIsotropicEmission())
+
+
+#source.add(radiopropa.SourceIsotropicEmission())
+source.add(radiopropa.SourceDirection(radiopropa.Vector3d(.3,0,1)))
+
+
 # Not constructiong this outside the add method will cause segfault
 rf = RadioFrequency(1E6)
 source.add(rf)
 
+#Two transmissive layers at +/- 10 m
+L1 = TransmissiveLayer(radiopropa.Vector3d(0,0,5),radiopropa.Vector3d(1,0,0),radiopropa.Vector3d(0,1,0), .2)
+L2 = TransmissiveLayer(radiopropa.Vector3d(0,0,-5),radiopropa.Vector3d(1,0,0),radiopropa.Vector3d(0,1,0), .2)
 
-boundary = radiopropa.SphericalBoundary(radiopropa.Vector3d(0, 0, 0), 100*radiopropa.kilo*radiopropa.meter)
+sim.add(L1)
+sim.add(L2)
+sim.add(radiopropa.MinimumEnergy(1E14 * radiopropa.eV))
+
+boundary = radiopropa.SphericalBoundary(radiopropa.Vector3d(0, 0, 0), 100*radiopropa.meter)
 sim.add(boundary)
 
 
+
 sim.setShowProgress(True)
-sim.run(source, 10000)
+sim.run(source, 1)
 #print rf
