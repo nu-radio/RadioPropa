@@ -54,15 +54,15 @@ class TransmissiveLayer(radiopropa.Module):
             # reflected: legacy from CRPropa interface as secondaries have same
             # direction as parents.
             candidate.addSecondary(0, self.__transmisionCoefficient * E, 1)
-	    candidate.current.setEnergy((1-self.__transmisionCoefficient) * E)
+            candidate.current.setEnergy((1-self.__transmisionCoefficient) * E)
 
-	    V = candidate.current.getDirection()
+            V = candidate.current.getDirection()
             u = self.__normal * (V.dot(self.__normal))
             new_direction = V - u*2
             candidate.current.setDirection(new_direction)
 
             # update position slightly to move on correct side of plane
-	    X = candidate.current.getPosition()
+            X = candidate.current.getPosition()
 
             candidate.current.setPosition(X + new_direction * candidate.getCurrentStep())
             # update position (this is a hack to avoid double scatter)
