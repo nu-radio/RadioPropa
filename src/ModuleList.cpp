@@ -164,6 +164,7 @@ void ModuleList::run(SourceInterface *source, size_t count, bool recursive, bool
 		} catch (std::exception &e) {
 			std::cerr << "Exception in radiopropa::ModuleList::run: source->getCandidate" << std::endl;
 			std::cerr << e.what() << std::endl;
+#pragma omp critical(g_cancel_signal_flag)
 			g_cancel_signal_flag = -1;
 		}
 
@@ -173,6 +174,7 @@ void ModuleList::run(SourceInterface *source, size_t count, bool recursive, bool
 			} catch (std::exception &e) {
 				std::cerr << "Exception in radiopropa::ModuleList::run: " << std::endl;
 				std::cerr << e.what() << std::endl;
+#pragma omp critical(g_cancel_signal_flag)
 				g_cancel_signal_flag = -1;
 			}
 		}
