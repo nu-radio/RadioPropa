@@ -141,7 +141,7 @@ void TextOutput::process(Candidate *c) const {
 				c->getTrajectoryLength() / lengthScale);
 
 	if (fields.test(AmplitudeColumn))
-		p += std::sprintf(buffer + p, "%1.5E\t", c->getAmplitude());
+		p += std::sprintf(buffer + p, "%1.5E\t", c->current.getAmplitude());
 
 	if (fields.test(SerialNumberColumn))
 		p += std::sprintf(buffer + p, "%10lu\t",
@@ -285,7 +285,7 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 		stream >> val_d;
 		c->setTrajectoryLength(val_d*lengthScale); // D
 		stream >> val_d;
-		c->setAmplitude(val_d); // z
+		c->current.setAmplitude(val_d); // z
 		stream >> val_i;
 		c->setSerialNumber(val_i); // SN
 		stream >> val_i;

@@ -174,7 +174,7 @@ TEST(ParticleCollector, dumpload) {
 	c->current.setPosition(Vector3d(1,2,3));
 	c->current.setDirection(Vector3d(-1,-1,-1));
 	c->setTrajectoryLength(1*Mpc);
-	c->setAmplitude(2);
+	c->current.setAmplitude(2);
 
 	ParticleCollector input;
 	ParticleCollector output;
@@ -191,7 +191,7 @@ TEST(ParticleCollector, dumpload) {
 	EXPECT_EQ(output[0]->current.getFrequency(), c->current.getFrequency());
 	EXPECT_EQ(output[1]->getTrajectoryLength(), c->getTrajectoryLength());
 	EXPECT_EQ(output[2]->current.getId(), c->current.getId());
-	EXPECT_EQ(output[3]->getAmplitude(), c->getAmplitude());
+	EXPECT_EQ(output[3]->current.getAmplitude(), c->current.getAmplitude());
 }
 
 // Just test if the trajectory is on a line for rectilinear propagation

@@ -130,26 +130,6 @@ void SourceFrequency::setDescription() {
 	description = ss.str();
 }
 
-// ----------------------------------------------------------------------------
-SourcePowerLawSpectrum::SourcePowerLawSpectrum(double Emin, double Emax,
-		double index) :
-		Emin(Emin), Emax(Emax), index(index) {
-	setDescription();
-}
-
-void SourcePowerLawSpectrum::prepareParticle(ParticleState& particle) const {
-	Random &random = Random::instance();
-	double E = random.randPowerLaw(index, Emin, Emax);
-	particle.setFrequency(E);
-}
-
-void SourcePowerLawSpectrum::setDescription() {
-	std::stringstream ss;
-	ss << "SourcePowerLawSpectrum: Random frequency ";
-	ss << "E = " << Emin / EeV << " - " << Emax / EeV << " EeV, ";
-	ss << "dN/dE ~ E^" << index  << "\n";
-	description = ss.str();
-}
 
 // ----------------------------------------------------------------------------
 SourceComposition::SourceComposition(double Emin, double Rmax, double index) :
@@ -766,17 +746,17 @@ void SourceEmissionCone::setDescription() {
 
 // ----------------------------------------------------------------------------
 SourceAmplitude::SourceAmplitude(double z) :
-		z(z) {
+		A(z) {
 	setDescription();
 }
 
-void SourceAmplitude::prepareCandidate(Candidate& candidate) const {
-	candidate.setAmplitude(z);
+void SourceAmplitude::prepareParticle(ParticleState& p) const {
+	p.setAmplitude(A);
 }
 
 void SourceAmplitude::setDescription() {
 	std::stringstream ss;
-	ss << "SourceAmplitude: Amplitude z = " << z << "\n";
+	ss << "SourceAmplitude: Amplitude A = " << A << "\n";
 	description = ss.str();
 }
 

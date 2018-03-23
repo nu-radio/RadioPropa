@@ -210,18 +210,7 @@ TEST(SourceDensityGrid1D, OneAllowedCell) {
 	}
 }
 
-TEST(SourcePowerLawSpectrum, simpleTest) {
-	double Emin = 4 * EeV;
-	double Emax = 200 * EeV;
-	double index = -2.7;
-	SourcePowerLawSpectrum spectrum(Emin, Emax, index);
-	ParticleState ps;
-	spectrum.prepareParticle(ps);
 
-	// frequency should be within Emin - Emax
-	EXPECT_LE(Emin, ps.getFrequency());
-	EXPECT_GE(Emax, ps.getFrequency());
-}
 
 TEST(SourceComposition, simpleTest) {
 	double Emin = 10;
@@ -277,44 +266,7 @@ TEST(SourceComposition, throwNoIsotope) {
 
 
 
-TEST(Source, allPropertiesUsed) {
-	Source source;
-	source.add(new SourcePosition(Vector3d(10, 0, 0) * Mpc));
-	source.add(new SourceIsotropicEmission());
-	source.add(new SourcePowerLawSpectrum(5 * EeV, 100 * EeV, -2));
-	source.add(new SourceParticleType(nucleusId(8, 4)));
-	source.add(new SourceAmplitude(2));
 
-	Candidate c = *source.getCandidate();
-
-	EXPECT_EQ(2, c.getAmplitude());
-
-	ParticleState p;
-
-	p = c.source;
-	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getFrequency());
-	EXPECT_GE(100 * EeV, p.getFrequency());
-	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
-
-	p = c.created;
-	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getFrequency());
-	EXPECT_GE(100 * EeV, p.getFrequency());
-	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
-
-	p = c.previous;
-	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getFrequency());
-	EXPECT_GE(100 * EeV, p.getFrequency());
-	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
-
-	p = c.current;
-	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getFrequency());
-	EXPECT_GE(100 * EeV, p.getFrequency());
-	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
-}
 
 TEST(SourceList, simpleTest) {
 	// test if source list works with one source

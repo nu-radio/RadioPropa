@@ -113,18 +113,17 @@ public:
 };
 
 /**
- @class SourcePowerLawSpectrum
- @brief Particle frequency following a power law spectrum
+ @class SourceAmplitude
+ @brief Sets the initial frequency to a given value
  */
-class SourcePowerLawSpectrum: public SourceFeature {
-	double Emin;
-	double Emax;
-	double index;
+class SourceAmplitude : public SourceFeature {
+	double A;
 public:
-	SourcePowerLawSpectrum(double Emin, double Emax, double index);
+	SourceAmplitude(double amplitude);
 	void prepareParticle(ParticleState &particle) const;
 	void setDescription();
 };
+
 
 /**
  @class SourceComposition
@@ -414,18 +413,6 @@ class SourceEmissionCone: public SourceFeature {
 public:
 	SourceEmissionCone(Vector3d direction, double aperture);
 	void prepareParticle(ParticleState &particle) const;
-	void setDescription();
-};
-
-/**
- @class SourceAmplitude
- @brief Discrete redshift (time of emission)
- */
-class SourceAmplitude: public SourceFeature {
-	double z;
-public:
-	SourceAmplitude(double z);
-	void prepareCandidate(Candidate &candidate) const;
 	void setDescription();
 };
 

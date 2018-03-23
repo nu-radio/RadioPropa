@@ -202,7 +202,7 @@ void HDF5Output::process(Candidate* candidate) const {
 
 	OutputRow r;
 	r.D = candidate->getTrajectoryLength() / lengthScale;
-	r.z = candidate->getAmplitude();
+	r.z = candidate->current.getAmplitude();
 
 	r.SN = candidate->getSerialNumber();
 	r.ID = candidate->current.getId();

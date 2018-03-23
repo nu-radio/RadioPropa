@@ -46,13 +46,13 @@ class TransmissiveLayer(radiopropa.Module):
         if np.sign(currentDistance) == np.sign(previousDistance):
             candidate.limitNextStep(abs(currentDistance))
         else:
-            E = candidate.current.getEnergy()
+            E = candidate.current.getAmplitude()
 
             # The secondary propagates further, while the candidate is
             # reflected: legacy from CRPropa interface as secondaries have same
             # direction as parents.
             candidate.addSecondary(0, self.__transmisionCoefficient * E, 1)
-	    candidate.current.setEnergy((1-self.__transmisionCoefficient) * E)
+	    candidate.current.setAmplitude((1-self.__transmisionCoefficient) * E)
 
 	    V = candidate.current.getDirection()
             u = self.__normal * (V.dot(self.__normal))
@@ -84,7 +84,7 @@ source = radiopropa.Source()
 
 source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, 0)))
 source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
-source.add(radiopropa.SourceEnergy(1E16 * radiopropa.eV))
+source.add(radiopropa.SourceAmplitude(1E16 * radiopropa.eV))
 source.add(radiopropa.SourceIsotropicEmission())
 # Not constructiong this outside the add method will cause segfault
 rf = RadioFrequency(1E6)

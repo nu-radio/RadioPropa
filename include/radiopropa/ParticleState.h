@@ -19,6 +19,7 @@ class ParticleState {
 private:
 	int id; ///< particle ID (Particle Data Group numbering scheme)
 	double frequency; ///< total frequency
+	double amplitude; ///< total frequency
 	Vector3d position; ///< position vector in comoving coordinates
 	Vector3d direction; ///< unit vector of velocity or momentum
 	double pmass; ///< particle rest mass
@@ -38,6 +39,9 @@ public:
 	void setDirection(const Vector3d &dir);
 	/// Get direction unit vector
 	const Vector3d &getDirection() const;
+
+	void setAmplitude(double newAmplitude);
+	double getAmplitude() const;
 
 	/// Set frequency in [J]
 	void setFrequency(double newFrequency);

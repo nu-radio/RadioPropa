@@ -34,6 +34,15 @@ const Vector3d &ParticleState::getDirection() const {
 	return direction;
 }
 
+void ParticleState::setAmplitude(double newAmplitude) {
+	amplitude = newAmplitude; 
+}
+
+double ParticleState::getAmplitude() const {
+	return amplitude;
+}
+
+
 void ParticleState::setFrequency(double newFrequency) {
 	frequency = std::max(0., newFrequency); // prevent negative energies
 }

@@ -129,7 +129,7 @@ TEST(Candidate, property) {
 
 TEST(Candidate, addSecondary) {
 	Candidate c;
-	c.setAmplitude(5);
+	c.current.setAmplitude(5);
 	c.setTrajectoryLength(23);
 	c.current.setId(nucleusId(56,26));
 	c.current.setFrequency(1000);
@@ -142,7 +142,7 @@ TEST(Candidate, addSecondary) {
 	EXPECT_EQ(nucleusId(1,1), s.current.getId());
 	EXPECT_EQ(200, s.current.getFrequency());
 
-	EXPECT_EQ(5, s.getAmplitude());
+	EXPECT_EQ(5, s.current.getAmplitude());
 	EXPECT_EQ(23, s.getTrajectoryLength());
 	EXPECT_EQ(1000, s.created.getFrequency());
 	EXPECT_TRUE(Vector3d(1,2,3) == s.created.getPosition());
