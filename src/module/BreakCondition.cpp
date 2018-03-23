@@ -94,26 +94,26 @@ std::string MinimumFrequency::getDescription() const {
 }
 
 //*****************************************************************************
-MinimumRigidity::MinimumRigidity(double minRigidity) :
-		minRigidity(minRigidity) {
+MinimumAmplitude::MinimumAmplitude(double minAmplitude) :
+		minAmplitude(minAmplitude) {
 }
 
-void MinimumRigidity::setMinimumRigidity(double minRigidity) {
-	this->minRigidity = minRigidity;
+void MinimumAmplitude::setMinimumAmplitude(double minAmplitude) {
+	this->minAmplitude = minAmplitude;
 }
 
-double MinimumRigidity::getMinimumRigidity() const {
-	return minRigidity;
+double MinimumAmplitude::getMinimumAmplitude() const {
+	return minAmplitude;
 }
 
-void MinimumRigidity::process(Candidate *c) const {
-	if (c->current.getRigidity() < minRigidity)
+void MinimumAmplitude::process(Candidate *c) const {
+	if (c->current.getAmplitude() < minAmplitude)
 		reject(c);
 }
 
-std::string MinimumRigidity::getDescription() const {
+std::string MinimumAmplitude::getDescription() const {
 	std::stringstream s;
-	s << "Minimum rigidity: " << minRigidity / EeV << " EeV, ";
+	s << "Minimum rigidity: " << minAmplitude / EeV << " EeV, ";
 	s << "Flag: '" << rejectFlagKey << "' -> '" << rejectFlagValue << "', ";
 	s << "MakeInactive: " << (makeRejectedInactive ? "yes" : "no");
 	if (rejectAction.valid())

@@ -45,18 +45,18 @@ public:
 
 
 /**
- @class MinimumRigidity
+ @class MinimumAmplitude
  @brief Deactivates the candidate below a minimum rigidity
 
  This modules deactivates the candidate below a given minimum rigidity (E/Z in EeV).
  In that case the property ("Deactivated", module::description) is set.
  */
-class MinimumRigidity: public AbstractCondition {
-	double minRigidity;
+class MinimumAmplitude: public AbstractCondition {
+	double minAmplitude;
 public:
-	MinimumRigidity(double minRigidity = 0);
-	void setMinimumRigidity(double minRigidity);
-	double getMinimumRigidity() const;
+	MinimumAmplitude(double minAmplitude = 0);
+	void setMinimumAmplitude(double minAmplitude);
+	double getMinimumAmplitude() const;
 	std::string getDescription() const;
 	void process(Candidate *candidate) const;
 };

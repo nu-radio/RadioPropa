@@ -4,15 +4,6 @@ import numpy as np
 
 
 
-class RadioFrequency(radiopropa.SourceFeature):
-    """ Set the initial energy to 10 EeV """
-    def __init__(self, frequency):
-        radiopropa.SourceFeature.__init__(self)
-        self.__frequency = frequency
-    def prepareCandidate(self, candidate):
-        radiopropa.SourceFeature.prepareCandidate(self, candidate)
-        candidate.setProperty("frequency", self.__frequency)
-
 
 class TransmissiveLayer(radiopropa.Module):
     """
@@ -84,11 +75,10 @@ source = radiopropa.Source()
 
 source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, 0)))
 source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
-source.add(radiopropa.SourceAmplitude(1E16 * radiopropa.eV))
+source.add(radiopropa.SourceAmplitude(1))
 source.add(radiopropa.SourceIsotropicEmission())
 # Not constructiong this outside the add method will cause segfault
-rf = RadioFrequency(1E6)
-source.add(rf)
+source.add(radiopropa.SourceFrequency(1E6))
 
 
 boundary = radiopropa.SphericalBoundary(radiopropa.Vector3d(0, 0, 0), 100*radiopropa.kilo*radiopropa.meter)
