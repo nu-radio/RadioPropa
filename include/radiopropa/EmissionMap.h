@@ -6,7 +6,7 @@
 
 /**
  @file
- @brief pid and energy dependent emission
+ @brief pid and frequency dependent emission
  */
 
 namespace radiopropa {
@@ -60,7 +60,7 @@ public:
 };
 
 /**
- * Particle Type and energy binned emission maps.
+ * Particle Type and frequency binned emission maps.
  * Use SourceEmissionMap to suppress directions at the source. Use EmissionMapFiller to create EmissionMap from Observer.
  */
 class EmissionMap : public Referenced {
@@ -72,48 +72,48 @@ public:
 	/**
 	 * @param nPhi number of bins for phi (0-2pi)
 	 * @param nTheta number of bins for theta (0-pi)
-	 * @param nEnergy number of bins for energy (1e-4 - 1e4 EeV)
+	 * @param nFrequency number of bins for frequency (1e-4 - 1e4 EeV)
 	 */
-	EmissionMap(size_t nPhi, size_t nTheta, size_t nEnergy);
+	EmissionMap(size_t nPhi, size_t nTheta, size_t nFrequency);
 
 	/**
 	 * @param nPhi number of bins for phi (0-2pi)
 	 * @param nTheta number of bins for theta (0-pi)
-	 * @param nEnergy number of bins for energy (1e-4 - 1e4 EeV)
-	 * @param minEnergy minimum energy for binning 
-	 * @param maxEnergy maximum energy for binning
+	 * @param nFrequency number of bins for frequency (1e-4 - 1e4 EeV)
+	 * @param minFrequency minimum frequency for binning 
+	 * @param maxFrequency maximum frequency for binning
 	 */
-	EmissionMap(size_t nPhi, size_t nTheta, size_t nEnergy, double minEnergy, double maxEnergy);
+	EmissionMap(size_t nPhi, size_t nTheta, size_t nFrequency, double minFrequency, double maxFrequency);
 
-	/** Calculate energy from bin */
-	double energyFromBin(size_t bin) const;
+	/** Calculate frequency from bin */
+	double frequencyFromBin(size_t bin) const;
 	
-	/** Calculate bin from energy */
-	size_t binFromEnergy(double energy) const;
+	/** Calculate bin from frequency */
+	size_t binFromFrequency(double frequency) const;
 
 	map_t &getMaps();
 	const map_t &getMaps() const;
 
-	/** Increment the value for particle type, energy and direction by weight. */
-	void fillMap(int pid, double energy, const Vector3d& direction, double weight = 1.);
+	/** Increment the value for particle type, frequency and direction by weight. */
+	void fillMap(int pid, double frequency, const Vector3d& direction, double weight = 1.);
 	/** Increment the value for the particle state by weight. */
 	void fillMap(const ParticleState& state, double weight = 1.);
 
 	/** Draw a random vector from the distribution. */
-	bool drawDirection(int pid, double energy, Vector3d& direction) const;
+	bool drawDirection(int pid, double frequency, Vector3d& direction) const;
 	/** Draw a random vector from the distribution. */
 	bool drawDirection(const ParticleState& state, Vector3d& direction) const;
 
 	/** Check if the direction has a non zero propabiliy. */
-	bool checkDirection(int pid, double energy, const Vector3d& direction) const;
+	bool checkDirection(int pid, double frequency, const Vector3d& direction) const;
 	/** Check if the direction has a non zero propabiliy. */
 	bool checkDirection(const ParticleState& state) const;
 
 	/** Check if a valid map exists */
-	bool hasMap(int pid, double energy);
+	bool hasMap(int pid, double frequency);
 
-	/** Get the map for the specified pid and energy */
-	ref_ptr<CylindricalProjectionMap> getMap(int pid, double energy);
+	/** Get the map for the specified pid and frequency */
+	ref_ptr<CylindricalProjectionMap> getMap(int pid, double frequency);
 
 	/** Save the content of the maps into a text file */
 	void save(const std::string &filename);
@@ -127,8 +127,8 @@ public:
 	void merge(const std::string &filename);
 
 protected:
-	double minEnergy, maxEnergy, logStep;
-	size_t nPhi, nTheta, nEnergy;
+	double minFrequency, maxFrequency, logStep;
+	size_t nPhi, nTheta, nFrequency;
 	map_t maps;
 };
 

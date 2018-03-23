@@ -7,25 +7,25 @@ namespace radiopropa {
 
 /**
  @class ParticleState
- @brief State of the particle: ID, energy, position, direction
+ @brief State of the particle: ID, frequency, position, direction
 
- The ParticleState defines the state of an ultra-high energy cosmic ray, which
+ The ParticleState defines the state of an ultra-high frequency cosmic ray, which
  is assumed to be traveling at the exact speed of light.
- The cosmic ray state is defined by particle ID, energy and position and
+ The cosmic ray state is defined by particle ID, frequency and position and
  direction vector.
  For faster lookup mass and charge of the particle are stored as members.
  */
 class ParticleState {
 private:
 	int id; ///< particle ID (Particle Data Group numbering scheme)
-	double energy; ///< total energy
+	double frequency; ///< total frequency
 	Vector3d position; ///< position vector in comoving coordinates
 	Vector3d direction; ///< unit vector of velocity or momentum
 	double pmass; ///< particle rest mass
 	double charge; ///< particle charge
 
 public:
-	ParticleState(int id = 0, double energy = 0,
+	ParticleState(int id = 0, double frequency = 0,
 			Vector3d position = Vector3d(0, 0, 0),
 			Vector3d direction = Vector3d(-1, 0, 0));
 
@@ -39,10 +39,10 @@ public:
 	/// Get direction unit vector
 	const Vector3d &getDirection() const;
 
-	/// Set energy in [J]
-	void setEnergy(double newEnergy);
-	/// Get energy in [J]
-	double getEnergy() const;
+	/// Set frequency in [J]
+	void setFrequency(double newFrequency);
+	/// Get frequency in [J]
+	double getFrequency() const;
 	/// Get rigidity defined as E/(Z*e) in [V]
 	double getRigidity() const;
 
@@ -60,14 +60,14 @@ public:
 	/// Mass of the particle in [kg]
 	double getMass() const;
 
-	/// Set Lorentz factor and modify the particle's energy accordingly
+	/// Set Lorentz factor and modify the particle's frequency accordingly
 	void setLorentzFactor(double gamma);
 	/// Get Lorentz factor
 	double getLorentzFactor() const;
 
 	/// Velocity: direction times the speed of light in [m/s]
 	Vector3d getVelocity() const;
-	/// Momentum: direction times energy divided by the speed of light [kg m/s]
+	/// Momentum: direction times frequency divided by the speed of light [kg m/s]
 	Vector3d getMomentum() const;
 };
 

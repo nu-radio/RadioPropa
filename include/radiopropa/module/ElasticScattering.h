@@ -17,7 +17,7 @@ private:
     PhotonField photonField;
 
     std::vector<double> tabRate; // elastic scattering rate
-    std::vector<std::vector<double> > tabCDF; // CDF as function of background photon energy
+    std::vector<std::vector<double> > tabCDF; // CDF as function of background photon frequency
 
     static const double lgmin; // minimum log10(Lorentz-factor)
     static const double lgmax; // maximum log10(Lorentz-factor)

@@ -16,7 +16,7 @@ namespace radiopropa {
  */
 class Output: public Module {
 protected:
-	double lengthScale, energyScale;
+	double lengthScale, frequencyScale;
 	std::bitset<64> fields;
 
 	struct Property
@@ -38,15 +38,15 @@ public:
 		ColumnDensityColumn,
 		AmplitudeColumn,
 		CurrentIdColumn,
-		CurrentEnergyColumn,
+		CurrentFrequencyColumn,
 		CurrentPositionColumn,
 		CurrentDirectionColumn,
 		SourceIdColumn,
-		SourceEnergyColumn,
+		SourceFrequencyColumn,
 		SourcePositionColumn,
 		SourceDirectionColumn,
 		CreatedIdColumn,
-		CreatedEnergyColumn,
+		CreatedFrequencyColumn,
 		CreatedPositionColumn,
 		CreatedDirectionColumn,
 		SerialNumberColumn,
@@ -66,7 +66,7 @@ public:
 	Output();
 	Output(OutputType outputtype);
 
-	void setEnergyScale(double scale);
+	void setFrequencyScale(double scale);
 	void setLengthScale(double scale);
 
 	void setOutputType(OutputType outputtype);

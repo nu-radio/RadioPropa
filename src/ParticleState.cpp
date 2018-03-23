@@ -13,7 +13,7 @@ namespace radiopropa {
 
 ParticleState::ParticleState(int id, double E, Vector3d pos, Vector3d dir) {
 	setId(id);
-	setEnergy(E);
+	setFrequency(E);
 	setPosition(pos);
 	setDirection(dir);
 }
@@ -34,16 +34,16 @@ const Vector3d &ParticleState::getDirection() const {
 	return direction;
 }
 
-void ParticleState::setEnergy(double newEnergy) {
-	energy = std::max(0., newEnergy); // prevent negative energies
+void ParticleState::setFrequency(double newFrequency) {
+	frequency = std::max(0., newFrequency); // prevent negative energies
 }
 
-double ParticleState::getEnergy() const {
-	return energy;
+double ParticleState::getFrequency() const {
+	return frequency;
 }
 
 double ParticleState::getRigidity() const {
-	return fabs(energy / charge);
+	return fabs(frequency / charge);
 }
 
 void ParticleState::setId(int newId) {
@@ -73,12 +73,12 @@ double ParticleState::getCharge() const {
 }
 
 double ParticleState::getLorentzFactor() const {
-	return energy / (pmass * c_squared);
+	return frequency / (pmass * c_squared);
 }
 
 void ParticleState::setLorentzFactor(double lf) {
 	lf = std::max(0., lf); // prevent negative Lorentz factors
-	energy = lf * pmass * c_squared;
+	frequency = lf * pmass * c_squared;
 }
 
 Vector3d ParticleState::getVelocity() const {
@@ -86,13 +86,13 @@ Vector3d ParticleState::getVelocity() const {
 }
 
 Vector3d ParticleState::getMomentum() const {
-	return direction * (energy / c_light);
+	return direction * (frequency / c_light);
 }
 
 std::string ParticleState::getDescription() const {
 	std::stringstream ss;
 	ss << "Particle " << id << ", ";
-	ss << "E = " << energy / EeV << " EeV, ";
+	ss << "E = " << frequency / EeV << " EeV, ";
 	ss << "x = " << position / Mpc << " Mpc, ";
 	ss << "p = " << direction;
 	return ss.str();

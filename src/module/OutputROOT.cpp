@@ -19,7 +19,7 @@ CRPropa2ROOTEventOutput1D::CRPropa2ROOTEventOutput1D(std::string filename) {
 	ROOTFile = new TFile(filename.c_str(), "RECREATE",
 			"CRPropa 2 output data file");
 	Ntuple = new TNtuple("events", "CRPropa 1D events",
-			"Particle_Type:Initial_Type:Initial_Position_Mpc:Initial_Energy_EeV:Energy_EeV");
+			"Particle_Type:Initial_Type:Initial_Position_Mpc:Initial_Frequency_EeV:Frequency_EeV");
 	TThread::UnLock();
 }
 
@@ -48,8 +48,8 @@ void CRPropa2ROOTEventOutput1D::process(Candidate *c) const {
 		Ntuple->Fill(convertToCRPropa2NucleusId(c->current.getId()),
 			convertToCRPropa2NucleusId(c->source.getId()),
 			comoving2LightTravelDistance(c->source.getPosition().x) / Mpc,
-			c->source.getEnergy() / EeV,
-			c->current.getEnergy() / EeV);
+			c->source.getFrequency() / EeV,
+			c->current.getFrequency() / EeV);
 	}
 	TThread::UnLock();
 }
@@ -63,7 +63,7 @@ CRPropa2ROOTTrajectoryOutput1D::CRPropa2ROOTTrajectoryOutput1D(std::string filen
 	ROOTFile = new TFile(filename.c_str(), "RECREATE",
 			"CRPropa 2 output data file");
 	Ntuple = new TNtuple("traj", "CRPropa 1D trajectories",
-			"Particle_Type:Initial_Type:Position_Mpc:Energy_EeV");
+			"Particle_Type:Initial_Type:Position_Mpc:Frequency_EeV");
 	TThread::UnLock();
 }
 
@@ -92,7 +92,7 @@ void CRPropa2ROOTTrajectoryOutput1D::process(Candidate *c) const {
 		Ntuple->Fill(convertToCRPropa2NucleusId(c->current.getId()),
 			convertToCRPropa2NucleusId(c->source.getId()),
 			comoving2LightTravelDistance(c->current.getPosition().x) / Mpc,
-			c->current.getEnergy() / EeV);
+			c->current.getFrequency() / EeV);
 	}
 	TThread::UnLock();
 }
@@ -139,14 +139,14 @@ void CRPropa2ROOTEventOutput3D::process(Candidate *c) const {
 			comoving2LightTravelDistance(ipos.x) / Mpc,
 			comoving2LightTravelDistance(ipos.y) / Mpc,
 			comoving2LightTravelDistance(ipos.z) / Mpc,
-			c->source.getEnergy() / EeV,
+			c->source.getFrequency() / EeV,
 			c->source.getDirection().getTheta(),
 			c->source.getDirection().getPhi(),
 			comoving2LightTravelDistance(c->getTrajectoryLength()) / Mpc,
 			comoving2LightTravelDistance(pos.x) / Mpc,
 			comoving2LightTravelDistance(pos.y) / Mpc,
 			comoving2LightTravelDistance(pos.z) / Mpc,
-			c->current.getEnergy() / EeV,
+			c->current.getFrequency() / EeV,
 			c->current.getDirection().getTheta(),
 			c->current.getDirection().getPhi());
 	}
@@ -162,7 +162,7 @@ CRPropa2ROOTTrajectoryOutput3D::CRPropa2ROOTTrajectoryOutput3D(std::string filen
 	ROOTFile = new TFile(filename.c_str(), "RECREATE",
 			"CRPropa 2 output data file");
 	Ntuple = new TNtuple("traj", "CRPropa 3D trajectories",
-			"Particle_Type:Initial_Type:Time_Mpc:Position_X_Mpc:Position_Y_Mpc:Position_Z_Mpc:Direction_X:Direction_Y:Direction_Z:Energy_EeV");
+			"Particle_Type:Initial_Type:Time_Mpc:Position_X_Mpc:Position_Y_Mpc:Position_Z_Mpc:Direction_X:Direction_Y:Direction_Z:Frequency_EeV");
 	TThread::UnLock();
 }
 
@@ -200,7 +200,7 @@ void CRPropa2ROOTTrajectoryOutput3D::process(Candidate *c) const {
 			dir.x,
 			dir.y,
 			dir.z,
-			c->current.getEnergy() / EeV);
+			c->current.getFrequency() / EeV);
 	}
 	TThread::UnLock();
 }
@@ -215,10 +215,10 @@ ROOTEventOutput1D::ROOTEventOutput1D(std::string filename) {
 			"CRPropa output data file");
 	Tree = new TTree("events", "CRPropa 1D events");
 	Tree->Branch("Particle_Type", &Particle_Type, "Particle_Type/I");
-	Tree->Branch("Energy_EeV", &Energy_EeV, "Energy_EeV/F" );
+	Tree->Branch("Frequency_EeV", &Frequency_EeV, "Frequency_EeV/F" );
 	Tree->Branch("TrajectoryLength_Mpc", &TrajectoryLength_Mpc, "TrajectoryLength_Mpc/F" );
 	Tree->Branch("Initial_Type", &Initial_Type, "Initial_Type/I" );
-	Tree->Branch("Initial_Energy_EeV", &Initial_Energy_EeV, "Initial_Energy_EeV/F" );
+	Tree->Branch("Initial_Frequency_EeV", &Initial_Frequency_EeV, "Initial_Frequency_EeV/F" );
 	TThread::UnLock();
 }
 
@@ -246,10 +246,10 @@ void ROOTEventOutput1D::process(Candidate *c) const {
 	#pragma omp critical
 	{
 		Particle_Type = c->current.getId();
-		Energy_EeV = c->current.getEnergy() / EeV;
+		Frequency_EeV = c->current.getFrequency() / EeV;
 		TrajectoryLength_Mpc = c->getTrajectoryLength() / Mpc;
 		Initial_Type = c->source.getId();
-		Initial_Energy_EeV = c->source.getEnergy() / EeV;
+		Initial_Frequency_EeV = c->source.getFrequency() / EeV;
 		Tree->Fill();
 	}
 	TThread::UnLock();
@@ -267,12 +267,12 @@ ROOTPhotonOutput1D::ROOTPhotonOutput1D(std::string filename) {
 	Tree = new TTree("events", "CRPropa 1D photons");
 
 	Tree->Branch("Particle_Type", &Particle_Type, "Particle_Type/I");
-	Tree->Branch("Energy_EeV", &Energy_EeV, "Energy_EeV/F" );
+	Tree->Branch("Frequency_EeV", &Frequency_EeV, "Frequency_EeV/F" );
 	Tree->Branch("ComovingDistance_Mpc", &ComovingDistance_Mpc, "ComovingDistance_Mpc/F" );
 	Tree->Branch("Initial_Type", &Initial_Type, "Initial_Type/I" );
-	Tree->Branch("Initial_Energy_EeV", &Initial_Energy_EeV, "Initial_Energy_EeV/F" );
+	Tree->Branch("Initial_Frequency_EeV", &Initial_Frequency_EeV, "Initial_Frequency_EeV/F" );
 	Tree->Branch("Parent_Type", &Parent_Type, "Parent_Type/I" );
-	Tree->Branch("Parent_Energy_EeV", &Parent_Energy_EeV, "Parent_Energy_EeV/F" );
+	Tree->Branch("Parent_Frequency_EeV", &Parent_Frequency_EeV, "Parent_Frequency_EeV/F" );
 
 	TThread::UnLock();
 }
@@ -304,12 +304,12 @@ void ROOTPhotonOutput1D::process(Candidate *c) const {
 #pragma omp critical
 	{
 		Particle_Type = pid;
-		Energy_EeV = c->current.getEnergy() / EeV;
+		Frequency_EeV = c->current.getFrequency() / EeV;
 		ComovingDistance_Mpc = c->created.getPosition().getR() / Mpc;
 		Parent_Type = c->created.getId();
-		Parent_Energy_EeV = c->created.getEnergy();
+		Parent_Frequency_EeV = c->created.getFrequency();
 		Initial_Type = c->source.getId();
-		Initial_Energy_EeV = c->source.getEnergy();
+		Initial_Frequency_EeV = c->source.getFrequency();
 		Tree->Fill();
 	}
 	TThread::UnLock();
@@ -327,7 +327,7 @@ ROOTTrajectoryOutput1D::ROOTTrajectoryOutput1D(std::string filename) {
 
 	Tree = new TTree("events", "CRPropa 1D trajectories");
 	Tree->Branch("Particle_Type", &Particle_Type, "Particle_Type/I");
-	Tree->Branch("Energy_EeV", &Energy_EeV, "Energy_EeV/F" );
+	Tree->Branch("Frequency_EeV", &Frequency_EeV, "Frequency_EeV/F" );
 	Tree->Branch("Position_Mpc", &Position_Mpc, "Position_Mpc/F" );
 
 	TThread::UnLock();
@@ -357,7 +357,7 @@ void ROOTTrajectoryOutput1D::process(Candidate *c) const {
 	{
 		Position_Mpc = c->current.getPosition().getX() / Mpc;
 		Particle_Type = c->current.getId();
-		Energy_EeV = c->current.getEnergy() / EeV;
+		Frequency_EeV = c->current.getFrequency() / EeV;
 		Tree->Fill();
 	}
 	TThread::UnLock();
@@ -416,8 +416,8 @@ void ROOTEventOutput3D::process(Candidate *c) const {
 		TrajectoryLength_Mpc = c->getTrajectoryLength() / Mpc;
 		Particle_Type = c->current.getId();
 		Initial_Type = c->source.getId();
-		Momentum_E_EeV = c->current.getEnergy() / EeV;
-		Initial_Momentum_E_EeV = c->source.getEnergy() / EeV;
+		Momentum_E_EeV = c->current.getFrequency() / EeV;
+		Initial_Momentum_E_EeV = c->source.getFrequency() / EeV;
 		Position_X_Mpc = c->current.getPosition().x / Mpc;
 		Position_Y_Mpc = c->current.getPosition().y / Mpc;
 		Position_Z_Mpc = c->current.getPosition().z / Mpc;
@@ -445,7 +445,7 @@ ROOTTrajectoryOutput3D::ROOTTrajectoryOutput3D(std::string filename) {
 
 	Tree->Branch("TrajectoryLength_Mpc", &TrajectoryLength_Mpc, "TrajectoryLength_Mpc/F" );
 	Tree->Branch("Particle_Type", &Particle_Type, "Particle_Type/I");
-	Tree->Branch("Energy_EeV", &Energy_EeV, "Energy_EeV/F" );
+	Tree->Branch("Frequency_EeV", &Frequency_EeV, "Frequency_EeV/F" );
 	Tree->Branch("Position_X_Mpc", &Position_X_Mpc, "Position_X_Mpc/F" );
 	Tree->Branch("Position_Y_Mpc", &Position_Y_Mpc, "Position_Y_Mpc/F" );
 	Tree->Branch("Position_Z_Mpc", &Position_Z_Mpc, "Position_Z_Mpc/F" );
@@ -480,7 +480,7 @@ void ROOTTrajectoryOutput3D::process(Candidate *c) const {
 	{
 		TrajectoryLength_Mpc = c->getTrajectoryLength() / Mpc;
 		Particle_Type = c->current.getId();
-		Energy_EeV = c->current.getEnergy() / EeV;
+		Frequency_EeV = c->current.getFrequency() / EeV;
 		Position_X_Mpc = c->current.getPosition().x / Mpc;
 		Position_Y_Mpc = c->current.getPosition().y / Mpc;
 		Position_Z_Mpc = c->current.getPosition().z / Mpc;

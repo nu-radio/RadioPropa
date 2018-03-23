@@ -101,20 +101,20 @@ public:
 };
 
 /**
- @class SourceEnergy
- @brief Sets the initial energy to a given value
+ @class SourceFrequency
+ @brief Sets the initial frequency to a given value
  */
-class SourceEnergy: public SourceFeature {
+class SourceFrequency: public SourceFeature {
 	double E;
 public:
-	SourceEnergy(double energy);
+	SourceFrequency(double frequency);
 	void prepareParticle(ParticleState &particle) const;
 	void setDescription();
 };
 
 /**
  @class SourcePowerLawSpectrum
- @brief Particle energy following a power law spectrum
+ @brief Particle frequency following a power law spectrum
  */
 class SourcePowerLawSpectrum: public SourceFeature {
 	double Emin;
@@ -459,7 +459,7 @@ protected:
 	double Emin, Emax;
 	size_t bins;
 	std::string expression;
-	std::vector<double> energy;
+	std::vector<double> frequency;
 
 	std::vector<Nucleus> nuclei;
 	std::vector<double> cdf;

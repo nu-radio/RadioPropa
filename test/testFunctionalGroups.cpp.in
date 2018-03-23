@@ -8,12 +8,12 @@ namespace radiopropa {
  * r_g = R / (B*c) = 1 EV / (1 nG * c) \approx 1.08*Mpc
  */
 TEST(testFunctionalGroups, gyroradius) {
-	double energy = 1*EeV;
+	double frequency = 1*EeV;
 	double field = 1*nG;
 
 	ParticleState p;
 	p.setId(nucleusId(1, 1));
-	p.setEnergy(energy);
+	p.setFrequency(frequency);
 	p.setPosition(Vector3d(0, 0, 0));
 	p.setDirection(Vector3d(0, 0, 1));
 
@@ -37,7 +37,7 @@ TEST(testFunctionalGroups, gyroradius) {
 			max_y = pos.getY();
 	}
 
-	EXPECT_NEAR(max_y/2.0, energy/(field * c_light * eplus), 0.01*Mpc);
+	EXPECT_NEAR(max_y/2.0, frequency/(field * c_light * eplus), 0.01*Mpc);
 
 }
 

@@ -64,28 +64,28 @@ void MaximumTrajectoryLength::process(Candidate *c) const {
 }
 
 //*****************************************************************************
-MinimumEnergy::MinimumEnergy(double minEnergy) :
-		minEnergy(minEnergy) {
+MinimumFrequency::MinimumFrequency(double minFrequency) :
+		minFrequency(minFrequency) {
 }
 
-void MinimumEnergy::setMinimumEnergy(double energy) {
-	minEnergy = energy;
+void MinimumFrequency::setMinimumFrequency(double frequency) {
+	minFrequency = frequency;
 }
 
-double MinimumEnergy::getMinimumEnergy() const {
-	return minEnergy;
+double MinimumFrequency::getMinimumFrequency() const {
+	return minFrequency;
 }
 
-void MinimumEnergy::process(Candidate *c) const {
-	if (c->current.getEnergy() > minEnergy)
+void MinimumFrequency::process(Candidate *c) const {
+	if (c->current.getFrequency() > minFrequency)
 		return;
 	else
 		reject(c);
 }
 
-std::string MinimumEnergy::getDescription() const {
+std::string MinimumFrequency::getDescription() const {
 	std::stringstream s;
-	s << "Minimum energy: " << minEnergy / EeV << " EeV, ";
+	s << "Minimum frequency: " << minFrequency / EeV << " EeV, ";
 	s << "Flag: '" << rejectFlagKey << "' -> '" << rejectFlagValue << "', ";
 	s << "MakeInactive: " << (makeRejectedInactive ? "yes" : "no");
 	if (rejectAction.valid())

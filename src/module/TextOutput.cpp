@@ -54,7 +54,7 @@ void TextOutput::printHeader() const {
 		*out << "\tSN";
 	if (fields.test(CurrentIdColumn))
 		*out << "\tID";
-	if (fields.test(CurrentEnergyColumn))
+	if (fields.test(CurrentFrequencyColumn))
 		*out << "\tE";
 	if (fields.test(CurrentPositionColumn) && oneDimensional)
 		*out << "\tX";
@@ -66,7 +66,7 @@ void TextOutput::printHeader() const {
 		*out << "\tSN0";
 	if (fields.test(SourceIdColumn))
 		*out << "\tID0";
-	if (fields.test(SourceEnergyColumn))
+	if (fields.test(SourceFrequencyColumn))
 		*out << "\tE0";
 	if (fields.test(SourcePositionColumn) && oneDimensional) 
 		*out << "\tX0";
@@ -78,7 +78,7 @@ void TextOutput::printHeader() const {
 		*out << "\tSN1";
 	if (fields.test(CreatedIdColumn))
 		*out << "\tID1";
-	if (fields.test(CreatedEnergyColumn))
+	if (fields.test(CreatedFrequencyColumn))
 		*out << "\tE1";
 	if (fields.test(CreatedPositionColumn) && oneDimensional)
 		*out << "\tX1";
@@ -105,9 +105,9 @@ void TextOutput::printHeader() const {
 	if (fields.test(CurrentIdColumn) || fields.test(CreatedIdColumn)
 			|| fields.test(SourceIdColumn))
 		*out << "# ID/ID0/ID1    Particle type (PDG MC numbering scheme)\n";
-	if (fields.test(CurrentEnergyColumn) || fields.test(CreatedEnergyColumn)
-			|| fields.test(SourceEnergyColumn))
-		*out << "# E/E0/E1       Energy [" << energyScale / EeV << " EeV]\n";
+	if (fields.test(CurrentFrequencyColumn) || fields.test(CreatedFrequencyColumn)
+			|| fields.test(SourceFrequencyColumn))
+		*out << "# E/E0/E1       Frequency [" << frequencyScale / EeV << " EeV]\n";
 	if (fields.test(CurrentPositionColumn) || fields.test(CreatedPositionColumn)
 			|| fields.test(SourcePositionColumn))
 		*out << "# X/X0/X1...    Position [" << lengthScale / Mpc << " Mpc]\n";
@@ -148,9 +148,9 @@ void TextOutput::process(Candidate *c) const {
 				c->getSerialNumber());
 	if (fields.test(CurrentIdColumn))
 		p += std::sprintf(buffer + p, "%10i\t", c->current.getId());
-	if (fields.test(CurrentEnergyColumn))
+	if (fields.test(CurrentFrequencyColumn))
 		p += std::sprintf(buffer + p, "%8.5E\t",
-				c->current.getEnergy() / energyScale);
+				c->current.getFrequency() / frequencyScale);
 	if (fields.test(CurrentPositionColumn)) {
 		if (oneDimensional) {
 			p += std::sprintf(buffer + p, "%8.5E\t",
@@ -173,9 +173,9 @@ void TextOutput::process(Candidate *c) const {
 		p += std::sprintf(buffer + p, "%10lu\t", c->getSourceSerialNumber());
 	if (fields.test(SourceIdColumn))
 		p += std::sprintf(buffer + p, "%10i\t", c->source.getId());
-	if (fields.test(SourceEnergyColumn))
+	if (fields.test(SourceFrequencyColumn))
 		p += std::sprintf(buffer + p, "%8.5E\t",
-				c->source.getEnergy() / energyScale);
+				c->source.getFrequency() / frequencyScale);
 	if (fields.test(SourcePositionColumn)) {
 		if (oneDimensional) {
 			p += std::sprintf(buffer + p, "%8.5E\t",
@@ -200,9 +200,9 @@ void TextOutput::process(Candidate *c) const {
 				c->getCreatedSerialNumber());
 	if (fields.test(CreatedIdColumn))
 		p += std::sprintf(buffer + p, "%10i\t", c->created.getId());
-	if (fields.test(CreatedEnergyColumn))
+	if (fields.test(CreatedFrequencyColumn))
 		p += std::sprintf(buffer + p, "%8.5E\t",
-				c->created.getEnergy() / energyScale);
+				c->created.getFrequency() / frequencyScale);
 	if (fields.test(CreatedPositionColumn)) {
 		if (oneDimensional) {
 			p += std::sprintf(buffer + p, "%8.5E\t",
@@ -260,7 +260,7 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 	std::ifstream infile(filename.c_str());
 	
 	double lengthScale = Mpc; // default Mpc
-	double energyScale = EeV; // default EeV
+	double frequencyScale = EeV; // default EeV
 
 	if (!infile.good())
 		throw std::runtime_error("radiopropa::TextOutput: could not open file " + filename);
@@ -291,7 +291,7 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 		stream >> val_i;
 		c->current.setId(val_i); // ID
 		stream >> val_d;
-		c->current.setEnergy(val_d*energyScale); // E
+		c->current.setFrequency(val_d*frequencyScale); // E
 		stream >> x >> y >> z;
 		c->current.setPosition(Vector3d(x, y, z)*lengthScale); // X, Y, Z
 		stream >> x >> y >> z;
@@ -300,7 +300,7 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 		stream >> val_i;
 		c->source.setId(val_i); // ID0
 		stream >> val_d;
-		c->source.setEnergy(val_d*energyScale);	// E0
+		c->source.setFrequency(val_d*frequencyScale);	// E0
 		stream >> x >> y >> z;
 		c->source.setPosition(Vector3d(x, y, z)*lengthScale); // X0, Y0, Z0
 		stream >> x >> y >> z;
@@ -309,7 +309,7 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 		stream >> val_i;
 		c->created.setId(val_i); // ID1
 		stream >> val_d;
-		c->created.setEnergy(val_d*energyScale); // E1
+		c->created.setFrequency(val_d*frequencyScale); // E1
 		stream >> x >> y >> z;
 		c->created.setPosition(Vector3d(x, y, z)*lengthScale); // X1, Y1, Z1
 		stream >> x >> y >> z;

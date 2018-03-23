@@ -27,18 +27,18 @@ public:
 };
 
 /**
- @class MinimumEnergy
- @brief Deactivates the candidate below a minimum energy
+ @class MinimumFrequency
+ @brief Deactivates the candidate below a minimum frequency
 
- This modules deactivates the candidate below a given minimum energy.
+ This modules deactivates the candidate below a given minimum frequency.
  In that case the property ("Deactivated", module::description) is set.
  */
-class MinimumEnergy: public AbstractCondition {
-	double minEnergy;
+class MinimumFrequency: public AbstractCondition {
+	double minFrequency;
 public:
-	MinimumEnergy(double minEnergy = 0);
-	void setMinimumEnergy(double energy);
-	double getMinimumEnergy() const;
+	MinimumFrequency(double minFrequency = 0);
+	void setMinimumFrequency(double frequency);
+	double getMinimumFrequency() const;
 	std::string getDescription() const;
 	void process(Candidate *candidate) const;
 };

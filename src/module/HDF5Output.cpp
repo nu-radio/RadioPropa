@@ -87,7 +87,7 @@ void HDF5Output::open(const std::string& filename) {
 		H5Tinsert(sid, "SN", HOFFSET(OutputRow, SN), H5T_NATIVE_UINT64);
 	if (fields.test(CurrentIdColumn))
 		H5Tinsert(sid, "ID", HOFFSET(OutputRow, ID), H5T_NATIVE_INT32);
-	if (fields.test(CurrentEnergyColumn))
+	if (fields.test(CurrentFrequencyColumn))
 		H5Tinsert(sid, "E", HOFFSET(OutputRow, E), H5T_NATIVE_DOUBLE);
 	if (fields.test(CurrentPositionColumn) && oneDimensional)
 		H5Tinsert(sid, "X", HOFFSET(OutputRow, X), H5T_NATIVE_DOUBLE);
@@ -105,7 +105,7 @@ void HDF5Output::open(const std::string& filename) {
 		H5Tinsert(sid, "SN0", HOFFSET(OutputRow, SN0), H5T_NATIVE_UINT64);
 	if (fields.test(SourceIdColumn))
 		H5Tinsert(sid, "ID0", HOFFSET(OutputRow, ID0), H5T_NATIVE_INT32);
-	if (fields.test(SourceEnergyColumn))
+	if (fields.test(SourceFrequencyColumn))
 		H5Tinsert(sid, "E0", HOFFSET(OutputRow, E0), H5T_NATIVE_DOUBLE);
 	if (fields.test(SourcePositionColumn) && oneDimensional) 
 		H5Tinsert(sid, "X0", HOFFSET(OutputRow, X0), H5T_NATIVE_DOUBLE);
@@ -123,7 +123,7 @@ void HDF5Output::open(const std::string& filename) {
 		H5Tinsert(sid, "SN1", HOFFSET(OutputRow, SN1), H5T_NATIVE_UINT64);
 	if (fields.test(CreatedIdColumn))
 		H5Tinsert(sid, "ID1", HOFFSET(OutputRow, ID1), H5T_NATIVE_INT32);
-	if (fields.test(CreatedEnergyColumn))
+	if (fields.test(CreatedFrequencyColumn))
 		H5Tinsert(sid, "E1", HOFFSET(OutputRow, E1), H5T_NATIVE_DOUBLE);
 	if (fields.test(CreatedPositionColumn) && oneDimensional)
 		H5Tinsert(sid, "X1", HOFFSET(OutputRow, X1), H5T_NATIVE_DOUBLE);
@@ -206,7 +206,7 @@ void HDF5Output::process(Candidate* candidate) const {
 
 	r.SN = candidate->getSerialNumber();
 	r.ID = candidate->current.getId();
-	r.E = candidate->current.getEnergy() / energyScale;
+	r.E = candidate->current.getFrequency() / frequencyScale;
 	Vector3d v = candidate->current.getPosition() / lengthScale;
 	r.X = v.x;
 	r.Y = v.y;
@@ -218,7 +218,7 @@ void HDF5Output::process(Candidate* candidate) const {
 
 	r.SN0 = candidate->getSourceSerialNumber();
 	r.ID0 = candidate->source.getId();
-	r.E0 = candidate->source.getEnergy() / energyScale;
+	r.E0 = candidate->source.getFrequency() / frequencyScale;
 	v = candidate->source.getPosition() / lengthScale;
 	r.X0 = v.x;
 	r.Y0 = v.y;
@@ -230,7 +230,7 @@ void HDF5Output::process(Candidate* candidate) const {
 
 	r.SN1 = candidate->getCreatedSerialNumber();
 	r.ID1 = candidate->created.getId();
-	r.E1 = candidate->created.getEnergy() / energyScale;
+	r.E1 = candidate->created.getFrequency() / frequencyScale;
 	v = candidate->created.getPosition() / lengthScale;
 	r.X1 = v.x;
 	r.Y1 = v.y;

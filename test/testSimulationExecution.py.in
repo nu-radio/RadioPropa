@@ -33,7 +33,7 @@ class test1DChainWithSecondaries(unittest.TestCase):
         sim.add(crp.NuclearDecay())
         sim.add(crp.ElectronPairProduction(crp.CMB))
         sim.add(crp.ElectronPairProduction(crp.IRB))
-        sim.add(crp.MinimumEnergy(1 * crp.EeV))
+        sim.add(crp.MinimumFrequency(1 * crp.EeV))
         sim.add(crp.EMCascade())
 
         # observer
@@ -51,8 +51,8 @@ class test1DChainWithSecondaries(unittest.TestCase):
         source.add(crp.SourceUniform1D(1 * crp.Mpc, 1000 * crp.Mpc))
         source.add(crp.SourceRedshift1D())
 
-        # power law spectrum with charge dependent maximum energy Z*100 EeV
-        # elements: H, He, N, Fe with equal abundances at constant energy per
+        # power law spectrum with charge dependent maximum frequency Z*100 EeV
+        # elements: H, He, N, Fe with equal abundances at constant frequency per
         # nucleon
         composition = crp.SourceComposition(1 * crp.EeV, 100 * crp.EeV, -1)
         composition.add(1,  1,  1)  # H

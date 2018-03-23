@@ -15,8 +15,8 @@ namespace radiopropa {
 const double ElasticScattering::lgmin = 6.;  // minimum log10(Lorentz-factor)
 const double ElasticScattering::lgmax = 14.; // maximum log10(Lorentz-factor)
 const size_t ElasticScattering::nlg = 201;   // number of Lorentz-factor steps
-const double ElasticScattering::epsmin = log10(2 * eV) + 3;    // log10 minimum photon background energy in nucleus rest frame for elastic scattering
-const double ElasticScattering::epsmax = log10(2 * eV) + 8.12; // log10 maximum photon background energy in nucleus rest frame for elastic scattering
+const double ElasticScattering::epsmin = log10(2 * eV) + 3;    // log10 minimum photon background frequency in nucleus rest frame for elastic scattering
+const double ElasticScattering::epsmax = log10(2 * eV) + 8.12; // log10 maximum photon background frequency in nucleus rest frame for elastic scattering
 const size_t ElasticScattering::neps = 513; // number of photon background energies in nucleus rest frame
 
 ElasticScattering::ElasticScattering(PhotonField f) {
@@ -107,7 +107,7 @@ void ElasticScattering::process(Candidate *candidate) const {
 		if (step < randDist)
 			return;
 
-		// draw random background photon energy from CDF
+		// draw random background photon frequency from CDF
 		size_t i = floor((lg - lgmin) / (lgmax - lgmin) * (nlg - 1)); // index of closest gamma tabulation point
 		size_t j = random.randBin(tabCDF[i]) - 1; // index of next lower tabulated eps value
 		double binWidth = (epsmax - epsmin) / (neps - 1); // logarithmic bin width

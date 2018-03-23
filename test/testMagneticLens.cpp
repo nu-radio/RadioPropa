@@ -87,7 +87,7 @@ TEST(MagneticLens, Vector3Deflection)
 	EXPECT_NEAR(u.getAngleTo(v), 0., 2. / 180 * M_PI);
 }
 
-TEST(MagneticLens, OutOfBoundsEnergy)
+TEST(MagneticLens, OutOfBoundsFrequency)
 {
 	MagneticLens magneticLens(5);
 	Pixelization P(5);

@@ -54,7 +54,7 @@ PropagationCK::Y PropagationCK::dYdt(const Y &y, ParticleState &p, double z) con
 		std::cerr << e.what() << std::endl;
 	}
 	// Lorentz force: du/dt = q*c/E * (v x B)
-	Vector3d dudt = p.getCharge() * c_light / p.getEnergy() * velocity.cross(B);
+	Vector3d dudt = p.getCharge() * c_light / p.getFrequency() * velocity.cross(B);
 	return Y(velocity, dudt);
 }
 

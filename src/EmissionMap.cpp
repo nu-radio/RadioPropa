@@ -116,34 +116,34 @@ void CylindricalProjectionMap::updateCdf() const {
 	}
 }
 
-EmissionMap::EmissionMap() : minEnergy(0.0001 * EeV), maxEnergy(10000 * EeV),
-	nEnergy(8*2), nPhi(360), nTheta(180) {
-	logStep = log10(maxEnergy / minEnergy) / nEnergy;
+EmissionMap::EmissionMap() : minFrequency(0.0001 * EeV), maxFrequency(10000 * EeV),
+	nFrequency(8*2), nPhi(360), nTheta(180) {
+	logStep = log10(maxFrequency / minFrequency) / nFrequency;
 }
 
-EmissionMap::EmissionMap(size_t nPhi, size_t nTheta, size_t nEnergy) : minEnergy(0.0001 * EeV), maxEnergy(10000 * EeV),
-	nEnergy(nEnergy), nPhi(nPhi), nTheta(nTheta) {
-	logStep = log10(maxEnergy / minEnergy) / nEnergy;
+EmissionMap::EmissionMap(size_t nPhi, size_t nTheta, size_t nFrequency) : minFrequency(0.0001 * EeV), maxFrequency(10000 * EeV),
+	nFrequency(nFrequency), nPhi(nPhi), nTheta(nTheta) {
+	logStep = log10(maxFrequency / minFrequency) / nFrequency;
 }
 
-EmissionMap::EmissionMap(size_t nPhi, size_t nTheta, size_t nEnergy, double minEnergy, double maxEnergy) : minEnergy(minEnergy), maxEnergy(maxEnergy), nEnergy(nEnergy), nPhi(nPhi), nTheta(nTheta) {
-	logStep = log10(maxEnergy / minEnergy) / nEnergy;
+EmissionMap::EmissionMap(size_t nPhi, size_t nTheta, size_t nFrequency, double minFrequency, double maxFrequency) : minFrequency(minFrequency), maxFrequency(maxFrequency), nFrequency(nFrequency), nPhi(nPhi), nTheta(nTheta) {
+	logStep = log10(maxFrequency / minFrequency) / nFrequency;
 }
 
-double EmissionMap::energyFromBin(size_t bin) const {
-	return pow(10, log10(minEnergy) + logStep * bin);
+double EmissionMap::frequencyFromBin(size_t bin) const {
+	return pow(10, log10(minFrequency) + logStep * bin);
 }
 
-size_t EmissionMap::binFromEnergy(double energy) const {
-	return log10(energy / minEnergy) / logStep;
+size_t EmissionMap::binFromFrequency(double frequency) const {
+	return log10(frequency / minFrequency) / logStep;
 }
 
-void EmissionMap::fillMap(int pid, double energy, const Vector3d& direction, double weight) {
-	getMap(pid, energy)->fillBin(direction, weight);
+void EmissionMap::fillMap(int pid, double frequency, const Vector3d& direction, double weight) {
+	getMap(pid, frequency)->fillBin(direction, weight);
 }
 
 void EmissionMap::fillMap(const ParticleState& state, double weight) {
-	fillMap(state.getId(), state.getEnergy(), state.getDirection(), weight);
+	fillMap(state.getId(), state.getFrequency(), state.getDirection(), weight);
 }
 
 EmissionMap::map_t &EmissionMap::getMaps() {
@@ -154,8 +154,8 @@ const EmissionMap::map_t &EmissionMap::getMaps() const {
 	return maps;
 }
 
-bool EmissionMap::drawDirection(int pid, double energy, Vector3d& direction) const {
-	key_t key(pid, binFromEnergy(energy));
+bool EmissionMap::drawDirection(int pid, double frequency, Vector3d& direction) const {
+	key_t key(pid, binFromFrequency(frequency));
 	map_t::const_iterator i = maps.find(key);
 
 	if (i == maps.end() || !i->second.valid()) {
@@ -167,11 +167,11 @@ bool EmissionMap::drawDirection(int pid, double energy, Vector3d& direction) con
 }
 
 bool EmissionMap::drawDirection(const ParticleState& state, Vector3d& direction) const {
-	return drawDirection(state.getId(), state.getEnergy(), direction);
+	return drawDirection(state.getId(), state.getFrequency(), direction);
 }
 
-bool EmissionMap::checkDirection(int pid, double energy, const Vector3d& direction) const {
-	key_t key(pid, binFromEnergy(energy));
+bool EmissionMap::checkDirection(int pid, double frequency, const Vector3d& direction) const {
+	key_t key(pid, binFromFrequency(frequency));
 	map_t::const_iterator i = maps.find(key);
 
 	if (i == maps.end() || !i->second.valid()) {
@@ -182,11 +182,11 @@ bool EmissionMap::checkDirection(int pid, double energy, const Vector3d& directi
 }
 
 bool EmissionMap::checkDirection(const ParticleState& state) const {
-	return checkDirection(state.getId(), state.getEnergy(), state.getDirection());
+	return checkDirection(state.getId(), state.getFrequency(), state.getDirection());
 }
 
-bool EmissionMap::hasMap(int pid, double energy) {
-    key_t key(pid, binFromEnergy(energy));
+bool EmissionMap::hasMap(int pid, double frequency) {
+    key_t key(pid, binFromFrequency(frequency));
     map_t::iterator i = maps.find(key);
     if (i == maps.end() || !i->second.valid())
 		return false;
@@ -194,8 +194,8 @@ bool EmissionMap::hasMap(int pid, double energy) {
 		return true;
 }
 
-ref_ptr<CylindricalProjectionMap> EmissionMap::getMap(int pid, double energy) {
-	key_t key(pid, binFromEnergy(energy));
+ref_ptr<CylindricalProjectionMap> EmissionMap::getMap(int pid, double frequency) {
+	key_t key(pid, binFromFrequency(frequency));
 	map_t::iterator i = maps.find(key);
 	if (i == maps.end() || !i->second.valid()) {
 		ref_ptr<CylindricalProjectionMap> cpm = new CylindricalProjectionMap(nPhi, nTheta);
@@ -213,7 +213,7 @@ void EmissionMap::save(const std::string &filename) {
 	for (map_t::iterator i = maps.begin(); i != maps.end(); i++) {
 		if (!i->second.valid())
 			continue;
-		out << i->first.first << " " << i->first.second << " " << energyFromBin(i->first.second) << " ";
+		out << i->first.first << " " << i->first.second << " " << frequencyFromBin(i->first.second) << " ";
 		out << i->second->getNPhi() << " " << i->second->getNTheta();
 		const std::vector<double> &pdf = i->second->getPdf();
 		for (size_t i = 0; i < pdf.size(); i++)

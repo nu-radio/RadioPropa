@@ -5,11 +5,11 @@
 
 namespace radiopropa {
 
-Output::Output() : outputName(OutputTypeName(Everything)), lengthScale(Mpc), energyScale(EeV), oneDimensional(false), count(0) {
+Output::Output() : outputName(OutputTypeName(Everything)), lengthScale(Mpc), frequencyScale(EeV), oneDimensional(false), count(0) {
 	enableAll();
 }
 
-Output::Output(OutputType outputtype) : outputName(OutputTypeName(outputtype)), lengthScale(Mpc), energyScale(EeV), oneDimensional(false), count(0) {
+Output::Output(OutputType outputtype) : outputName(OutputTypeName(outputtype)), lengthScale(Mpc), frequencyScale(EeV), oneDimensional(false), count(0) {
 	setOutputType(outputtype);
 }
 
@@ -40,21 +40,21 @@ void Output::setOutputType(OutputType outputtype) {
 		// X, ID, E
 		set(CurrentPositionColumn, true);
 		set(CurrentIdColumn, true);
-		set(CurrentEnergyColumn, true);
+		set(CurrentFrequencyColumn, true);
 		set1D(true);
 	} else if (outputtype == Event1D) {
 		// D, ID, E, ID0, E0
 		set(TrajectoryLengthColumn, true);
 		set(CurrentIdColumn, true);
-		set(CurrentEnergyColumn, true);
+		set(CurrentFrequencyColumn, true);
 		set(SourceIdColumn, true);
-		set(SourceEnergyColumn, true);
+		set(SourceFrequencyColumn, true);
 		set1D(true);
 	} else if (outputtype == Trajectory3D) {
 		// D, ID, E, X, Y, Z, Px, Py, Pz
 		set(TrajectoryLengthColumn, true);
 		set(CurrentIdColumn, true);
-		set(CurrentEnergyColumn, true);
+		set(CurrentFrequencyColumn, true);
 		set(CurrentPositionColumn, true);
 		set(CurrentDirectionColumn, true);
 		set1D(false);
@@ -62,11 +62,11 @@ void Output::setOutputType(OutputType outputtype) {
 		// W, D, ID, E, X, Y, Z, Px, Py, Pz, ID0, E0, X0, Y0, Z0, P0x, P0y, P0z
 		set(TrajectoryLengthColumn, true);
 		set(CurrentIdColumn, true);
-		set(CurrentEnergyColumn, true);
+		set(CurrentFrequencyColumn, true);
 		set(CurrentPositionColumn, true);
 		set(CurrentDirectionColumn, true);
 		set(SourceIdColumn, true);
-		set(SourceEnergyColumn, true);
+		set(SourceFrequencyColumn, true);
 		set(SourcePositionColumn, true);
 		set(SourceDirectionColumn, true);
 		set1D(false);
@@ -79,9 +79,9 @@ void Output::setOutputType(OutputType outputtype) {
 	}
 }
 
-void Output::setEnergyScale(double scale) {
+void Output::setFrequencyScale(double scale) {
 	modify();
-	energyScale = scale;
+	frequencyScale = scale;
 }
 
 void Output::setLengthScale(double scale) {

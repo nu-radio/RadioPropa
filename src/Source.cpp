@@ -115,18 +115,18 @@ void SourceMultipleParticleTypes::setDescription() {
 }
 
 // ----------------------------------------------------------------------------
-SourceEnergy::SourceEnergy(double energy) :
-		E(energy) {
+SourceFrequency::SourceFrequency(double frequency) :
+		E(frequency) {
 	setDescription();
 }
 
-void SourceEnergy::prepareParticle(ParticleState& p) const {
-	p.setEnergy(E);
+void SourceFrequency::prepareParticle(ParticleState& p) const {
+	p.setFrequency(E);
 }
 
-void SourceEnergy::setDescription() {
+void SourceFrequency::setDescription() {
 	std::stringstream ss;
-	ss << "SourceEnergy: " << E / EeV << " EeV\n";
+	ss << "SourceFrequency: " << E / EeV << " EeV\n";
 	description = ss.str();
 }
 
@@ -140,12 +140,12 @@ SourcePowerLawSpectrum::SourcePowerLawSpectrum(double Emin, double Emax,
 void SourcePowerLawSpectrum::prepareParticle(ParticleState& particle) const {
 	Random &random = Random::instance();
 	double E = random.randPowerLaw(index, Emin, Emax);
-	particle.setEnergy(E);
+	particle.setFrequency(E);
 }
 
 void SourcePowerLawSpectrum::setDescription() {
 	std::stringstream ss;
-	ss << "SourcePowerLawSpectrum: Random energy ";
+	ss << "SourcePowerLawSpectrum: Random frequency ";
 	ss << "E = " << Emin / EeV << " - " << Emax / EeV << " EeV, ";
 	ss << "dN/dE ~ E^" << index  << "\n";
 	description = ss.str();
@@ -191,14 +191,14 @@ void SourceComposition::prepareParticle(ParticleState& particle) const {
 	int id = nuclei[i];
 	particle.setId(id);
 
-	// random energy from power law
+	// random frequency from power law
 	int Z = chargeNumber(id);
-	particle.setEnergy(random.randPowerLaw(index, Emin, Z * Rmax));
+	particle.setFrequency(random.randPowerLaw(index, Emin, Z * Rmax));
 }
 
 void SourceComposition::setDescription() {
 	std::stringstream ss;
-	ss << "SourceComposition: Random element and energy ";
+	ss << "SourceComposition: Random element and frequency ";
 	ss << "E = " << Emin / EeV << " - Z*" << Rmax / EeV << " EeV, ";
 	ss << "dN/dE ~ E^" << index << "\n";
 	for (int i = 0; i < nuclei.size(); i++)
@@ -787,13 +787,13 @@ void SourceAmplitude::setDescription() {
 SourceGenericComposition::SourceGenericComposition(double Emin, double Emax, std::string expression, size_t bins) :
 	Emin(Emin), Emax(Emax), expression(expression), bins(bins) {
 
-	// precalculate energy bins
+	// precalculate frequency bins
 	double logEmin = ::log10(Emin);
 	double logEmax = ::log10(Emax);
 	double logStep = (logEmax - logEmin) / bins;
-	energy.resize(bins + 1);
+	frequency.resize(bins + 1);
 	for (size_t i = 0; i <= bins; i++) {
-		energy[i] = ::pow(10, logEmin + i * logStep);
+		frequency[i] = ::pow(10, logEmin + i * logStep);
 	}
 	setDescription();
 }
@@ -827,13 +827,13 @@ void SourceGenericComposition::add(int id, double weight) {
 	n.cdf.resize(bins + 1);
 
 	for (std::size_t i=0; i<=bins; ++i) {
-		E = energy[i];
+		E = frequency[i];
 		n.cdf[i] = p.Eval();
 	}
 
 	// integrate
 	for (std::size_t i=bins; i>0; --i) {
-		n.cdf[i] = (n.cdf[i-1] + n.cdf[i]) * (energy[i] - energy[i-1]) / 2;
+		n.cdf[i] = (n.cdf[i-1] + n.cdf[i]) * (frequency[i] - frequency[i-1]) / 2;
 	}
 	n.cdf[0] = 0;
 
@@ -867,9 +867,9 @@ void SourceGenericComposition::prepareParticle(ParticleState& particle) const {
 	const Nucleus &n = nuclei.at(iN);
 	particle.setId(n.id);
 
-	// random energy
-	double E = interpolate(random.rand() * n.cdf.back(), n.cdf, energy);
-	particle.setEnergy(E);
+	// random frequency
+	double E = interpolate(random.rand() * n.cdf.back(), n.cdf, frequency);
+	particle.setFrequency(E);
 }
 
 void SourceGenericComposition::setDescription() {

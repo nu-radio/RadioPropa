@@ -18,11 +18,11 @@ TEST (AdiabaticCooling, UniformField) {
 	Candidate c(nucleusId(1,1), 1e13*eV);
 	c.setCurrentStep(10*kpc);
 	c.setNextStep(10*kpc);
-	double E = c.current.getEnergy();
+	double E = c.current.getFrequency();
 	AC.process(&c);
 
-	// Energy is expected to be conserved
-	EXPECT_DOUBLE_EQ(c.current.getEnergy(), E);
+	// Frequency is expected to be conserved
+	EXPECT_DOUBLE_EQ(c.current.getFrequency(), E);
 	EXPECT_DOUBLE_EQ(c.getNextStep(), 10*kpc);
 
 	double limit = 0.2;
@@ -42,11 +42,11 @@ TEST (AdiabaticCooling, ConstantSphericalField) {
 	c.current.setPosition(Vector3d(1,0,0));
 	c.setCurrentStep(c_light);
 	c.setNextStep(c_light);
-	double E = c.current.getEnergy();
+	double E = c.current.getFrequency();
 	AC.process(&c);
 
-	// Check energy loss and step limitation
-	EXPECT_DOUBLE_EQ(c.current.getEnergy(), E/3.);
+	// Check frequency loss and step limitation
+	EXPECT_DOUBLE_EQ(c.current.getFrequency(), E/3.);
 	EXPECT_DOUBLE_EQ(c.getNextStep(), 0.15*c_light);
 
 }

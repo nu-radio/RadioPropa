@@ -40,7 +40,7 @@ TEST(testPropagationCK, zeroField) {
 
 	ParticleState p;
 	p.setId(nucleusId(1, 1));
-	p.setEnergy(100 * EeV);
+	p.setFrequency(100 * EeV);
 	p.setPosition(Vector3d(0, 0, 0));
 	p.setDirection(Vector3d(0, 1, 0));
 	Candidate c(p);
@@ -60,7 +60,7 @@ TEST(testPropagationCK, proton) {
 
 	ParticleState p;
 	p.setId(nucleusId(1, 1));
-	p.setEnergy(100 * EeV);
+	p.setFrequency(100 * EeV);
 	p.setPosition(Vector3d(0, 0, 0));
 	p.setDirection(Vector3d(0, 1, 0));
 	Candidate c(p);
@@ -79,7 +79,7 @@ TEST(testPropagationCK, neutron) {
 
 	ParticleState p;
 	p.setId(nucleusId(1, 0));
-	p.setEnergy(100 * EeV);
+	p.setFrequency(100 * EeV);
 	p.setPosition(Vector3d(0, 0, 0));
 	p.setDirection(Vector3d(0, 1, 0));
 	Candidate c(p);

@@ -12,26 +12,26 @@ ParticleMapsContainer::~ParticleMapsContainer()
 {
 	for(std::map<int, std::map<int, double*> >::iterator pid_iter = _data.begin(); 
 			pid_iter != _data.end(); ++pid_iter) {
-		for(std::map<int, double*>::iterator energy_iter = pid_iter->second.begin();
-			energy_iter != pid_iter->second.end(); ++energy_iter) {
-				delete[] (energy_iter->second);
+		for(std::map<int, double*>::iterator frequency_iter = pid_iter->second.begin();
+			frequency_iter != pid_iter->second.end(); ++frequency_iter) {
+				delete[] (frequency_iter->second);
 		}
 	}
 }
 
-int ParticleMapsContainer::energy2Idx(double energy) const
+int ParticleMapsContainer::frequency2Idx(double frequency) const
 {
-	double lE = log10(energy / eV);
+	double lE = log10(frequency / eV);
 	return int((lE - _bin0lowerEdge) / _deltaLogE);
 }
 
-double ParticleMapsContainer::idx2Energy(int idx) const
+double ParticleMapsContainer::idx2Frequency(int idx) const
 {
 	return pow(10, idx * _deltaLogE + _bin0lowerEdge + _deltaLogE / 2) * eV;
 }
 
 		
-double* ParticleMapsContainer::getMap(const int particleId, double energy)
+double* ParticleMapsContainer::getMap(const int particleId, double frequency)
 {
 	_weightsUpToDate = false;
 	if (_data.find(particleId) == _data.end())
@@ -39,17 +39,17 @@ double* ParticleMapsContainer::getMap(const int particleId, double energy)
 		std::cerr << "No map for ParticleID " << particleId << std::endl;
 		return NULL;
 	}
-	int energyIdx	= energy2Idx(energy);
-	if (_data[particleId].find(energyIdx) == _data[particleId].end())
+	int frequencyIdx	= frequency2Idx(frequency);
+	if (_data[particleId].find(frequencyIdx) == _data[particleId].end())
 	{
-		std::cerr << "No map for ParticleID and energy" << energy / eV << " eV" << std::endl;
+		std::cerr << "No map for ParticleID and frequency" << frequency / eV << " eV" << std::endl;
 		return NULL;
 	}
-	return _data[particleId][energy2Idx(energy)];
+	return _data[particleId][frequency2Idx(frequency)];
 }
 			
 			
-void ParticleMapsContainer::addParticle(const int particleId, double energy, double galacticLongitude, double galacticLatitude, double weight)
+void ParticleMapsContainer::addParticle(const int particleId, double frequency, double galacticLongitude, double galacticLatitude, double weight)
 {
 	_weightsUpToDate = false;
 	if (_data.find(particleId) == _data.end())
@@ -58,23 +58,23 @@ void ParticleMapsContainer::addParticle(const int particleId, double energy, dou
 		_data[particleId] = M;
 	}
 
-	int energyIdx	= energy2Idx(energy);
-	if (_data[particleId].find(energyIdx) == _data[particleId].end())
+	int frequencyIdx	= frequency2Idx(frequency);
+	if (_data[particleId].find(frequencyIdx) == _data[particleId].end())
 	{
-		_data[particleId][energyIdx] = new double[_pixelization.getNumberOfPixels()];
-		std::fill(_data[particleId][energyIdx], _data[particleId][energyIdx] + _pixelization.getNumberOfPixels(), 0);
+		_data[particleId][frequencyIdx] = new double[_pixelization.getNumberOfPixels()];
+		std::fill(_data[particleId][frequencyIdx], _data[particleId][frequencyIdx] + _pixelization.getNumberOfPixels(), 0);
 	}
 
 	uint32_t pixel = _pixelization.direction2Pix(galacticLongitude, galacticLatitude);
-	_data[particleId][energyIdx][pixel] += weight;
+	_data[particleId][frequencyIdx][pixel] += weight;
 }
 
 
-void ParticleMapsContainer::addParticle(const int particleId, double energy, const Vector3d &p, double weight)
+void ParticleMapsContainer::addParticle(const int particleId, double frequency, const Vector3d &p, double weight)
 {
 	double galacticLongitude = atan2(-p.y, -p.x);
 	double galacticLatitude =	M_PI / 2 - acos(-p.z / p.getR());
-	addParticle(particleId, energy, galacticLongitude, galacticLatitude, weight);
+	addParticle(particleId, frequency, galacticLongitude, galacticLatitude, weight);
 }
 
 
@@ -99,7 +99,7 @@ std::vector<double> ParticleMapsContainer::getEnergies(int pid)
 		for(std::map<int, double*>::iterator iter = _data[pid].begin(); 
 			iter != _data[pid].end(); ++iter) 
 		{
-			energies.push_back( idx2Energy(iter->first) / eV );
+			energies.push_back( idx2Frequency(iter->first) / eV );
 		}
 	}
 	return energies;
@@ -113,20 +113,20 @@ void ParticleMapsContainer::applyLens(MagneticLens &lens)
 
 	for(std::map<int, std::map<int, double*> >::iterator pid_iter = _data.begin(); 
 			pid_iter != _data.end(); ++pid_iter) {
-		for(std::map<int, double*>::iterator energy_iter = pid_iter->second.begin();
-			energy_iter != pid_iter->second.end(); ++energy_iter) {
+		for(std::map<int, double*>::iterator frequency_iter = pid_iter->second.begin();
+			frequency_iter != pid_iter->second.end(); ++frequency_iter) {
 		//	// transform only nuclei
-			double energy = idx2Energy(energy_iter->first);
+			double frequency = idx2Frequency(frequency_iter->first);
 			int chargeNumber = HepPID::Z(pid_iter->first);
-			if (chargeNumber != 0 && lens.rigidityCovered(energy / chargeNumber))
+			if (chargeNumber != 0 && lens.rigidityCovered(frequency / chargeNumber))
 			{
-				lens.transformModelVector(energy_iter->second, energy / chargeNumber);
+				lens.transformModelVector(frequency_iter->second, frequency / chargeNumber);
 			}
 			else
 			{ // still normalize the vectors 
 				for(size_t j=0; j< _pixelization.getNumberOfPixels() ; j++)
 				{
-					energy_iter->second[j]/=lens.getNorm();
+					frequency_iter->second[j]/=lens.getNorm();
 				}
 			}
 		}
@@ -144,18 +144,18 @@ void ParticleMapsContainer::_updateWeights()
 	{
 		_weightsPID[pid_iter->first] = 0;
 
-		for(std::map<int, double*>::iterator energy_iter = pid_iter->second.begin();
-			energy_iter != pid_iter->second.end(); ++energy_iter) 
+		for(std::map<int, double*>::iterator frequency_iter = pid_iter->second.begin();
+			frequency_iter != pid_iter->second.end(); ++frequency_iter) 
 		{
 
-			_weights_pidEnergy[pid_iter->first][energy_iter->first] = 0;
+			_weights_pidFrequency[pid_iter->first][frequency_iter->first] = 0;
 			for(size_t j=0; j< _pixelization.getNumberOfPixels() ; j++)
 			{
-				_weights_pidEnergy[pid_iter->first][energy_iter->first] +=energy_iter->second[j];
+				_weights_pidFrequency[pid_iter->first][frequency_iter->first] +=frequency_iter->second[j];
 					
-				_weightsPID[pid_iter->first]+=energy_iter->second[j];
+				_weightsPID[pid_iter->first]+=frequency_iter->second[j];
 			}
-		_sumOfWeights+=_weights_pidEnergy[pid_iter->first][energy_iter->first];
+		_sumOfWeights+=_weights_pidFrequency[pid_iter->first][frequency_iter->first];
 		}
 	}
 	_weightsUpToDate = true;
@@ -163,13 +163,13 @@ void ParticleMapsContainer::_updateWeights()
 
 
 void ParticleMapsContainer::getRandomParticles(size_t N, vector<int> &particleId, 
-	vector<double> &energy, vector<double> &galacticLongitudes,
+	vector<double> &frequency, vector<double> &galacticLongitudes,
 	vector<double> &galacticLatitudes)
 {
 	_updateWeights();
 
 	particleId.resize(N);
-	energy.resize(N);
+	frequency.resize(N);
 	galacticLongitudes.resize(N);
 	galacticLatitudes.resize(N);
 
@@ -184,21 +184,21 @@ void ParticleMapsContainer::getRandomParticles(size_t N, vector<int> &particleId
 		}
 		particleId[i] = iter->first;
 	
-		//get energy
+		//get frequency
 		r = Random::instance().rand() * iter->second;
-		iter = _weights_pidEnergy[particleId[i]].begin();
+		iter = _weights_pidFrequency[particleId[i]].begin();
 		while ((r-= iter->second) > 0)
 		{
 		 ++iter; 
 		}
-		energy[i] = idx2Energy(iter->first) / eV;
+		frequency[i] = idx2Frequency(iter->first) / eV;
 
-		placeOnMap(particleId[i], energy[i] * eV, galacticLongitudes[i], galacticLatitudes[i]);
+		placeOnMap(particleId[i], frequency[i] * eV, galacticLongitudes[i], galacticLatitudes[i]);
 	}
 }
 
 
-bool ParticleMapsContainer::placeOnMap(int pid, double energy, double &galacticLongitude, double &galacticLatitude)
+bool ParticleMapsContainer::placeOnMap(int pid, double frequency, double &galacticLongitude, double &galacticLatitude)
 {
 	_updateWeights();
 
@@ -206,17 +206,17 @@ bool ParticleMapsContainer::placeOnMap(int pid, double energy, double &galacticL
 	{
 		return false;
 	}
-	int energyIdx	= energy2Idx(energy);
-	if (_data[pid].find(energyIdx) == _data[pid].end())
+	int frequencyIdx	= frequency2Idx(frequency);
+	if (_data[pid].find(frequencyIdx) == _data[pid].end())
 	{
 		return false;
 	}
 
-	double r = Random::instance().rand() * _weights_pidEnergy[pid][energyIdx];
+	double r = Random::instance().rand() * _weights_pidFrequency[pid][frequencyIdx];
 
 	for(size_t j=0; j< _pixelization.getNumberOfPixels(); j++)
 	{
-		r-= _data[pid][energyIdx][j];
+		r-= _data[pid][frequencyIdx][j];
 		if (r <=0)
 		{
 			_pixelization.getRandomDirectionInPixel(j, galacticLongitude, galacticLatitude );

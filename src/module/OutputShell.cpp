@@ -13,7 +13,7 @@ void ShellOutput::process(Candidate* c) const {
 		std::cout << c->getTrajectoryLength() / Mpc << " Mpc,  ";
 		std::cout << c->getAmplitude() << ",  ";
 		std::cout << c->current.getId() << ",  ";
-		std::cout << c->current.getEnergy() / EeV << " EeV,  ";
+		std::cout << c->current.getFrequency() / EeV << " EeV,  ";
 		std::cout << c->current.getPosition() / Mpc << " Mpc,  ";
 		std::cout << c->current.getDirection();
 		std::cout << std::endl;
@@ -32,7 +32,7 @@ void ShellOutput1D::process(Candidate* c) const {
 		std::cout << c->current.getPosition().x / Mpc << " Mpc,  ";
 		std::cout << c->getAmplitude() << ",  ";
 		std::cout << c->current.getId() << ",  ";
-		std::cout << c->current.getEnergy() / EeV << " EeV";
+		std::cout << c->current.getFrequency() / EeV << " EeV";
 		std::cout << std::endl;
 	}
 }

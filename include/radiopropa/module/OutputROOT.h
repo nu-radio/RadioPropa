@@ -20,7 +20,7 @@ class ROOTTrajectoryOutput1D: public Module {
 	mutable TTree *Tree;
 
 	mutable int Particle_Type;
-	mutable float Energy_EeV;
+	mutable float Frequency_EeV;
 	mutable float Position_Mpc;
 public:
 	ROOTTrajectoryOutput1D(std::string filename);
@@ -38,7 +38,7 @@ class ROOTTrajectoryOutput3D: public Module {
 	mutable TTree *Tree;
 
 	mutable int Particle_Type;
-	mutable float Energy_EeV;
+	mutable float Frequency_EeV;
 	mutable float TrajectoryLength_Mpc;
 	mutable float Position_X_Mpc, Position_Y_Mpc, Position_Z_Mpc;
 	mutable float Direction_X_Mpc, Direction_Y_Mpc, Direction_Z_Mpc;
@@ -59,7 +59,7 @@ class ROOTEventOutput1D: public Module {
 	mutable TTree *Tree;
 
 	mutable int Particle_Type, Initial_Type;
-	mutable float Energy_EeV, Initial_Energy_EeV;
+	mutable float Frequency_EeV, Initial_Frequency_EeV;
 	mutable float TrajectoryLength_Mpc;
 public:
 	ROOTEventOutput1D(std::string filename);
@@ -100,7 +100,7 @@ class ROOTPhotonOutput1D: public Module {
 	mutable TTree *Tree;
 
 	mutable int Particle_Type, Initial_Type, Parent_Type;
-	mutable float Energy_EeV, Initial_Energy_EeV, Parent_Energy_EeV;
+	mutable float Frequency_EeV, Initial_Frequency_EeV, Parent_Frequency_EeV;
 	mutable float ComovingDistance_Mpc;
 public:
 	ROOTPhotonOutput1D(std::string filename);

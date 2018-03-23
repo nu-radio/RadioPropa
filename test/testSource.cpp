@@ -218,9 +218,9 @@ TEST(SourcePowerLawSpectrum, simpleTest) {
 	ParticleState ps;
 	spectrum.prepareParticle(ps);
 
-	// energy should be within Emin - Emax
-	EXPECT_LE(Emin, ps.getEnergy());
-	EXPECT_GE(Emax, ps.getEnergy());
+	// frequency should be within Emin - Emax
+	EXPECT_LE(Emin, ps.getFrequency());
+	EXPECT_GE(Emax, ps.getFrequency());
 }
 
 TEST(SourceComposition, simpleTest) {
@@ -232,8 +232,8 @@ TEST(SourceComposition, simpleTest) {
 	ParticleState p;
 	source.prepareParticle(p);
 	EXPECT_EQ(nucleusId(6, 3), p.getId());
-	EXPECT_LE(Emin, p.getEnergy());
-	EXPECT_GE(6 * Rmax, p.getEnergy());
+	EXPECT_LE(Emin, p.getFrequency());
+	EXPECT_GE(6 * Rmax, p.getFrequency());
 }
 
 #ifdef CRPROPA_HAVE_MUPARSER
@@ -255,7 +255,7 @@ TEST(SourceGenericComposition, simpleTest) {
 			id1Count++;
 		if (p.getId() == id2)
 			id2Count++;
-		double e = p.getEnergy();
+		double e = p.getFrequency();
 		if ( (e >= Emin) && (e < 20))
 			ElowCount++;
 		if ( (e >= 20) && (e <= Emax))
@@ -293,26 +293,26 @@ TEST(Source, allPropertiesUsed) {
 
 	p = c.source;
 	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getEnergy());
-	EXPECT_GE(100 * EeV, p.getEnergy());
+	EXPECT_LE(5 * EeV, p.getFrequency());
+	EXPECT_GE(100 * EeV, p.getFrequency());
 	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
 
 	p = c.created;
 	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getEnergy());
-	EXPECT_GE(100 * EeV, p.getEnergy());
+	EXPECT_LE(5 * EeV, p.getFrequency());
+	EXPECT_GE(100 * EeV, p.getFrequency());
 	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
 
 	p = c.previous;
 	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getEnergy());
-	EXPECT_GE(100 * EeV, p.getEnergy());
+	EXPECT_LE(5 * EeV, p.getFrequency());
+	EXPECT_GE(100 * EeV, p.getFrequency());
 	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
 
 	p = c.current;
 	EXPECT_EQ(nucleusId(8, 4), p.getId());
-	EXPECT_LE(5 * EeV, p.getEnergy());
-	EXPECT_GE(100 * EeV, p.getEnergy());
+	EXPECT_LE(5 * EeV, p.getFrequency());
+	EXPECT_GE(100 * EeV, p.getFrequency());
 	EXPECT_EQ(Vector3d(10, 0, 0) * Mpc, p.getPosition());
 }
 
@@ -341,17 +341,17 @@ TEST(SourceList, luminosity) {
 	SourceList sourceList;
 
 	ref_ptr<Source> source1 = new Source;
-	source1->add(new SourceEnergy(100));
+	source1->add(new SourceFrequency(100));
 	sourceList.add(source1, 80);
 
 	ref_ptr<Source> source2 = new Source;
-	source2->add(new SourceEnergy(0));
+	source2->add(new SourceFrequency(0));
 	sourceList.add(source2, 20);
 
 	double meanE = 0;
 	for (int i = 0; i < 1000; i++) {
 		ref_ptr<Candidate> c = sourceList.getCandidate();
-		meanE += c->created.getEnergy();
+		meanE += c->created.getFrequency();
 	}
 	meanE /= 1000;
 	EXPECT_NEAR(80, meanE, 4); // this test can stochastically fail

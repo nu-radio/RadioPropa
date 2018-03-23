@@ -12,7 +12,7 @@ namespace radiopropa{
 
 /// Container for particlemaps
 /// The maps are stored with discrete energies on a logarithmic scale. The
-/// default energy width is 0.02 with an energy bin from 10**17.99 - 10**18.01
+/// default frequency width is 0.02 with an frequency bin from 10**17.99 - 10**18.01
 /// eV
 class ParticleMapsContainer 
 {
@@ -22,15 +22,15 @@ class ParticleMapsContainer
     double _deltaLogE;
     double _bin0lowerEdge;
 
-		// get the bin number of the energy
-		int energy2Idx(double energy) const;
-		double idx2Energy(int idx) const;
+		// get the bin number of the frequency
+		int frequency2Idx(double frequency) const;
+		double idx2Frequency(int idx) const;
 
 
 		// weights of the particles
 		double _sumOfWeights;
 		std::map< int , double > _weightsPID;				
-		std::map< int , map<int, double> > _weights_pidEnergy;				
+		std::map< int , map<int, double> > _weights_pidFrequency;				
 
 		// lazy update of weights 
 		bool _weightsUpToDate;
@@ -48,16 +48,16 @@ class ParticleMapsContainer
       return _pixelization.getNumberOfPixels();
     }
 
-		/// returns the map for the particleId with the given energy,. energy in
+		/// returns the map for the particleId with the given frequency,. frequency in
 		/// Joule
-		double *getMap(const int particleId, double energy);
+		double *getMap(const int particleId, double frequency);
 			
 		/// adds a particle to the map container
-    /// particleId is HEP particleId, energy [Joule], galacticLongitude and
+    /// particleId is HEP particleId, frequency [Joule], galacticLongitude and
     /// galacticLatitude in [rad]
-		void addParticle(const int particleId, double energy, double galacticLongitude, double galacticLatitude, double weight = 1);
+		void addParticle(const int particleId, double frequency, double galacticLongitude, double galacticLatitude, double weight = 1);
 			
-		void addParticle(const int particleId, double energy, const Vector3d &v, double weight = 1);
+		void addParticle(const int particleId, double frequency, const Vector3d &v, double weight = 1);
 		
 		// returns a vector of all particle ids in th
 		std::vector<int> getParticleIds();
@@ -67,14 +67,14 @@ class ParticleMapsContainer
 
 		void applyLens(MagneticLens &lens);;
 
-		// energy in eV , galacticLongitude in rad [-pi ... pi], galacticLatitudes in rad [-pi/2 ... pi/2]
+		// frequency in eV , galacticLongitude in rad [-pi ... pi], galacticLatitudes in rad [-pi/2 ... pi/2]
 		void getRandomParticles(size_t N, vector<int> &particleId, 
-			vector<double> &energy, vector<double> &galacticLongitudes,
+			vector<double> &frequency, vector<double> &galacticLongitudes,
 			vector<double> &galacticLatitudes);
 
-		// places a cosmic ray with given PID and energy according to the
+		// places a cosmic ray with given PID and frequency according to the
 		// probability maps. Returns false if not possible.
-		bool placeOnMap(int pid, double energy, double &galacticLongitude, double &galacticLatitude);
+		bool placeOnMap(int pid, double frequency, double &galacticLongitude, double &galacticLatitude);
 
 		// force weight update prior to get random particles. Only necessary when
 		// reusing pointer to maps after calculating weights
@@ -87,11 +87,11 @@ class ParticleMapsContainer
 			return _sumOfWeights;
 		}
 
-		double getWeight(int pid, double energy)
+		double getWeight(int pid, double frequency)
 		{
 			if (!_weightsUpToDate)
 				_updateWeights();
-			return _weights_pidEnergy[pid][energy2Idx(energy)];				
+			return _weights_pidFrequency[pid][frequency2Idx(frequency)];				
 		}
 };
 

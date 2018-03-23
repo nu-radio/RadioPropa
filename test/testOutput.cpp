@@ -188,7 +188,7 @@ TEST(ParticleCollector, dumpload) {
 	output.load("ParticleCollector_DumpTest.txt");
 
 	EXPECT_EQ(input.size(), output.size());
-	EXPECT_EQ(output[0]->current.getEnergy(), c->current.getEnergy());
+	EXPECT_EQ(output[0]->current.getFrequency(), c->current.getFrequency());
 	EXPECT_EQ(output[1]->getTrajectoryLength(), c->getTrajectoryLength());
 	EXPECT_EQ(output[2]->current.getId(), c->current.getId());
 	EXPECT_EQ(output[3]->getAmplitude(), c->getAmplitude());

@@ -124,7 +124,7 @@ void Candidate::addSecondary(Candidate *c) {
 	secondaries.push_back(c);
 }
 
-void Candidate::addSecondary(int id, double energy, double weight) {
+void Candidate::addSecondary(int id, double frequency, double weight) {
 	ref_ptr<Candidate> secondary = new Candidate;
 	secondary->setAmplitude(amplitude);
 	secondary->setTrajectoryLength(trajectoryLength);
@@ -134,12 +134,12 @@ void Candidate::addSecondary(int id, double energy, double weight) {
 	secondary->created = current;
 	secondary->current = current;
 	secondary->current.setId(id);
-	secondary->current.setEnergy(energy);
+	secondary->current.setFrequency(frequency);
 	secondary->parent = this;
 	secondaries.push_back(secondary);
 }
 
-void Candidate::addSecondary(int id, double energy, Vector3d position, double weight) {
+void Candidate::addSecondary(int id, double frequency, Vector3d position, double weight) {
 	ref_ptr<Candidate> secondary = new Candidate;
 	secondary->setAmplitude(amplitude);
 	secondary->setTrajectoryLength(trajectoryLength - (current.getPosition() - position).getR() );
@@ -149,7 +149,7 @@ void Candidate::addSecondary(int id, double energy, Vector3d position, double we
 	secondary->created = current;
 	secondary->current = current;
 	secondary->current.setId(id);
-	secondary->current.setEnergy(energy);
+	secondary->current.setFrequency(frequency);
 	secondary->current.setPosition(position);
 	secondary->created.setPosition(position);
 	secondary->parent = this;

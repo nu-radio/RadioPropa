@@ -21,7 +21,7 @@ void setCosmologyParameters(double hubbleParameter, double omegaMatter);
  */
 double hubbleRate(double redshift = 0);
 
-// Returns the dark energy density parameter
+// Returns the dark frequency density parameter
 double omegaL();
 
 // Returns the matter density parameter

@@ -11,16 +11,16 @@
 namespace radiopropa {
 
 //** ========================= Break conditions ============================= */
-TEST(MinimumEnergy, test) {
-	MinimumEnergy minEnergy(5);
+TEST(MinimumFrequency, test) {
+	MinimumFrequency minFrequency(5);
 	Candidate c;
 
-	c.current.setEnergy(5.1);
-	minEnergy.process(&c);
+	c.current.setFrequency(5.1);
+	minFrequency.process(&c);
 	EXPECT_TRUE(c.isActive());
 
-	c.current.setEnergy(4.9);
-	minEnergy.process(&c);
+	c.current.setFrequency(4.9);
+	minFrequency.process(&c);
 	EXPECT_FALSE(c.isActive());
 	EXPECT_TRUE(c.hasProperty("Rejected"));
 }

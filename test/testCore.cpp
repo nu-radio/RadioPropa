@@ -27,10 +27,10 @@ TEST(ParticleState, position) {
 	EXPECT_TRUE(particle.getPosition() == v * Mpc);
 }
 
-TEST(ParticleState, energy) {
+TEST(ParticleState, frequency) {
 	ParticleState particle;
-	particle.setEnergy(10 * EeV);
-	EXPECT_EQ(particle.getEnergy(), 10 * EeV);
+	particle.setFrequency(10 * EeV);
+	EXPECT_EQ(particle.getFrequency(), 10 * EeV);
 }
 
 TEST(ParticleState, direction) {
@@ -51,8 +51,8 @@ TEST(ParticleState, momentum) {
 	ParticleState particle;
 	Vector3d v(0, 1, 0);
 	particle.setDirection(v);
-	particle.setEnergy(100 * EeV);
-	EXPECT_TRUE(particle.getMomentum() == v * (particle.getEnergy() / c_light));
+	particle.setFrequency(100 * EeV);
+	EXPECT_TRUE(particle.getMomentum() == v * (particle.getFrequency() / c_light));
 }
 
 TEST(ParticleState, id) {
@@ -91,7 +91,7 @@ TEST(ParticleState, Rigidity) {
 	ParticleState particle;
 
 	particle.setId(nucleusId(1, 1)); // proton
-	particle.setEnergy(1 * EeV);
+	particle.setFrequency(1 * EeV);
 	EXPECT_EQ(particle.getRigidity(), 1e18);
 }
 
@@ -132,7 +132,7 @@ TEST(Candidate, addSecondary) {
 	c.setAmplitude(5);
 	c.setTrajectoryLength(23);
 	c.current.setId(nucleusId(56,26));
-	c.current.setEnergy(1000);
+	c.current.setFrequency(1000);
 	c.current.setPosition(Vector3d(1,2,3));
 	c.current.setDirection(Vector3d(0,0,1));
 
@@ -140,11 +140,11 @@ TEST(Candidate, addSecondary) {
 	Candidate s = *c.secondaries[0];
 
 	EXPECT_EQ(nucleusId(1,1), s.current.getId());
-	EXPECT_EQ(200, s.current.getEnergy());
+	EXPECT_EQ(200, s.current.getFrequency());
 
 	EXPECT_EQ(5, s.getAmplitude());
 	EXPECT_EQ(23, s.getTrajectoryLength());
-	EXPECT_EQ(1000, s.created.getEnergy());
+	EXPECT_EQ(1000, s.created.getFrequency());
 	EXPECT_TRUE(Vector3d(1,2,3) == s.created.getPosition());
 	EXPECT_TRUE(Vector3d(0,0,1) == s.created.getDirection());
 }
@@ -468,8 +468,8 @@ TEST(CylindricalProjectionMap, functions) {
 TEST(EmissionMap, functions) {
 
 	EmissionMap em(360, 180, 100, 1 * EeV, 100 * EeV);
-	double e = em.energyFromBin(50);
-	size_t b = em.binFromEnergy(50 * EeV);
+	double e = em.frequencyFromBin(50);
+	size_t b = em.binFromFrequency(50 * EeV);
 
 	Vector3d d(1.0, 0.0, 0.0);
 

@@ -49,7 +49,7 @@ private:
 public:
 	Candidate(
 		int id = 0,
-		double energy = 0,
+		double frequency = 0,
 		Vector3d position = Vector3d(0, 0, 0),
 		Vector3d direction = Vector3d(-1, 0, 0),
 		double z = 0,
@@ -105,17 +105,17 @@ public:
 	/**
 	 Add a new candidate to the list of secondaries.
 	 @param id		particle ID of the secondary
-	 @param energy	energy of the secondary
+	 @param frequency	frequency of the secondary
 
 	 Adds a new candidate to the list of secondaries of this candidate.
 	 The secondaries Candidate::source and Candidate::previous state are set to the _source_ and _previous_ state of its parent.
-	 The secondaries Candidate::created and Candidate::current state are set to the _current_ state of its parent, except for the secondaries current energy and particle id.
+	 The secondaries Candidate::created and Candidate::current state are set to the _current_ state of its parent, except for the secondaries current frequency and particle id.
 	 Trajectory length and redshift are copied from the parent.
 	 */
 	void addSecondary(Candidate *c);
 	inline void addSecondary(ref_ptr<Candidate> c) { addSecondary(c.get()); };
-	void addSecondary(int id, double energy, double weight = 1);
-	void addSecondary(int id, double energy, Vector3d position, double weight = 1);
+	void addSecondary(int id, double frequency, double weight = 1);
+	void addSecondary(int id, double frequency, Vector3d position, double weight = 1);
 	void clearSecondaries();
 
 	std::string getDescription() const;

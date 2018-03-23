@@ -15,7 +15,7 @@ namespace radiopropa {
 struct Cosmology {
 	double H0; // Hubble parameter at z=0
 	double omegaM; // matter density parameter
-	double omegaL; // vacuum energy parameter
+	double omegaL; // vacuum frequency parameter
 
 	static const int n;
 	static const double zmin;

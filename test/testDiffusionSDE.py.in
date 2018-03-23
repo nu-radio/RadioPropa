@@ -165,7 +165,7 @@ class DiffusionOneDirection(unittest.TestCase):
     def test_NeutralPropagation(self):
         c = radiopropa.Candidate()
         c.current.setId(radiopropa.nucleusId(1,0))
-        c.current.setEnergy(10*TeV)
+        c.current.setFrequency(10*TeV)
         c.current.setDirection(radiopropa.Vector3d(1,0,0))
         
         # check for position
@@ -191,7 +191,7 @@ class DiffusionOneDirection(unittest.TestCase):
         Dif = radiopropa.DiffusionSDE(BField, precision, minStep, maxStep, epsilon)
         c = radiopropa.Candidate()
         c.current.setId(radiopropa.nucleusId(1,1))
-        c.current.setEnergy(10*TeV)
+        c.current.setFrequency(10*TeV)
         c.current.setDirection(radiopropa.Vector3d(1,0,0))
         
         # check for position
@@ -221,7 +221,7 @@ class DiffusionOneDirection(unittest.TestCase):
         Dif = radiopropa.DiffusionSDE(BField, AdvField, precision, minStep, maxStep, epsilon)
         c = radiopropa.Candidate()
         c.current.setId(radiopropa.nucleusId(1,1))
-        c.current.setEnergy(10*TeV)
+        c.current.setFrequency(10*TeV)
         c.current.setDirection(radiopropa.Vector3d(1,0,0))
         
         # check for position
@@ -236,7 +236,7 @@ class DiffusionOneDirection(unittest.TestCase):
 
     msg1 = "Note that this is a statistical test. It might fail by chance with a probabilty O(0.00001)! You should rerun the test to make sure there is a bug."
     
-    def test_DiffusionEnergy10TeV(self):
+    def test_DiffusionFrequency10TeV(self):
         x, y, z = [], [], []
         E = 10 * TeV
         D = self.Dif.getScale()*6.1e24*(E/(4*GeV))**self.Dif.getAlpha()
@@ -250,7 +250,7 @@ class DiffusionOneDirection(unittest.TestCase):
         for i in range(N):
             c = radiopropa.Candidate()
             c.current.setId(radiopropa.nucleusId(1,1))
-            c.current.setEnergy(E)
+            c.current.setFrequency(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)
                 self.Dif.process(c)
@@ -277,7 +277,7 @@ class DiffusionOneDirection(unittest.TestCase):
         self.assertLess(abs((stdZ-std_exp)/4./stdOfStds), 1., msg=self.msg1)
 
     
-    def test_DiffusionEnergy1PeV(self):
+    def test_DiffusionFrequency1PeV(self):
         x, y, z = [], [], []
         E = 1 * TeV
         D = self.Dif.getScale()*6.1e24*(E/(4*GeV))**self.Dif.getAlpha()
@@ -291,7 +291,7 @@ class DiffusionOneDirection(unittest.TestCase):
         for i in range(N):
             c = radiopropa.Candidate()
             c.current.setId(radiopropa.nucleusId(1,1))
-            c.current.setEnergy(E)
+            c.current.setFrequency(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)
                 self.Dif.process(c)
@@ -317,7 +317,7 @@ class DiffusionOneDirection(unittest.TestCase):
         self.assertLess(abs((meanZ-mean_exp)/4./stdOfMeans), 1., msg=self.msg1)
         self.assertLess(abs((stdZ-std_exp)/4./stdOfStds), 1., msg=self.msg1)
         
-    def test_DiffusionEnergy100PeV(self):
+    def test_DiffusionFrequency100PeV(self):
         x, y, z = [], [], []
         E = 10 * PeV
         D = self.Dif.getScale()*6.1e24*(E/(4*GeV))**self.Dif.getAlpha()
@@ -331,7 +331,7 @@ class DiffusionOneDirection(unittest.TestCase):
         for i in range(N):
             c = radiopropa.Candidate()
             c.current.setId(radiopropa.nucleusId(1,1))
-            c.current.setEnergy(E)
+            c.current.setFrequency(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)
                 self.Dif.process(c)
@@ -393,7 +393,7 @@ class DiffusionOneDirection(unittest.TestCase):
         for i in range(N):
             c = radiopropa.Candidate()
             c.current.setId(radiopropa.nucleusId(1,1))
-            c.current.setEnergy(E)
+            c.current.setFrequency(E)
             while c.getTrajectoryLength() < L_max:
                 maxTra.process(c)
                 DifAdv.process(c)
