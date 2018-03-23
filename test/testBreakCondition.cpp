@@ -54,19 +54,6 @@ TEST(MaximumTrajectoryLength, observer) {
 	EXPECT_FALSE(c.isActive());
 }
 
-TEST(MinimumRedshift, test) {
-	MinimumRedshift minZ; // default minimum redshift of 0
-	Candidate c;
-
-	c.setRedshift(0.1);
-	minZ.process(&c);
-	EXPECT_TRUE(c.isActive());
-
-	c.setRedshift(0);
-	minZ.process(&c);
-	EXPECT_FALSE(c.isActive());
-	EXPECT_TRUE(c.hasProperty("Rejected"));
-}
 
 TEST(DetectionLength, test) {
         DetectionLength detL(10);

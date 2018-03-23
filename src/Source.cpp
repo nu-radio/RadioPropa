@@ -765,76 +765,22 @@ void SourceEmissionCone::setDescription() {
 }
 
 // ----------------------------------------------------------------------------
-SourceRedshift::SourceRedshift(double z) :
+SourceAmplitude::SourceAmplitude(double z) :
 		z(z) {
 	setDescription();
 }
 
-void SourceRedshift::prepareCandidate(Candidate& candidate) const {
-	candidate.setRedshift(z);
+void SourceAmplitude::prepareCandidate(Candidate& candidate) const {
+	candidate.setAmplitude(z);
 }
 
-void SourceRedshift::setDescription() {
+void SourceAmplitude::setDescription() {
 	std::stringstream ss;
-	ss << "SourceRedshift: Redshift z = " << z << "\n";
+	ss << "SourceAmplitude: Amplitude z = " << z << "\n";
 	description = ss.str();
 }
 
-// ----------------------------------------------------------------------------
-SourceUniformRedshift::SourceUniformRedshift(double zmin, double zmax) :
-		zmin(zmin), zmax(zmax) {
-	setDescription();
-}
 
-void SourceUniformRedshift::prepareCandidate(Candidate& candidate) const {
-	double z = Random::instance().randUniform(zmin, zmax);
-	candidate.setRedshift(z);
-}
-
-void SourceUniformRedshift::setDescription() {
-	std::stringstream ss;
-	ss << "SourceUniformRedshift: Uniform redshift in z = ";
-	ss << zmin << " - " << zmax << "\n";
-	description = ss.str();
-}
-
-// ----------------------------------------------------------------------------
-SourceRedshiftEvolution::SourceRedshiftEvolution(double m, double zmin, double zmax) : m(m), zmin(zmin), zmax(zmax) {
-	std::stringstream ss;
-	ss << "SourceRedshiftEvolution: (1+z)^m, m = " << m;
-	ss << ", z = " << zmin << " - " << zmax << "\n";
-	description = ss.str();
-}
-
-void SourceRedshiftEvolution::prepareCandidate(Candidate& candidate) const {
-	double x = Random::instance().randUniform(0, 1);
-	double norm, z;
-
-	// special case: m=-1
-	if ((std::abs(m+1)) < std::numeric_limits<double>::epsilon()) {
-		norm = log(1+zmax) - log(1+zmin);
-		z = exp(norm*x) * (1+zmin) - 1;
-	} else {
-		norm = ( pow(1+zmax, m+1) - pow(1+zmin, m+1) ) / (m+1);
-		z = pow( norm*(m+1)*x + pow(1+zmin, m+1), 1./(m+1)) - 1;
-	}
-	candidate.setRedshift(z);
-}
-
-// ----------------------------------------------------------------------------
-SourceRedshift1D::SourceRedshift1D() {
-	setDescription();
-}
-
-void SourceRedshift1D::prepareCandidate(Candidate& candidate) const {
-	double d = candidate.source.getPosition().getR();
-	double z = comovingDistance2Redshift(d);
-	candidate.setRedshift(z);
-}
-
-void SourceRedshift1D::setDescription() {
-	description = "SourceRedshift1D: Redshift according to source distance\n";
-}
 
 // ----------------------------------------------------------------------------
 #ifdef CRPROPA_HAVE_MUPARSER

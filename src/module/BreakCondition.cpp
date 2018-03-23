@@ -122,34 +122,7 @@ std::string MinimumRigidity::getDescription() const {
 }
 
 //*****************************************************************************
-MinimumRedshift::MinimumRedshift(double zmin) :
-		zmin(zmin) {
-}
 
-void MinimumRedshift::setMinimumRedshift(double z) {
-	zmin = z;
-}
-
-double MinimumRedshift::getMinimumRedshift() {
-	return zmin;
-}
-
-void MinimumRedshift::process(Candidate* c) const {
-	if (c->getRedshift() > zmin)
-		return;
-	else
-		reject(c);
-}
-
-std::string MinimumRedshift::getDescription() const {
-	std::stringstream s;
-	s << "Minimum redshift: " << zmin << ", ";
-	s << "Flag: '" << rejectFlagKey << "' -> '" << rejectFlagValue << "', ";
-	s << "MakeInactive: " << (makeRejectedInactive ? "yes" : "no");
-	if (rejectAction.valid())
-		s << ", Action: " << rejectAction->getDescription();
-	return s.str();
-}
 
 //*****************************************************************************
 DetectionLength::DetectionLength(double detLength) :

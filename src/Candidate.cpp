@@ -7,7 +7,7 @@
 namespace radiopropa {
 
 Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, double weight) :
-		redshift(z), trajectoryLength(0), weight(1), currentStep(0), nextStep(0), active(true), parent(0) {
+		amplitude(z), trajectoryLength(0), weight(1), currentStep(0), nextStep(0), active(true), parent(0) {
 	ParticleState state(id, E, pos, dir);
 	source = state;
 	created = state;
@@ -27,7 +27,7 @@ Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, dou
 }
 
 Candidate::Candidate(const ParticleState &state) :
-		source(state), created(state), current(state), previous(state), redshift(0), trajectoryLength(0), currentStep(0), nextStep(0), active(true), parent(0) {
+		source(state), created(state), current(state), previous(state), amplitude(0), trajectoryLength(0), currentStep(0), nextStep(0), active(true), parent(0) {
 
 #if defined(OPENMP_3_1)
 		#pragma omp atomic capture
@@ -49,8 +49,8 @@ void Candidate::setActive(bool b) {
 	active = b;
 }
 
-double Candidate::getRedshift() const {
-	return redshift;
+double Candidate::getAmplitude() const {
+	return amplitude;
 }
 
 double Candidate::getTrajectoryLength() const {
@@ -69,8 +69,8 @@ double Candidate::getNextStep() const {
 	return nextStep;
 }
 
-void Candidate::setRedshift(double z) {
-	redshift = z;
+void Candidate::setAmplitude(double z) {
+	amplitude = z;
 }
 
 void Candidate::setTrajectoryLength(double a) {
@@ -126,7 +126,7 @@ void Candidate::addSecondary(Candidate *c) {
 
 void Candidate::addSecondary(int id, double energy, double weight) {
 	ref_ptr<Candidate> secondary = new Candidate;
-	secondary->setRedshift(redshift);
+	secondary->setAmplitude(amplitude);
 	secondary->setTrajectoryLength(trajectoryLength);
 	secondary->setWeight(weight);
 	secondary->source = source;
@@ -141,7 +141,7 @@ void Candidate::addSecondary(int id, double energy, double weight) {
 
 void Candidate::addSecondary(int id, double energy, Vector3d position, double weight) {
 	ref_ptr<Candidate> secondary = new Candidate;
-	secondary->setRedshift(redshift);
+	secondary->setAmplitude(amplitude);
 	secondary->setTrajectoryLength(trajectoryLength - (current.getPosition() - position).getR() );
 	secondary->setWeight(weight);
 	secondary->source = source;
@@ -162,7 +162,7 @@ void Candidate::clearSecondaries() {
 
 std::string Candidate::getDescription() const {
 	std::stringstream ss;
-	ss << "CosmicRay at z = " << getRedshift() << "\n";
+	ss << "CosmicRay at z = " << getAmplitude() << "\n";
 	ss << "  source:  " << source.getDescription() << "\n";
 	ss << "  current: " << current.getDescription();
 	return ss.str();
@@ -177,7 +177,7 @@ ref_ptr<Candidate> Candidate::clone(bool recursive) const {
 
 	cloned->properties = properties;
 	cloned->active = active;
-	cloned->redshift = redshift;
+	cloned->amplitude = amplitude;
 	cloned->weight = weight;
 	cloned->trajectoryLength = trajectoryLength;
 	cloned->currentStep = currentStep;

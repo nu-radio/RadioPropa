@@ -418,50 +418,13 @@ public:
 };
 
 /**
- @class SourceRedshift
+ @class SourceAmplitude
  @brief Discrete redshift (time of emission)
  */
-class SourceRedshift: public SourceFeature {
+class SourceAmplitude: public SourceFeature {
 	double z;
 public:
-	SourceRedshift(double z);
-	void prepareCandidate(Candidate &candidate) const;
-	void setDescription();
-};
-
-/**
- @class SourceUniformRedshift
- @brief Random redshift (time of emission) from uniform distribution
- */
-class SourceUniformRedshift: public SourceFeature {
-	double zmin, zmax;
-public:
-	SourceUniformRedshift(double zmin, double zmax);
-	void prepareCandidate(Candidate &candidate) const;
-	void setDescription();
-};
-
-/**
- @class SourceRedshiftEvolution
- @brief Random redshift (time of emission) from (1+z)^m distribution
- */
-class SourceRedshiftEvolution: public SourceFeature {
-	double zmin, zmax, m;
-public:
-	SourceRedshiftEvolution(double m, double zmin, double zmax);
-	void prepareCandidate(Candidate &candidate) const;
-};
-
-/**
- @class SourceRedshift1D
- @brief Redshift according to the distance to 0
-
- This source property sets the redshift according to the distance to 0.
- It must be added after a position setting source property.
- */
-class SourceRedshift1D: public SourceFeature {
-public:
-	SourceRedshift1D();
+	SourceAmplitude(double z);
 	void prepareCandidate(Candidate &candidate) const;
 	void setDescription();
 };

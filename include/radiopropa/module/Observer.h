@@ -120,18 +120,6 @@ public:
 	std::string getDescription() const;
 };
 
-/**
- @class ObserverRedshiftWindow
- @brief Detects particles in a given redshift window
- */
-class ObserverRedshiftWindow: public ObserverFeature {
-private:
-	double zmin, zmax;
-public:
-	ObserverRedshiftWindow(double zmin = 0, double zmax = 0.1);
-	DetectionState checkDetection(Candidate *candidate) const;
-	std::string getDescription() const;
-};
 
 /**
  @class ObserverInactiveVeto

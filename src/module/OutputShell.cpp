@@ -11,7 +11,7 @@ void ShellOutput::process(Candidate* c) const {
 		std::cout << std::fixed << std::showpoint << std::setprecision(3)
 				<< std::setw(6);
 		std::cout << c->getTrajectoryLength() / Mpc << " Mpc,  ";
-		std::cout << c->getRedshift() << ",  ";
+		std::cout << c->getAmplitude() << ",  ";
 		std::cout << c->current.getId() << ",  ";
 		std::cout << c->current.getEnergy() / EeV << " EeV,  ";
 		std::cout << c->current.getPosition() / Mpc << " Mpc,  ";
@@ -30,7 +30,7 @@ void ShellOutput1D::process(Candidate* c) const {
 		std::cout << std::fixed << std::showpoint << std::setprecision(3)
 				<< std::setw(6);
 		std::cout << c->current.getPosition().x / Mpc << " Mpc,  ";
-		std::cout << c->getRedshift() << ",  ";
+		std::cout << c->getAmplitude() << ",  ";
 		std::cout << c->current.getId() << ",  ";
 		std::cout << c->current.getEnergy() / EeV << " EeV";
 		std::cout << std::endl;

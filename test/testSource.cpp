@@ -275,28 +275,7 @@ TEST(SourceComposition, throwNoIsotope) {
 	EXPECT_THROW(source.prepareParticle(ps), std::runtime_error);
 }
 
-TEST(SourceRedshiftEvolution, testInRange) {
-	Candidate c;
 
-	double zmin = 0.5;
-	double zmax = 2.5;
-
-	// general case: m
-	SourceRedshiftEvolution source1(3.2, zmin, zmax);
-	for (int i = 0; i < 100; i++) {
-		source1.prepareCandidate(c);
-		EXPECT_LE(zmin, c.getRedshift());
-		EXPECT_GE(zmax, c.getRedshift());
-	}
-
-	// general case: m = -1
-	SourceRedshiftEvolution source2(-1, zmin, zmax);
-	for (int i = 0; i < 100; i++) {
-		source2.prepareCandidate(c);
-		EXPECT_LE(zmin, c.getRedshift());
-		EXPECT_GE(zmax, c.getRedshift());
-	}
-}
 
 TEST(Source, allPropertiesUsed) {
 	Source source;
@@ -304,11 +283,11 @@ TEST(Source, allPropertiesUsed) {
 	source.add(new SourceIsotropicEmission());
 	source.add(new SourcePowerLawSpectrum(5 * EeV, 100 * EeV, -2));
 	source.add(new SourceParticleType(nucleusId(8, 4)));
-	source.add(new SourceRedshift(2));
+	source.add(new SourceAmplitude(2));
 
 	Candidate c = *source.getCandidate();
 
-	EXPECT_EQ(2, c.getRedshift());
+	EXPECT_EQ(2, c.getAmplitude());
 
 	ParticleState p;
 

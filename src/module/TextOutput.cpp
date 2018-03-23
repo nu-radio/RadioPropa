@@ -48,7 +48,7 @@ void TextOutput::printHeader() const {
 	*out << "#";
 	if (fields.test(TrajectoryLengthColumn))
 		*out << "\tD";
-	if (fields.test(RedshiftColumn))
+	if (fields.test(AmplitudeColumn))
 		*out << "\tz";
 	if (fields.test(SerialNumberColumn))
 		*out << "\tSN";
@@ -98,8 +98,8 @@ void TextOutput::printHeader() const {
 	if (fields.test(TrajectoryLengthColumn))
 		*out << "# D             Trajectory length [" << lengthScale / Mpc
 				<< " Mpc]\n";
-	if (fields.test(RedshiftColumn))
-		*out << "# z             Redshift\n";
+	if (fields.test(AmplitudeColumn))
+		*out << "# z             Amplitude\n";
 	if (fields.test(SerialNumberColumn))
 		*out << "# SN/SN0/SN1    Serial number. Unique (within this run) id of the particle.\n";
 	if (fields.test(CurrentIdColumn) || fields.test(CreatedIdColumn)
@@ -124,7 +124,7 @@ void TextOutput::printHeader() const {
 	}
 
 	*out << "# no index = current, 0 = at source, 1 = at point of creation\n#\n";
-	*out << "# CRPropa version: " << g_GIT_DESC << "\n#\n";
+	*out << "# RadioPropa version: " << g_GIT_DESC << "\n#\n";
 }
 
 void TextOutput::process(Candidate *c) const {
@@ -140,8 +140,8 @@ void TextOutput::process(Candidate *c) const {
 		p += std::sprintf(buffer + p, "%8.5E\t",
 				c->getTrajectoryLength() / lengthScale);
 
-	if (fields.test(RedshiftColumn))
-		p += std::sprintf(buffer + p, "%1.5E\t", c->getRedshift());
+	if (fields.test(AmplitudeColumn))
+		p += std::sprintf(buffer + p, "%1.5E\t", c->getAmplitude());
 
 	if (fields.test(SerialNumberColumn))
 		p += std::sprintf(buffer + p, "%10lu\t",
@@ -285,7 +285,7 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 		stream >> val_d;
 		c->setTrajectoryLength(val_d*lengthScale); // D
 		stream >> val_d;
-		c->setRedshift(val_d); // z
+		c->setAmplitude(val_d); // z
 		stream >> val_i;
 		c->setSerialNumber(val_i); // SN
 		stream >> val_i;

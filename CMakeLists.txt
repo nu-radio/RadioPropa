@@ -354,7 +354,6 @@ add_library(radiopropa SHARED
 	src/module/OutputShell.cpp
 	src/module/ParticleCollector.cpp
 	src/module/PropagationCK.cpp
-	src/module/Redshift.cpp
 	src/module/SimplePropagation.cpp
 	src/module/TextOutput.cpp
 	src/module/Tools.cpp

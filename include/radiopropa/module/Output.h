@@ -36,7 +36,7 @@ public:
 	enum OutputColumn {
 		TrajectoryLengthColumn,
 		ColumnDensityColumn,
-		RedshiftColumn,
+		AmplitudeColumn,
 		CurrentIdColumn,
 		CurrentEnergyColumn,
 		CurrentPositionColumn,

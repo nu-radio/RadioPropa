@@ -81,7 +81,7 @@ void HDF5Output::open(const std::string& filename) {
 	sid = H5Tcreate(H5T_COMPOUND, sizeof(OutputRow));
 	if (fields.test(TrajectoryLengthColumn))
 		H5Tinsert(sid, "D", HOFFSET(OutputRow, D), H5T_NATIVE_DOUBLE);
-	if (fields.test(RedshiftColumn))
+	if (fields.test(AmplitudeColumn))
 		H5Tinsert(sid, "z", HOFFSET(OutputRow, z), H5T_NATIVE_DOUBLE);
 	if (fields.test(SerialNumberColumn))
 		H5Tinsert(sid, "SN", HOFFSET(OutputRow, SN), H5T_NATIVE_UINT64);
@@ -202,7 +202,7 @@ void HDF5Output::process(Candidate* candidate) const {
 
 	OutputRow r;
 	r.D = candidate->getTrajectoryLength() / lengthScale;
-	r.z = candidate->getRedshift();
+	r.z = candidate->getAmplitude();
 
 	r.SN = candidate->getSerialNumber();
 	r.ID = candidate->current.getId();

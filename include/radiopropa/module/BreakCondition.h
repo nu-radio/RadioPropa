@@ -62,23 +62,6 @@ public:
 };
 
 /**
- @class MinimumRedshift
- @brief Deactivates the candidate below a minimum redshift
-
- This modules deactivates the candidate below a given minimum redshift.
- In that case the property ("Deactivated", module::description) is set.
- */
-class MinimumRedshift: public AbstractCondition {
-	double zmin;
-public:
-	MinimumRedshift(double zmin = 0);
-	void setMinimumRedshift(double z);
-	double getMinimumRedshift();
-	std::string getDescription() const;
-	void process(Candidate *candidate) const;
-};
-
-/**
  @class DetectionLength
  @brief Detects the candidate at a given trajectoryLength
  

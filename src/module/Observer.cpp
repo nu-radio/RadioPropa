@@ -222,26 +222,6 @@ std::string ObserverPoint::getDescription() const {
 	return "ObserverPoint: observer at x = 0";
 }
 
-// ObserverRedshiftWindow -----------------------------------------------------
-ObserverRedshiftWindow::ObserverRedshiftWindow(double zmin, double zmax) :
-		zmin(zmin), zmax(zmax) {
-}
-
-DetectionState ObserverRedshiftWindow::checkDetection(
-		Candidate *candidate) const {
-	double z = candidate->getRedshift();
-	if (z > zmax)
-		return VETO;
-	if (z < zmin)
-		return VETO;
-	return NOTHING;
-}
-
-std::string ObserverRedshiftWindow::getDescription() const {
-	std::stringstream ss;
-	ss << "ObserverRedshiftWindow: z = " << zmin << " - " << zmax;
-	return ss.str();
-}
 
 // ObserverInactiveVeto -------------------------------------------------------
 DetectionState ObserverInactiveVeto::checkDetection(Candidate *c) const {
