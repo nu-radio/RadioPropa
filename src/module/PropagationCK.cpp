@@ -43,22 +43,16 @@ void PropagationCK::tryStep(const Y &y, Y &out, Y &error, double h,
 	}
 }
 
+
 PropagationCK::Y PropagationCK::dYdt(const Y &y, ParticleState &p, double z) const {
 	// normalize direction vector to prevent numerical losses
-	Vector3d velocity = y.u.getUnitVector() * c_light;
-	Vector3d B(0, 0, 0);
-	try {
-		B = field->getField(y.x, z);
-	} catch (std::exception &e) {
-		std::cerr << "PropagationCK: Exception in getField." << std::endl;
-		std::cerr << e.what() << std::endl;
-	}
-	// Lorentz force: du/dt = q*c/E * (v x B)
-	Vector3d dudt = p.getCharge() * c_light / p.getFrequency() * velocity.cross(B);
+	double n = field->getValue(y.x);
+	Vector3d velocity = y.u.getUnitVector() * c_light / n;
+	Vector3d dudt =  field->getGradient(y.x) / n/n * c_light; 
 	return Y(velocity, dudt);
 }
 
-PropagationCK::PropagationCK(ref_ptr<MagneticField> field, double tolerance,
+PropagationCK::PropagationCK(ref_ptr<ScalarField> field, double tolerance,
 		double minStep, double maxStep) :
 		minStep(0) {
 	setField(field);
@@ -78,16 +72,6 @@ void PropagationCK::process(Candidate *candidate) const {
 	candidate->previous = current;
 
 	double step = clip(candidate->getNextStep(), minStep, maxStep);
-
-	// rectilinear propagation for neutral particles
-	if (current.getCharge() == 0) {
-		Vector3d pos = current.getPosition();
-		Vector3d dir = current.getDirection();
-		current.setPosition(pos + dir * step);
-		candidate->setCurrentStep(step);
-		candidate->setNextStep(maxStep);
-		return;
-	}
 
 	Y yIn(current.getPosition(), current.getDirection());
 	Y yOut, yErr;
@@ -115,7 +99,7 @@ void PropagationCK::process(Candidate *candidate) const {
 	candidate->setNextStep(newStep);
 }
 
-void PropagationCK::setField(ref_ptr<MagneticField> f) {
+void PropagationCK::setField(ref_ptr<ScalarField> f) {
 	field = f;
 }
 

@@ -33,14 +33,13 @@ TEST(testSimplePropagation, step) {
 
 
 TEST(testPropagationCK, zeroField) {
-	PropagationCK propa(new UniformMagneticField(Vector3d(0, 0, 0)));
+	PropagationCK propa(new ScalarField());
 
-	double minStep = 0.1 * kpc;
+	double minStep = 0.001 * meter;
 	propa.setMinimumStep(minStep);
 
 	ParticleState p;
 	p.setId(nucleusId(1, 1));
-	p.setFrequency(100 * EeV);
 	p.setPosition(Vector3d(0, 0, 0));
 	p.setDirection(Vector3d(0, 1, 0));
 	Candidate c(p);
@@ -52,45 +51,26 @@ TEST(testPropagationCK, zeroField) {
 	EXPECT_DOUBLE_EQ(5 * minStep, c.getNextStep());  // acceleration by factor 5
 }
 
-TEST(testPropagationCK, proton) {
-	PropagationCK propa(new UniformMagneticField(Vector3d(0, 0, 1 * nG)));
+//TEST(testPropagationCK, proton) {
+//	PropagationCK propa(new UniformMagneticField(Vector3d(0, 0, 1 * nG)));
+//
+//	double minStep = 0.1 * kpc;
+//	propa.setMinimumStep(minStep);
+//
+//	ParticleState p;
+//	p.setId(nucleusId(1, 1));
+//	p.setFrequency(100 * EeV);
+//	p.setPosition(Vector3d(0, 0, 0));
+//	p.setDirection(Vector3d(0, 1, 0));
+//	Candidate c(p);
+//	c.setNextStep(0);
+//
+//	propa.process(&c);
+//
+//	EXPECT_DOUBLE_EQ(minStep, c.getCurrentStep());  // perform minimum step
+//	EXPECT_DOUBLE_EQ(5 * minStep, c.getNextStep());  // acceleration by factor 5
+//}
 
-	double minStep = 0.1 * kpc;
-	propa.setMinimumStep(minStep);
-
-	ParticleState p;
-	p.setId(nucleusId(1, 1));
-	p.setFrequency(100 * EeV);
-	p.setPosition(Vector3d(0, 0, 0));
-	p.setDirection(Vector3d(0, 1, 0));
-	Candidate c(p);
-	c.setNextStep(0);
-
-	propa.process(&c);
-
-	EXPECT_DOUBLE_EQ(minStep, c.getCurrentStep());  // perform minimum step
-	EXPECT_DOUBLE_EQ(5 * minStep, c.getNextStep());  // acceleration by factor 5
-}
-
-TEST(testPropagationCK, neutron) {
-	PropagationCK propa(new UniformMagneticField(Vector3d(0, 0, 1 * nG)));
-	propa.setMinimumStep(1 * kpc);
-	propa.setMaximumStep(42 * Mpc);
-
-	ParticleState p;
-	p.setId(nucleusId(1, 0));
-	p.setFrequency(100 * EeV);
-	p.setPosition(Vector3d(0, 0, 0));
-	p.setDirection(Vector3d(0, 1, 0));
-	Candidate c(p);
-
-	propa.process(&c);
-
-	EXPECT_DOUBLE_EQ(1 * kpc, c.getCurrentStep());
-	EXPECT_DOUBLE_EQ(42 * Mpc, c.getNextStep());
-	EXPECT_EQ(Vector3d(0, 1 * kpc, 0), c.current.getPosition());
-	EXPECT_EQ(Vector3d(0, 1, 0), c.current.getDirection());
-}
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);

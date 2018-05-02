@@ -64,7 +64,8 @@ class TransmissiveLayer(radiopropa.Module):
 
 # simulation setup
 sim = radiopropa.ModuleList()
-sim.add(radiopropa.SimplePropagation(.1*radiopropa.meter, 1*radiopropa.meter))
+sim.add(radiopropa.PropagationCK(radiopropa.ScalarField()))
+#sim.add(radiopropa.SimplePropagation(.1*radiopropa.meter, 1*radiopropa.meter))
 
 
 
@@ -75,7 +76,7 @@ sim.add(radiopropa.SimplePropagation(.1*radiopropa.meter, 1*radiopropa.meter))
 #obs = radiopropa.Observer()
 #obs.add(radiopropa.ObserverLargeSphere(radiopropa.Vector3d(0,0,0), 99*radiopropa.meter))
 output = radiopropa.HDF5Output('output_traj.h5', radiopropa.Output.Trajectory3D)
-output.enableProperty('frequency', 0., 'Frequency for RadioPropa')
+#output.enableProperty('frequency', 0., 'Frequency for RadioPropa')
 
 #obs.onDetection(output)
 #obs.setDeactivateOnDetection(True)

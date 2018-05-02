@@ -43,6 +43,7 @@
 %ignore operator radiopropa::Module*;
 %ignore operator radiopropa::ModuleList*;
 %ignore operator radiopropa::MagneticField*;
+%ignore operator radiopropa::ScalarField*;
 %ignore operator radiopropa::Observer*;
 %ignore operator radiopropa::ObserverFeature*;
 %ignore operator radiopropa::ParticleCollector*;
@@ -275,6 +276,10 @@
 %implicitconv radiopropa::ref_ptr<radiopropa::MagneticField>;
 %template(MagneticFieldRefPtr) radiopropa::ref_ptr<radiopropa::MagneticField>;
 %include "radiopropa/magneticField/MagneticField.h"
+
+%implicitconv radiopropa::ref_ptr<radiopropa::ScalarField>;
+%template(ScalarFieldRefPtr) radiopropa::ref_ptr<radiopropa::ScalarField>;
+%include "radiopropa/ScalarField.h"
 
 %include "radiopropa/Grid.h"
 %include "radiopropa/GridTools.h"

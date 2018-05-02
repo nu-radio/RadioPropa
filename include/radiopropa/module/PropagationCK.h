@@ -3,19 +3,18 @@
 
 #include "radiopropa/Module.h"
 #include "radiopropa/Units.h"
-#include "radiopropa/magneticField/MagneticField.h"
+#include "radiopropa/ScalarField.h"
 
 namespace radiopropa {
 
 /**
  @class PropagationCK
- @brief Propagation through magnetic fields using the Cash-Karp method.
+ @brief Propagation through scalar using the Cash-Karp method.
 
- This module solves the equations of motion of a relativistic charged particle when propagating through a magnetic field.\n
+ This module solves the Eikonal equation of motion of a ray propagating through a refractivity field.\n
  It uses the Runge-Kutta integration method with Cash-Karp coefficients.\n
  The step size control tries to keep the relative error close to, but smaller than the designated tolerance.
  Additionally a minimum and maximum size for the steps can be set.
- For neutral particles a rectilinear propagation is applied and a next step of the maximum step size proposed.
  */
 class PropagationCK: public Module {
 public:
@@ -47,14 +46,14 @@ public:
 
 private:
 	std::vector<double> a, b, bs; /*< Cash-Karp coefficients */
-	ref_ptr<MagneticField> field;
+	ref_ptr<ScalarField> field;
 	double tolerance; /*< target relative error of the numerical integration */
 	double minStep; /*< minimum step size of the propagation */
 	double maxStep; /*< maximum step size of the propagation */
 
 public:
-	PropagationCK(ref_ptr<MagneticField> field = NULL, double tolerance = 1e-4,
-			double minStep = (0.1 * kpc), double maxStep = (1 * Gpc));
+	PropagationCK(ref_ptr<ScalarField> field = NULL, double tolerance = 1e-4,
+			double minStep = (1E-3 * meter), double maxStep = (1 * meter));
 	void process(Candidate *candidate) const;
 
 	// derivative of phase point, dY/dt = d/dt(x, u) = (v, du/dt)
@@ -64,7 +63,7 @@ public:
 	void tryStep(const Y &y, Y &out, Y &error, double t,
 			ParticleState &p, double z) const;
 
-	void setField(ref_ptr<MagneticField> field);
+	void setField(ref_ptr<ScalarField> field);
 	void setTolerance(double tolerance);
 	void setMinimumStep(double minStep);
 	void setMaximumStep(double maxStep);
