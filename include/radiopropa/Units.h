@@ -24,6 +24,7 @@ static const double kilogram = 1;
 static const double ampere = 1;
 static const double mol = 1;
 static const double kelvin = 1;
+static const double rad = 1;
 
 // derived units
 static const double newton = 1 * kilogram * meter / second / second;
@@ -33,6 +34,7 @@ static const double tesla = 1 * newton / ampere / meter;
 static const double volt = 1 * kilogram * meter * meter / ampere / second / second / second;
 static const double coulomb = 1 * ampere * second;
 static const double hertz = 1 / second;
+static const double deg = M_PI / 180.;
 
 // si prefixes
 static const double kilo = 1E3;
