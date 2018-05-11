@@ -2,22 +2,6 @@ import radiopropa
 import numpy as np
 
 
-class ObserverZ(radiopropa.ObserverFeature):
-    """
-    An observer plane parallel to the xy plane in depth z.
-    """
-    def __init__(self, Z):
-        radiopropa.ObserverFeature.__init__(self)
-        self.__Z = Z
-
-    def checkDetection(self, candidate):
-        cx = candidate.current.getPosition().getZ() - self.__Z
-        px = candidate.previous.getPosition().getZ() - self.__Z
-
-        if np.sign(cx) == np.sign(px):
-            return radiopropa.NOTHING
-        else:
-            return radiopropa.DETECTED
 
 
 iceModel = radiopropa.GorhamIceModel()
@@ -29,13 +13,13 @@ if __name__ == "__main__":
 
     # Observer to stop imulation at =0m and z=300m
     obs = radiopropa.Observer()
-    obsz = ObserverZ(0.0)
+    obsz = radiopropa.ObserverSurface(radiopropa.Plane(radiopropa.Vector3d(0,0,0), radiopropa.Vector3d(0,0,1)))
     obs.add(obsz)
     obs.setDeactivateOnDetection(True)
     sim.add(obs)
 
     obs2 = radiopropa.Observer()
-    obsz2 = ObserverZ(-300.0)
+    obsz2 = radiopropa.ObserverSurface(radiopropa.Plane(radiopropa.Vector3d(0,0,-300), radiopropa.Vector3d(0,0,1)))
     obs.add(obsz2)
     obs2.setDeactivateOnDetection(True)
     sim.add(obs2)
@@ -49,7 +33,6 @@ if __name__ == "__main__":
     # Source
     source = radiopropa.Source()
     source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, -240.)))
-    source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
     source.add(radiopropa.SourceAmplitude(1))
     source.add(radiopropa.SourceFrequency(1E6))
 

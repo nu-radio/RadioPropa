@@ -288,6 +288,7 @@ add_library(radiopropa SHARED
 	src/Cosmology.cpp
 	src/EmissionMap.cpp
 	src/GridTools.cpp
+	src/Geometry.cpp
 	src/Module.cpp
 	src/ModuleList.cpp
 	src/ParticleState.cpp
@@ -305,6 +306,7 @@ add_library(radiopropa SHARED
 	src/module/OutputShell.cpp
 	src/module/ParticleCollector.cpp
 	src/module/PropagationCK.cpp
+	src/module/RestrictToRegion.cpp
 	src/module/SimplePropagation.cpp
 	src/module/TextOutput.cpp
 	src/module/Tools.cpp

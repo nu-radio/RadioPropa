@@ -3,6 +3,7 @@
 #include "radiopropa/module/BreakCondition.h"
 #include "radiopropa/module/Observer.h"
 #include "radiopropa/module/Boundary.h"
+#include "radiopropa/module/RestrictToRegion.h"
 #include "radiopropa/module/Tools.h"
 
 #include "gtest/gtest.h"
@@ -75,7 +76,7 @@ TEST(DetectionLength, test) {
 TEST(ObserverFeature, SmallSphere) {
 	// detect if the current position is inside and the previous outside of the sphere
 	Observer obs;
-	obs.add(new ObserverSmallSphere(Vector3d(0, 0, 0), 1));
+	obs.add(new ObserverSurface(new Sphere (Vector3d(0, 0, 0), 1)));
 	Candidate c;
 	c.setNextStep(10);
 
@@ -86,7 +87,7 @@ TEST(ObserverFeature, SmallSphere) {
 	EXPECT_TRUE(c.isActive());
 
 	// limit step
-	EXPECT_NEAR(c.getNextStep(), 0.436, 0.001);
+	EXPECT_NEAR(c.getNextStep(), 0.1, 0.001);
 
 	// detection: particle just entered
 	c.current.setPosition(Vector3d(0.9, 0, 0));
@@ -98,7 +99,7 @@ TEST(ObserverFeature, SmallSphere) {
 TEST(ObserverFeature, LargeSphere) {
 	// detect if the current position is outside and the previous inside of the sphere
 	Observer obs;
-	obs.add(new ObserverLargeSphere(Vector3d(0, 0, 0), 10));
+	obs.add(new ObserverSurface(new Sphere (Vector3d(0, 0, 0), 10)));
 	Candidate c;
 	c.setNextStep(10);
 
@@ -117,6 +118,7 @@ TEST(ObserverFeature, LargeSphere) {
 	obs.process(&c);
 	EXPECT_FALSE(c.isActive());
 }
+
 
 TEST(ObserverFeature, Point) {
 	Observer obs;
@@ -397,6 +399,24 @@ TEST(CylindricalBoundary, limitStep) {
 	cylinder.process(&c);
 	EXPECT_DOUBLE_EQ(c.getNextStep(), 1.5);
 }
+
+
+TEST(RestrictToRegion, RestrictToRegion) {
+
+	ref_ptr<Observer> obs = new Observer();
+	obs->add(new ObserverDetectAll());
+	RestrictToRegion R(obs, new Sphere(Vector3d(0, 0, 0), 10));
+
+	Candidate c;
+	c.previous.setPosition(Vector3d(13,0,0));
+	c.current.setPosition(Vector3d(12,0,0));
+	R.process(&c);
+	EXPECT_TRUE(c.isActive());
+	c.current.setPosition(Vector3d(9,0,0));
+	R.process(&c);
+	EXPECT_FALSE(c.isActive());
+}
+
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);

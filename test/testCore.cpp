@@ -9,6 +9,7 @@
 #include "radiopropa/Common.h"
 #include "radiopropa/Units.h"
 #include "radiopropa/Random.h"
+#include "radiopropa/Geometry.h"
 #include "radiopropa/Grid.h"
 #include "radiopropa/GridTools.h"
 #include "radiopropa/EmissionMap.h"
@@ -475,7 +476,30 @@ TEST(Variant, stringConversion)
 		EXPECT_EQ(a, w.asInt64());
 	}
 }
+TEST(Geometry, Plane)
+{
+	Plane p(Vector3d(0,0,1), Vector3d(0,0,1));
+	EXPECT_DOUBLE_EQ(-1., p.distance(Vector3d(0, 0, 0)));
+	EXPECT_DOUBLE_EQ(9., p.distance(Vector3d(1, 1, 10)));
+}
 
+TEST(Geometry, Sphere)
+{
+	Sphere s(Vector3d(0,0,0), 1.);
+	EXPECT_DOUBLE_EQ(-1., s.distance(Vector3d(0, 0, 0)));
+	EXPECT_DOUBLE_EQ(9., s.distance(Vector3d(10, 0, 0)));
+}
+
+TEST(Geometry, ParaxialBox)
+{
+	ParaxialBox b(Vector3d(0,0,0), Vector3d(3,4,5));
+	EXPECT_NEAR(-.1, b.distance(Vector3d(0.1, 0.1, 0.1)), 1E-10);
+	EXPECT_NEAR(-.1, b.distance(Vector3d(0.1, 3.8, 0.1)), 1E-10);
+	EXPECT_NEAR(-.2, b.distance(Vector3d(0.9, 3.8, 0.9)), 1E-10);
+	EXPECT_NEAR(7., b.distance(Vector3d(10., 0., 0.)), 1E-10);
+	EXPECT_NEAR(7., b.distance(Vector3d(10., 2., 0.)), 1E-10);
+	EXPECT_NEAR(8., b.distance(Vector3d(-8., 0., 0.)), 1E-10);
+}
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);

@@ -94,48 +94,7 @@ std::string ObserverDetectAll::getDescription() const {
 	return description;
 }
 
-// ObserverSmallSphere --------------------------------------------------------
-ObserverSmallSphere::ObserverSmallSphere(Vector3d center, double radius) :
-		center(center), radius(radius) {
-}
 
-DetectionState ObserverSmallSphere::checkDetection(Candidate *candidate) const {
-	// current distance to observer sphere center
-	double d = (candidate->current.getPosition() - center).getR();
-
-	// conservatively limit next step to prevent overshooting
-	candidate->limitNextStep(sqrt(fabs(d*d - radius*radius)));
-
-	// no detection if outside of observer sphere
-	if (d > radius)
-		return NOTHING;
-
-	// previous distance to observer sphere center
-	double dprev = (candidate->previous.getPosition() - center).getR();
-
-	// if particle was inside of sphere in previous step it has already been detected
-	if (dprev <= radius)
-		return NOTHING;
-
-	// else detection
-	return DETECTED;
-}
-
-void ObserverSmallSphere::setCenter(const Vector3d &center) {
-	this->center = center;
-}
-
-void ObserverSmallSphere::setRadius(float radius) {
-	this->radius = radius;
-}
-
-std::string ObserverSmallSphere::getDescription() const {
-	std::stringstream ss;
-	ss << "ObserverSmallSphere: ";
-	ss << "center = " << center / Mpc << " Mpc, ";
-	ss << "radius = " << radius / Mpc << " Mpc";
-	return ss.str();
-}
 
 // ObserverTracking --------------------------------------------------------
 ObserverTracking::ObserverTracking(Vector3d center, double radius, double stepSize) :
@@ -172,40 +131,7 @@ std::string ObserverTracking::getDescription() const {
 	return ss.str();
 }
 
-// ObserverLargeSphere --------------------------------------------------------
-ObserverLargeSphere::ObserverLargeSphere(Vector3d center, double radius) :
-		center(center), radius(radius) {
-}
 
-DetectionState ObserverLargeSphere::checkDetection(Candidate *candidate) const {
-	// current distance to observer sphere center
-	double d = (candidate->current.getPosition() - center).getR();
-
-	// conservatively limit next step size to prevent overshooting
-	candidate->limitNextStep(fabs(radius - d));
-
-	// no detection if inside observer sphere
-	if (d < radius)
-		return NOTHING;
-
-	// previous distance to observer sphere center
-	double dprev = (candidate->previous.getPosition() - center).getR();
-
-	// if particle was outside of sphere in previous step it has already been detected
-	if (dprev >= radius)
-		return NOTHING;
-
-	// else: detection
-	return DETECTED;
-}
-
-std::string ObserverLargeSphere::getDescription() const {
-	std::stringstream ss;
-	ss << "ObserverLargeSphere: ";
-	ss << "center = " << center / Mpc << " Mpc, ";
-	ss << "radius = " << radius / Mpc << " Mpc";
-	return ss.str();
-}
 
 // ObserverPoint --------------------------------------------------------------
 DetectionState ObserverPoint::checkDetection(Candidate *candidate) const {
@@ -306,5 +232,31 @@ std::string ObserverTimeEvolution::getDescription() const {
 	  s << "  - " << detList[i] / kpc;
 	return s.str();
 }
+
+
+// ObserverSurface--------------------------------------------------------------
+ObserverSurface::ObserverSurface(Surface* _surface) : surface(_surface) { };
+
+DetectionState ObserverSurface::checkDetection(Candidate *candidate) const
+{
+		double currentDistance = surface->distance(candidate->current.getPosition());
+		double previousDistance = surface->distance(candidate->previous.getPosition());
+		candidate->limitNextStep(fabs(currentDistance));
+
+		if (currentDistance * previousDistance > 0)
+			return NOTHING;
+		else if (previousDistance == 0)
+			return NOTHING;
+		else
+			return DETECTED;
+};
+
+std::string ObserverSurface::getDescription() const {
+	std::stringstream ss;
+	ss << "ObserverSurface: << " << surface->getDescription();
+	return ss.str();
+};
+
+
 
 } // namespace radiopropa

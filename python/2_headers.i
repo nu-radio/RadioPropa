@@ -61,6 +61,7 @@
 %include "radiopropa/Cosmology.h"
 %include "radiopropa/Random.h"
 %include "radiopropa/ParticleState.h"
+%include "radiopropa/Geometry.h"
 %include "radiopropa/Version.h"
 
 %import "radiopropa/Variant.h"

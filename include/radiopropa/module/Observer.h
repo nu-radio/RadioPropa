@@ -10,6 +10,7 @@
 #include "../Module.h"
 #include "../Referenced.h"
 #include "../Vector3.h"
+#include "../Geometry.h"
 
 namespace radiopropa {
 
@@ -62,21 +63,22 @@ public:
 	std::string getDescription() const;
 };
 
+
+
 /**
- @class ObserverSmallSphere
- @brief Detects particles upon entering a sphere
+ @class ObserverSurface
+ @brief Detects particles crossing the durface
  */
-class ObserverSmallSphere: public ObserverFeature {
-private:
-	Vector3d center;
-	double radius;
-public:
-	ObserverSmallSphere(Vector3d center = Vector3d(0.), double radius = 0);
-	DetectionState checkDetection(Candidate *candidate) const;
-	void setCenter(const Vector3d &center);
-	void setRadius(float radius);
-	std::string getDescription() const;
+class ObserverSurface: public ObserverFeature {
+	private:
+		ref_ptr<Surface> surface;
+
+	public:
+		ObserverSurface(Surface* _surface);
+		DetectionState checkDetection(Candidate *candidate) const;
+		std::string getDescription() const;
 };
+
 
 /**
  @class ObserverTracking
@@ -93,19 +95,6 @@ public:
 	std::string getDescription() const;
 };
 
-/**
- @class ObserverLargeSphere
- @brief Detects particles upon exiting a sphere
- */
-class ObserverLargeSphere: public ObserverFeature {
-private:
-	Vector3d center;
-	double radius;
-public:
-	ObserverLargeSphere(Vector3d center = Vector3d(0.), double radius = 0);
-	DetectionState checkDetection(Candidate *candidate) const;
-	std::string getDescription() const;
-};
 
 /**
  @class ObserverPoint

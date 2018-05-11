@@ -6,6 +6,7 @@
 #include "radiopropa/Common.h"
 #include "radiopropa/Cosmology.h"
 #include "radiopropa/EmissionMap.h"
+#include "radiopropa/Geometry.h"
 #include "radiopropa/Grid.h"
 #include "radiopropa/GridTools.h"
 #include "radiopropa/Logging.h"

@@ -1,41 +1,19 @@
 import radiopropa
 import numpy as np
 
-
-class ObserverZ(radiopropa.ObserverFeature):
+class Discontinuity(radiopropa.Module):
     """
-    An observer plane parallel to the xy plane in depth z.
     """
-    def __init__(self, Z):
-        radiopropa.ObserverFeature.__init__(self)
-        self.__Z = Z
-
-    def checkDetection(self, candidate):
-        cx = candidate.current.getPosition().getZ() - self.__Z
-        px = candidate.previous.getPosition().getZ() - self.__Z
-
-        if np.sign(cx) == np.sign(px):
-            return radiopropa.NOTHING
-        else:
-            return radiopropa.DETECTED
-
-
-class DiscontinuityZ(radiopropa.Module):
-    """
-    A layer defined by point X0 and vectors V1, V2. Part of a candidate
-    crossing the layer is reflected. 
-    Future propagation in scalar field will take care of directivity change automatically???
-    """
-    def __init__(self, Z, n1, n2):
+    def __init__(self, surface, n1, n2):
         radiopropa.Module.__init__(self)
-        self.__Z = Z
+        self.__surface = surface
         self.__n1 = n1
         self.__n2 = n2
 
     def process(self, candidate):
 
-        cx = candidate.current.getPosition().getZ() - self.__Z
-        px = candidate.previous.getPosition().getZ() - self.__Z
+        cx = self.__surface.distance(candidate.current.getPosition())
+        px = self.__surface.distance(candidate.previous.getPosition())
 
         if np.sign(cx) == np.sign(px):
             candidate.limitNextStep(abs(cx))
@@ -78,9 +56,13 @@ class DiscontinuityZ(radiopropa.Module):
             #tpar = 2*sb*sa / sin(a+b) / cos(a-b)
 
 
-            # reflection
-            self.__normal = radiopropa.Vector3d(0,0,1)
-            u = self.__normal * (V.dot(self.__normal))
+            ## reflection
+            # calculate inersection point
+            dp = candidate.current.getPosition() -  candidate.previous.getPosition()
+            p = candidate.previous.getPosition() + dp.getUnitVector() * px
+
+            normal = self.__surface.normal(p) 
+            u = normal * (V.dot(normal))
             new_direction = V - u*2
             candidate.current.setDirection(new_direction)
 
@@ -103,21 +85,23 @@ if __name__ == "__main__":
     sim = radiopropa.ModuleList()
     sim.add(radiopropa.PropagationCK(iceModel, 1E-8, .001, 1.))
 
-    iceAirBoundary = DiscontinuityZ(0., iceModel.getValue(radiopropa.Vector3d(0,0,-1E-128)), 1.)
+    iceAirBoundary = Discontinuity(radiopropa.Plane(radiopropa.Vector3d(0,0,0), radiopropa.Vector3d(0,0,1)), iceModel.getValue(radiopropa.Vector3d(0,0,-1E-128)), 1.)
     sim.add(iceAirBoundary)
 
-    # Observer to stop imulation at =0m and z=300m
+    # Observer to stop imulation at = 30m and z=300m
     obs = radiopropa.Observer()
-    obsz = ObserverZ(30.0)
+    obsz = radiopropa.ObserverSurface(radiopropa.Plane(radiopropa.Vector3d(0,0,30), radiopropa.Vector3d(0,0,1)))
     obs.add(obsz)
     obs.setDeactivateOnDetection(True)
     sim.add(obs)
 
     obs2 = radiopropa.Observer()
-    obsz2 = ObserverZ(-300.0)
+    obsz2 = radiopropa.ObserverSurface(radiopropa.Plane(radiopropa.Vector3d(0,0,-300), radiopropa.Vector3d(0,0,1)))
     obs.add(obsz2)
     obs2.setDeactivateOnDetection(True)
     sim.add(obs2)
+
+
 
     # Output
     output = radiopropa.HDF5Output('output_traj.h5', radiopropa.Output.Trajectory3D)
@@ -128,7 +112,6 @@ if __name__ == "__main__":
     # Source
     source = radiopropa.Source()
     source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, -240.)))
-    source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
     source.add(radiopropa.SourceAmplitude(1))
     source.add(radiopropa.SourceFrequency(1E6))
 
