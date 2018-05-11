@@ -32,13 +32,7 @@ TEST(Vector3, division) {
 	EXPECT_DOUBLE_EQ(v.z, 5);
 }
 
-TEST(Vector3, mod) {
-	Vector3d v(10.1, 10.2, 10.3);
-	v %= 10.2;
-	EXPECT_NEAR(v.x, 10.1, 1e-10); // mod doesn't preserve double precision
-	EXPECT_NEAR(v.y, 0, 1e-10);
-	EXPECT_NEAR(v.z, 0.1, 1e-10);
-}
+
 
 TEST(Vector3, dot) {
 	double a = Vector3d(1, 0, 0).dot(Vector3d(0, 1, 0));

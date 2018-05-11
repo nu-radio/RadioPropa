@@ -310,8 +310,6 @@ add_library(radiopropa SHARED
 	src/module/SimplePropagation.cpp
 	src/module/TextOutput.cpp
 	src/module/Tools.cpp
-	src/magneticField/MagneticField.cpp
-	src/magneticField/MagneticFieldGrid.cpp
 
 	${CRPROPA_EXTRA_SOURCES}
 )

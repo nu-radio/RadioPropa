@@ -44,6 +44,7 @@
 
 }
 
+/*
 %extend classname {
         const std::string repr() {
             char buffer[1024];
@@ -60,7 +61,7 @@
                 throw RangeError();
         }
 }
-
+*/
 
 
 %template(Vector3d) radiopropa::Vector3<double>;

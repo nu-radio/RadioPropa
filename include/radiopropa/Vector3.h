@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <complex>
 #include <vector>
 #include <limits>
 
@@ -182,12 +183,12 @@ public:
 		Vector3<T> u = axis / axis.getR();
 		T c = cos(angle);
 		T s = sin(angle);
-		Vector3<T> Rx(c + u.x * u.x * (1 - c), u.x * u.y * (1 - c) - u.z * s,
-				u.x * u.z * (1 - c) + u.y * s);
-		Vector3<T> Ry(u.y * u.x * (1 - c) + u.z * s, c + u.y * u.y * (1 - c),
-				u.y * u.z * (1 - c) - u.x * s);
+		Vector3<T> Rx(c + u.x * u.x * (1. - c), u.x * u.y * (1. - c) - u.z * s,
+				u.x * u.z * (1. - c) + u.y * s);
+		Vector3<T> Ry(u.y * u.x * (1. - c) + u.z * s, c + u.y * u.y * (1. - c),
+				u.y * u.z * (1. - c) - u.x * s);
 		Vector3<T> Rz(u.z * u.x * (1 - c) - u.y * s,
-				u.z * u.y * (1 - c) + u.x * s, c + u.z * u.z * (1 - c));
+				u.z * u.y * (1. - c) + u.x * s, c + u.z * u.z * (1. - c));
 		return Vector3<T>(dot(Rx), dot(Ry), dot(Rz));
 	}
 
@@ -205,15 +206,15 @@ public:
 		return Vector3<T>(std::abs(x), std::abs(y), std::abs(z));
 	}
 
-	// return vector with floored values
-	Vector3<T> floor() const {
-		return Vector3<T>(std::floor(x), std::floor(y), std::floor(z));
-	}
+	//// return vector with floored values
+	//Vector3<T> floor() const {
+	//	return Vector3<T>(std::floor(x), std::floor(y), std::floor(z));
+	//}
 
-	// return vector with ceiled values
-	Vector3<T> ceil() const {
-		return Vector3<T>(std::ceil(x), std::ceil(y), std::ceil(z));
-	}
+	//// return vector with ceiled values
+	//Vector3<T> ceil() const {
+	//	return Vector3<T>(std::ceil(x), std::ceil(y), std::ceil(z));
+	//}
 
 	// minimum element
 	T min() const {
@@ -281,14 +282,14 @@ public:
 		return Vector3(x / f, y / f, z / f);
 	}
 
-	// element-wise modulo operation
-	Vector3<T> operator %(const Vector3<T> &v) const {
-		return Vector3(fmod(x, v.x), fmod(y, v.y), fmod(z, v.z));
-	}
+	//// element-wise modulo operation
+	//Vector3<T> operator %(const Vector3<T> &v) const {
+	//	return Vector3(fmod(x, v.x), fmod(y, v.y), fmod(z, v.z));
+	//}
 
-	Vector3<T> operator %(const T &f) const {
-		return Vector3(fmod(x, f), fmod(y, f), fmod(z, f));
-	}
+	//Vector3<T> operator %(const T &f) const {
+	//	return Vector3(fmod(x, f), fmod(y, f), fmod(z, f));
+	//}
 
 	Vector3<T> &operator -=(const Vector3<T> &v) {
 		x -= v.x;
@@ -348,27 +349,27 @@ public:
 		return *this;
 	}
 
-	// element-wise modulo operation
-	Vector3<T> &operator %=(const Vector3<T> &v) {
-		x = fmod(x, v.x);
-		y = fmod(y, v.y);
-		z = fmod(z, v.z);
-		return *this;
-	}
+	//// element-wise modulo operation
+	//Vector3<T> &operator %=(const Vector3<T> &v) {
+	//	x = fmod(x, v.x);
+	//	y = fmod(y, v.y);
+	//	z = fmod(z, v.z);
+	//	return *this;
+	//}
 
-	Vector3<T> &operator %=(const T &f) {
-		x = fmod(x, f);
-		y = fmod(y, f);
-		z = fmod(z, f);
-		return *this;
-	}
+	//Vector3<T> &operator %=(const T &f) {
+	//	x = fmod(x, f);
+	//	y = fmod(y, f);
+	//	z = fmod(z, f);
+	//	return *this;
+	//}
 
-	Vector3<T> &operator =(const Vector3<T> &v) {
-		x = v.x;
-		y = v.y;
-		z = v.z;
-		return *this;
-	}
+	//Vector3<T> &operator =(const Vector3<T> &v) {
+	//	x = v.x;
+	//	y = v.y;
+	//	z = v.z;
+	//	return *this;
+	//}
 
 	Vector3<T> &operator =(const T &f) {
 		x = f;

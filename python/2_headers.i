@@ -15,7 +15,6 @@
 #ifdef CRPROPA_HAVE_QUIMBY
 %import (module="quimby") "quimby/Referenced.h"
 %import (module="quimby") "quimby/Vector3.h"
-%import (module="quimby") "quimby/MagneticField.h"
 //%import (module="quimby") quimby.i
 #endif
 
@@ -42,7 +41,6 @@
 %ignore operator radiopropa::Candidate*;
 %ignore operator radiopropa::Module*;
 %ignore operator radiopropa::ModuleList*;
-%ignore operator radiopropa::MagneticField*;
 %ignore operator radiopropa::ScalarField*;
 %ignore operator radiopropa::Observer*;
 %ignore operator radiopropa::ObserverFeature*;
@@ -271,10 +269,6 @@
 %feature("director") radiopropa::Module;
 %feature("director") radiopropa::AbstractCondition;
 %include "radiopropa/Module.h"
-
-%implicitconv radiopropa::ref_ptr<radiopropa::MagneticField>;
-%template(MagneticFieldRefPtr) radiopropa::ref_ptr<radiopropa::MagneticField>;
-%include "radiopropa/magneticField/MagneticField.h"
 
 %implicitconv radiopropa::ref_ptr<radiopropa::ScalarField>;
 %template(ScalarFieldRefPtr) radiopropa::ref_ptr<radiopropa::ScalarField>;

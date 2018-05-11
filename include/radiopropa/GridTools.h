@@ -2,7 +2,6 @@
 #define CRPROPA_GRIDTOOLS_H
 
 #include "radiopropa/Grid.h"
-#include "radiopropa/magneticField/MagneticField.h"
 #include <string>
 
 /**
@@ -54,12 +53,6 @@ void initTurbulence(ref_ptr<VectorGrid> grid, double Brms, double lMin, double l
 /** Analytically calculate the correlation length of a turbulent field */
 double turbulentCorrelationLength(double lMin, double lMax,
 		double alpha = (-11./3.));
-
-/** Fill vector grid from provided magnetic field */
-void fromMagneticField(ref_ptr<VectorGrid> grid, ref_ptr<MagneticField> field);
-
-/** Fill scalar grid from provided magnetic field */
-void fromMagneticFieldStrength(ref_ptr<ScalarGrid> grid, ref_ptr<MagneticField> field);
 
 /** Load a VectorGrid from a binary file with single precision */
 void loadGrid(ref_ptr<VectorGrid> grid, std::string filename,

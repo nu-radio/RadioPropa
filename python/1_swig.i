@@ -23,6 +23,7 @@ using std::ptrdiff_t;
 /* SWIG headers */
 
 %include "stl.i"
+%include "std_complex.i"
 %include "std_set.i"
 %include "std_multiset.i"
 %include "std_map.i"

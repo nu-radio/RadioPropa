@@ -33,7 +33,5 @@
 #include "radiopropa/module/SimplePropagation.h"
 #include "radiopropa/module/TextOutput.h"
 #include "radiopropa/module/Tools.h"
-#include "radiopropa/magneticField/MagneticField.h"
-#include "radiopropa/magneticField/MagneticFieldGrid.h"
 
 #endif // CRPROPA_H
