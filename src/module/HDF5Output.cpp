@@ -81,8 +81,18 @@ void HDF5Output::open(const std::string& filename) {
 	sid = H5Tcreate(H5T_COMPOUND, sizeof(OutputRow));
 	if (fields.test(TrajectoryLengthColumn))
 		H5Tinsert(sid, "D", HOFFSET(OutputRow, D), H5T_NATIVE_DOUBLE);
-	if (fields.test(AmplitudeColumn))
-		H5Tinsert(sid, "z", HOFFSET(OutputRow, z), H5T_NATIVE_DOUBLE);
+	if (fields.test(CurrentAmplitudeColumn))
+  {
+		H5Tinsert(sid, "Ax", HOFFSET(OutputRow, Ax), H5T_NATIVE_DOUBLE);
+		H5Tinsert(sid, "Ay", HOFFSET(OutputRow, Ay), H5T_NATIVE_DOUBLE);
+		H5Tinsert(sid, "Az", HOFFSET(OutputRow, Az), H5T_NATIVE_DOUBLE);
+  }
+if (fields.test(SourceAmplitudeColumn))
+  {
+		H5Tinsert(sid, "Ax0", HOFFSET(OutputRow, Ax0), H5T_NATIVE_DOUBLE);
+		H5Tinsert(sid, "Ay0", HOFFSET(OutputRow, Ay0), H5T_NATIVE_DOUBLE);
+		H5Tinsert(sid, "Az0", HOFFSET(OutputRow, Az0), H5T_NATIVE_DOUBLE);
+  }
 	if (fields.test(SerialNumberColumn))
 		H5Tinsert(sid, "SN", HOFFSET(OutputRow, SN), H5T_NATIVE_UINT64);
 	if (fields.test(CurrentIdColumn))
@@ -202,7 +212,17 @@ void HDF5Output::process(Candidate* candidate) const {
 
 	OutputRow r;
 	r.D = candidate->getTrajectoryLength() / lengthScale;
-	r.z = candidate->current.getAmplitude();
+	Vector3d A = candidate->current.getAmplitude();
+  r.Ax = A.x;
+  r.Ay = A.y;
+  r.Az = A.z;
+
+	A = candidate->created.getAmplitude();
+  r.Ax0 = A.x;
+  r.Ay0 = A.y;
+  r.Az0 = A.z;
+
+
 
 	r.SN = candidate->getSerialNumber();
 	r.ID = candidate->current.getId();

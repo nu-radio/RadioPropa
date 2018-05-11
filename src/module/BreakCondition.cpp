@@ -106,7 +106,7 @@ double MinimumAmplitude::getMinimumAmplitude() const {
 }
 
 void MinimumAmplitude::process(Candidate *c) const {
-	if (c->current.getAmplitude() < minAmplitude)
+	if (c->current.getAmplitude().getR() < minAmplitude)
 		reject(c);
 }
 

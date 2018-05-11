@@ -15,9 +15,9 @@ PeriodicBox::PeriodicBox(Vector3d o, Vector3d s) :
 
 void PeriodicBox::process(Candidate *c) const {
 	Vector3d pos = c->current.getPosition();
-	Vector3d n = (pos - origin - size/2).abs();
+	Vector3d n = ((pos - origin) / size).floor();
 
-	if ((n.x <= size.x/2) and (n.y <= size.y/2) and (n.z <= size.z/2))
+	if ((n.x == 0) and (n.y == 0) and (n.z == 0))
 		return; // do nothing if candidate is inside the box
 
 	c->current.setPosition(pos - n * size);
@@ -50,9 +50,9 @@ ReflectiveBox::ReflectiveBox(Vector3d o, Vector3d s) :
 
 void ReflectiveBox::process(Candidate *c) const {
 	Vector3d cur = (c->current.getPosition() - origin) / size; // current position in cell units
-	Vector3d n = (cur - origin - size/2).abs();
+	Vector3d n = cur.floor();
 
-	if ((n.x <= size.x/2) and (n.y <= size.y/2) and (n.z <= size.z/2))
+	if ((n.x == 0) and (n.y == 0) and (n.z == 0))
 		return; // do nothing if candidate is inside the box
 
 	// flip direction
@@ -119,8 +119,8 @@ CubicBoundary::CubicBoundary(Vector3d o, double s) :
 
 void CubicBoundary::process(Candidate *c) const {
 	Vector3d r = c->current.getPosition() - origin;
-  double lo = std::min(r.x, std::min(r.y, r.z));
-  double hi = std::max(r.x, std::max(r.y, r.z));
+	double lo = r.min();
+	double hi = r.max();
 	if ((lo <= 0) or (hi >= size)) {
 		reject(c);
 	}

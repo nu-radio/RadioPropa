@@ -89,7 +89,7 @@ TEST(Candidate, property) {
 
 TEST(Candidate, addSecondary) {
 	Candidate c;
-	c.current.setAmplitude(5);
+	c.current.setAmplitude(Vector3d(5,5,5));
 	c.setTrajectoryLength(23);
 	c.current.setFrequency(1000);
 	c.current.setPosition(Vector3d(1,2,3));
@@ -100,7 +100,9 @@ TEST(Candidate, addSecondary) {
 
 	EXPECT_EQ(200, s.current.getFrequency());
 
-	EXPECT_EQ(5, s.current.getAmplitude());
+	EXPECT_EQ(5, s.current.getAmplitude().x);
+	EXPECT_EQ(5, s.current.getAmplitude().x);
+	EXPECT_EQ(5, s.current.getAmplitude().x);
 	EXPECT_EQ(23, s.getTrajectoryLength());
 	EXPECT_EQ(1000, s.created.getFrequency());
 	EXPECT_TRUE(Vector3d(1,2,3) == s.created.getPosition());

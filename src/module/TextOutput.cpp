@@ -48,8 +48,6 @@ void TextOutput::printHeader() const {
 	*out << "#";
 	if (fields.test(TrajectoryLengthColumn))
 		*out << "\tD";
-	if (fields.test(AmplitudeColumn))
-		*out << "\tz";
 	if (fields.test(SerialNumberColumn))
 		*out << "\tSN";
 	if (fields.test(CurrentIdColumn))
@@ -62,6 +60,8 @@ void TextOutput::printHeader() const {
 		*out << "\tX\tY\tZ";
 	if (fields.test(CurrentDirectionColumn) && not oneDimensional)
 		*out << "\tPx\tPy\tPz";
+	if (fields.test(CurrentAmplitudeColumn))
+		*out << "\tAx\tAy\tAz";
 	if (fields.test(SerialNumberColumn))
 		*out << "\tSN0";
 	if (fields.test(SourceIdColumn))
@@ -98,8 +98,6 @@ void TextOutput::printHeader() const {
 	if (fields.test(TrajectoryLengthColumn))
 		*out << "# D             Trajectory length [" << lengthScale / Mpc
 				<< " Mpc]\n";
-	if (fields.test(AmplitudeColumn))
-		*out << "# z             Amplitude\n";
 	if (fields.test(SerialNumberColumn))
 		*out << "# SN/SN0/SN1    Serial number. Unique (within this run) id of the particle.\n";
 	if (fields.test(CurrentIdColumn) || fields.test(CreatedIdColumn)
@@ -140,8 +138,7 @@ void TextOutput::process(Candidate *c) const {
 		p += std::sprintf(buffer + p, "%8.5E\t",
 				c->getTrajectoryLength() / lengthScale);
 
-	if (fields.test(AmplitudeColumn))
-		p += std::sprintf(buffer + p, "%1.5E\t", c->current.getAmplitude());
+	
 
 	if (fields.test(SerialNumberColumn))
 		p += std::sprintf(buffer + p, "%10lu\t",
@@ -157,8 +154,7 @@ void TextOutput::process(Candidate *c) const {
 					c->current.getPosition().x / lengthScale);
 		} else {
 			const Vector3d pos = c->current.getPosition() / lengthScale;
-			p += std::sprintf(buffer + p, "%8.5E\t%8.5E\t%8.5E\t", pos.x, pos.y,
-					pos.z);
+			p += std::sprintf(buffer + p, "%8.5E\t%8.5E\t%8.5E\t", pos.x, pos.y, pos.z);
 		}
 	}
 	if (fields.test(CurrentDirectionColumn)) {
@@ -168,6 +164,11 @@ void TextOutput::process(Candidate *c) const {
 					pos.z);
 		}
 	}
+	if (fields.test(CurrentAmplitudeColumn))
+  {
+			const Vector3d pos = c->current.getAmplitude();
+			p += std::sprintf(buffer + p, "%8.5E\t%8.5E\t%8.5E\t", pos.x, pos.y, pos.z);
+  }
 
 	if (fields.test(SerialNumberColumn))
 		p += std::sprintf(buffer + p, "%10lu\t", c->getSourceSerialNumber());
@@ -284,8 +285,6 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 		double x, y, z;
 		stream >> val_d;
 		c->setTrajectoryLength(val_d*lengthScale); // D
-		stream >> val_d;
-		c->current.setAmplitude(val_d); // z
 		stream >> val_i;
 		c->setSerialNumber(val_i); // SN
 		stream >> val_i;
@@ -296,6 +295,8 @@ void TextOutput::load(const std::string &filename, ParticleCollector *collector)
 		c->current.setPosition(Vector3d(x, y, z)*lengthScale); // X, Y, Z
 		stream >> x >> y >> z;
 		c->current.setDirection(Vector3d(x, y, z)*lengthScale); // Px, Py, Pz
+		stream >> x >> y >>z;
+		c->current.setAmplitude(Vector3d(x,y,z)); // Ax, Ay, Az
 		stream >> val_i; // SN0 (TODO: Reconstruct the parent-child relationship)
 		stream >> val_i;
 		c->source.setId(val_i); // ID0

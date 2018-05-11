@@ -40,69 +40,6 @@ TEST(Output, size) {
 
 //-- TextOutput
 
-TEST(TextOutput, printHeader_Trajectory1D) {
-	Candidate c;
-	TextOutput output(Output::Trajectory1D);
-
-	::testing::internal::CaptureStdout();
-	output.process(&c);
-	std::string captured = testing::internal::GetCapturedStdout();
-
-	EXPECT_EQ(captured.substr(0, captured.find("\n")),
-	          "#\tID\tE\tX");
-}
-
-TEST(TextOutput, printHeader_Event1D) {
-	Candidate c;
-	TextOutput output(Output::Event1D);
-
-	::testing::internal::CaptureStdout();
-	output.process(&c);
-	std::string captured = testing::internal::GetCapturedStdout();
-
-	EXPECT_EQ(captured.substr(0, captured.find("\n")),
-	          "#\tD\tID\tE\tID0\tE0");
-}
-
-TEST(TextOutput, printHeader_Trajectory3D) {
-	Candidate c;
-	TextOutput output(Output::Trajectory3D);
-
-	::testing::internal::CaptureStdout();
-	output.process(&c);
-	std::string captured = testing::internal::GetCapturedStdout();
-
-	EXPECT_EQ(captured.substr(0, captured.find("\n")),
-	          "#\tD\tID\tE\tX\tY\tZ\tPx\tPy\tPz");
-}
-
-TEST(TextOutput, printHeader_Event3D) {
-	Candidate c;
-	TextOutput output(Output::Event3D);
-
-	::testing::internal::CaptureStdout();
-	output.process(&c);
-	std::string captured = testing::internal::GetCapturedStdout();
-
-	EXPECT_EQ(captured.substr(0, captured.find("\n")),
-	          "#\tD\tID\tE\tX\tY\tZ\tPx\tPy\tPz\tID0\tE0\tX0\tY0\tZ0\tP0x\tP0y\tP0z");
-}
-
-TEST(TextOutput, printHeader_Custom) {
-	Candidate c;
-	TextOutput output(Output::Event1D);
-
-	output.enable(Output::SerialNumberColumn);
-	output.disable(Output::TrajectoryLengthColumn);
-	output.set(Output::AmplitudeColumn, false);
-
-	::testing::internal::CaptureStdout();
-	output.process(&c);
-	std::string captured = testing::internal::GetCapturedStdout();
-
-	EXPECT_EQ(captured.substr(0, captured.find("\n")),
-	          "#\tSN\tID\tE\tSN0\tID0\tE0\tSN1");
-}
 
 TEST(TextOutput, printProperty) {
 	Candidate c;
@@ -174,7 +111,7 @@ TEST(ParticleCollector, dumpload) {
 	c->current.setPosition(Vector3d(1,2,3));
 	c->current.setDirection(Vector3d(-1,-1,-1));
 	c->setTrajectoryLength(1*Mpc);
-	c->current.setAmplitude(2);
+	c->current.setAmplitude(Vector3d(2,0,0));
 
 	ParticleCollector input;
 	ParticleCollector output;
@@ -190,7 +127,9 @@ TEST(ParticleCollector, dumpload) {
 	EXPECT_EQ(input.size(), output.size());
 	EXPECT_EQ(output[0]->current.getFrequency(), c->current.getFrequency());
 	EXPECT_EQ(output[1]->getTrajectoryLength(), c->getTrajectoryLength());
-	EXPECT_EQ(output[3]->current.getAmplitude(), c->current.getAmplitude());
+	EXPECT_EQ(output[3]->current.getAmplitude().x, c->current.getAmplitude().x);
+	EXPECT_EQ(output[3]->current.getAmplitude().y, c->current.getAmplitude().y);
+	EXPECT_EQ(output[3]->current.getAmplitude().z, c->current.getAmplitude().z);
 }
 
 // Just test if the trajectory is on a line for rectilinear propagation

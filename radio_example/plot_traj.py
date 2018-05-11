@@ -2,7 +2,7 @@ import h5py
 from mpl_toolkits.mplot3d import axes3d
 import radiopropa 
 
-from Ice import iceModel
+#from Ice import iceModel
 
 
 #Plot Ice model
@@ -13,16 +13,16 @@ dn = zeros_like(z)
 
 position = radiopropa.Vector3d(0,0,0) 
 
-for i,vz in enumerate(z):
-    position.z = vz
-    n[i] = iceModel.getValue(position)
-    dn[i] = iceModel.getGradient(position).z
-
-
-figure()
-plot(n, z)
-xlabel('Index of Refracton')
-ylabel('Z [m]')
+#for i,vz in enumerate(z):
+#    position.z = vz
+#    n[i] = iceModel.getValue(position)
+#    dn[i] = iceModel.getGradient(position).z
+#
+#
+#figure()
+#plot(n, z)
+#xlabel('Index of Refracton')
+#ylabel('Z [m]')
 
 
 
@@ -48,7 +48,8 @@ s1 = subplot(111)
 #
 #    s1.plot(d['X'][idx], d['Z'][idx], c=c, label='RadioPropa')
 #
-s1.scatter(d['X'], d['Z'], c=d['SN'], marker='.', s=2)
+
+s1.scatter(d['X'], d['Z'], c=abs(d['SN']), marker='.', s=2)
 s1.plot([d['X'][0]], [d['Z'][0]], c='r', marker='*')
 axhline(0., c='k')
 text(1500.,5, 'Air')

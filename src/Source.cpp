@@ -394,7 +394,9 @@ SourceAmplitude::SourceAmplitude(double z) :
 }
 
 void SourceAmplitude::prepareParticle(ParticleState& p) const {
-	p.setAmplitude(A);
+	Vector3d v =p.getAmplitude();
+
+	p.setAmplitude(v / v.getR() * A);
 }
 
 void SourceAmplitude::setDescription() {

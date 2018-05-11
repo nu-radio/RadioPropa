@@ -41,20 +41,24 @@ void Output::setOutputType(OutputType outputtype) {
 		set(CurrentPositionColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
+		set(CurrentAmplitudeColumn, true);
 		set1D(true);
 	} else if (outputtype == Event1D) {
 		// D, ID, E, ID0, E0
 		set(TrajectoryLengthColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
+		set(CurrentAmplitudeColumn, true);
 		set(SourceIdColumn, true);
 		set(SourceFrequencyColumn, true);
+		set(SourceAmplitudeColumn, true);
 		set1D(true);
 	} else if (outputtype == Trajectory3D) {
 		// D, ID, E, X, Y, Z, Px, Py, Pz
 		set(TrajectoryLengthColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
+		set(CurrentAmplitudeColumn, true);
 		set(CurrentPositionColumn, true);
 		set(CurrentDirectionColumn, true);
 		set1D(false);
@@ -63,12 +67,14 @@ void Output::setOutputType(OutputType outputtype) {
 		set(TrajectoryLengthColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
+		set(CurrentAmplitudeColumn, true);
 		set(CurrentPositionColumn, true);
 		set(CurrentDirectionColumn, true);
 		set(SourceIdColumn, true);
 		set(SourceFrequencyColumn, true);
 		set(SourcePositionColumn, true);
 		set(SourceDirectionColumn, true);
+		set(SourceAmplitudeColumn, true);
 		set1D(false);
 	} else if (outputtype == Everything) {
 		enableAll();

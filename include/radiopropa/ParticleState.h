@@ -14,14 +14,16 @@ class ParticleState {
 private:
 	int id; ///< particle ID (Particle Data Group numbering scheme)
 	double frequency; ///< total frequency
-	double amplitude; ///< total frequency
 	Vector3d position; ///< position vector in comoving coordinates
 	Vector3d direction; ///< unit vector of velocity or momentum
+  Vector3d amplitude;
 
 public:
 	ParticleState(int id = 0, double frequency = 0,
 			Vector3d position = Vector3d(0, 0, 0),
-			Vector3d direction = Vector3d(-1, 0, 0));
+			Vector3d direction = Vector3d(-1, 0, 0),
+			Vector3d amplitude = Vector3d(0, 1, 1)
+      );
 
 	/// Set position in comoving coordinates
 	void setPosition(const Vector3d &pos);
@@ -33,8 +35,8 @@ public:
 	/// Get direction unit vector
 	const Vector3d &getDirection() const;
 
-	void setAmplitude(double newAmplitude);
-	double getAmplitude() const;
+	void setAmplitude(const Vector3d &newAmplitude);
+	const Vector3d& getAmplitude() const;
 
 	/// Set frequency in [J]
 	void setFrequency(double newFrequency);
