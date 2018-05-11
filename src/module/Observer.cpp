@@ -1,6 +1,5 @@
 #include "radiopropa/module/Observer.h"
 #include "radiopropa/Units.h"
-#include "radiopropa/ParticleID.h"
 #include "radiopropa/Cosmology.h"
 
 #include <iostream>
@@ -234,50 +233,6 @@ std::string ObserverInactiveVeto::getDescription() const {
 	return "ObserverInactiveVeto";
 }
 
-// ObserverNucleusVeto --------------------------------------------------------
-DetectionState ObserverNucleusVeto::checkDetection(Candidate *c) const {
-	if (isNucleus(c->current.getId()))
-		return VETO;
-	return NOTHING;
-}
-
-std::string ObserverNucleusVeto::getDescription() const {
-	return "ObserverNucleusVeto";
-}
-
-// ObserverNeutrinoVeto -------------------------------------------------------
-DetectionState ObserverNeutrinoVeto::checkDetection(Candidate *c) const {
-	int id = abs(c->current.getId());
-	if ((id == 12) or (id == 14) or (id == 16))
-		return VETO;
-	return NOTHING;
-}
-
-std::string ObserverNeutrinoVeto::getDescription() const {
-	return "ObserverNeutrinoVeto";
-}
-
-// ObserverPhotonVeto ---------------------------------------------------------
-DetectionState ObserverPhotonVeto::checkDetection(Candidate *c) const {
-	if (c->current.getId() == 22)
-		return VETO;
-	return NOTHING;
-}
-
-std::string ObserverPhotonVeto::getDescription() const {
-	return "ObserverPhotonVeto";
-}
-
-// ObserverElectronVeto ---------------------------------------------------------
-DetectionState ObserverElectronVeto::checkDetection(Candidate *c) const {
-	if (abs(c->current.getId()) == 11)
-		return VETO;
-	return NOTHING;
-}
-
-std::string ObserverElectronVeto::getDescription() const {
-	return "ObserverElectronVeto";
-}
 
 // ObserverTimeEvolution --------------------------------------------------------
 ObserverTimeEvolution::ObserverTimeEvolution() {}

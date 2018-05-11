@@ -61,8 +61,6 @@
 %include "radiopropa/Cosmology.h"
 %include "radiopropa/Random.h"
 %include "radiopropa/ParticleState.h"
-%include "radiopropa/ParticleID.h"
-%include "radiopropa/ParticleMass.h"
 %include "radiopropa/Version.h"
 
 %import "radiopropa/Variant.h"
@@ -385,7 +383,6 @@
 %include "radiopropa/module/HDF5Output.h"
 %include "radiopropa/module/OutputShell.h"
 %include "radiopropa/module/OutputROOT.h"
-%include "radiopropa/module/OutputCRPropa2.h"
 
 %template(IntSet) std::set<int>;
 %include "radiopropa/module/Tools.h"

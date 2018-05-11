@@ -1,6 +1,5 @@
 #include "radiopropa/module/OutputROOT.h"
 #include "radiopropa/Units.h"
-#include "radiopropa/ParticleID.h"
 #include "radiopropa/Cosmology.h"
 
 #ifdef CRPROPA_HAVE_ROOT

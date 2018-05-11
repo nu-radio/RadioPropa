@@ -131,45 +131,6 @@ public:
 	std::string getDescription() const;
 };
 
-/**
- @class ObserverNucleusVeto
- @brief Veto for nuclei (including protons and neutrons)
- */
-class ObserverNucleusVeto: public ObserverFeature {
-public:
-	DetectionState checkDetection(Candidate *candidate) const;
-	std::string getDescription() const;
-};
-
-/**
- @class ObserverNeutrinoVeto
- @brief Veto for neutrinos
- */
-class ObserverNeutrinoVeto: public ObserverFeature {
-public:
-	DetectionState checkDetection(Candidate *candidate) const;
-	std::string getDescription() const;
-};
-
-/**
- @class ObserverPhotonVeto
- @brief Veto for photons
- */
-class ObserverPhotonVeto: public ObserverFeature {
-public:
-	DetectionState checkDetection(Candidate *candidate) const;
-	std::string getDescription() const;
-};
-
-/**
- @class ObserverElectronVeto
- @brief Veto for electrons and positrons
- */
-class ObserverElectronVeto: public ObserverFeature {
-public:
-	DetectionState checkDetection(Candidate *candidate) const;
-	std::string getDescription() const;
-};
 
 /**
  @class ObserverTimeEvolution

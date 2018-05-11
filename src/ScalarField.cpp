@@ -12,16 +12,12 @@ LinearIncrease::~LinearIncrease() {
 
 double LinearIncrease::getValue(const Vector3d &position) const
 {
-  double z = position.dot(g0);
-  if ( position.z <= 0)
-    return 1.;
-  else
     return v0 * position.z;
 };
 
 Vector3d LinearIncrease::getGradient(const Vector3d &position) const
 {
-  return g0;
+  return Vector3d(0, 0, v0);
 };
 
 
@@ -37,14 +33,23 @@ GorhamIceModel::~GorhamIceModel()
 
 double GorhamIceModel::getValue(const Vector3d &position) const
 {
+	if (position.z < 0)
       return a + b * (1.0 - exp(-1.*c*position.z));
+	else
+      return 1.;
+
 };
 
 Vector3d GorhamIceModel::getGradient(const Vector3d &position) const
 {
-      Vector3d v(0,0,0);
+	Vector3d v(0,0,0);
+	if (position.z < 0)
+	{
       v.z = 1.0 * b * c * exp(-1.*c*position.z);
-      return v;
+	}
+	// The gradient on discontinuities has to be 0 as these are handeled by a
+	// different module!
+	return v;
 }
 
 

@@ -115,59 +115,12 @@ add_subdirectory(libs/kiss)
 list(APPEND CRPROPA_EXTRA_LIBRARIES kiss)
 list(APPEND CRPROPA_EXTRA_INCLUDES libs/kiss/include)
 
-# HepID (provided)
-add_subdirectory(libs/HepPID)
-list(APPEND CRPROPA_EXTRA_LIBRARIES HepPID)
-list(APPEND CRPROPA_EXTRA_INCLUDES libs/HepPID/include)
-
-# SOPHIA (provided)
-add_subdirectory(libs/sophia)
-list(APPEND CRPROPA_EXTRA_LIBRARIES sophia gfortran)
-list(APPEND CRPROPA_EXTRA_INCLUDES libs/sophia)
-
-# DINT (provided)
-add_subdirectory(libs/dint)
-list(APPEND CRPROPA_EXTRA_LIBRARIES dint)
-list(APPEND CRPROPA_EXTRA_INCLUDES libs/dint/include)
-
-# EleCa (provided)
-add_subdirectory(libs/EleCa)
-list(APPEND CRPROPA_EXTRA_LIBRARIES eleca)
-list(APPEND CRPROPA_EXTRA_INCLUDES libs/EleCa/include)
-
-# GlacticMagneticLenses
-option(ENABLE_GALACTICMAGETICLENS "Galactic Magnetic Lens" ON)
-option(INSTALL_EIGEN "Install provided EIGEN headers" OFF)
-SET(EIGEN_PATH  "" CACHE STRING "Use EIGEN from this path instead of the version shipped with CRPropa")
-SET(WITH_GALACTIC_LENSES FALSE)
-if (ENABLE_GALACTICMAGETICLENS)
-	SET(WITH_GALACTIC_LENSES TRUE)
-
-	if(EIGEN_PATH)
-		message("Using EIGEN from " ${EIGEN_PATH})
-		list(APPEND CRPROPA_EXTRA_INCLUDES ${EIGEN_PATH})
-	else(EIGEN_PATH)
-		# Eigen redux (provided)
-		message("Using provided EIGEN")
-		list(APPEND CRPROPA_EXTRA_INCLUDES libs/eigen3)
-	endif(EIGEN_PATH)
-	if(INSTALL_EIGEN)
-		install(DIRECTORY libs/eigen3/ DESTINATION include)
-	endif(INSTALL_EIGEN)
 
 	# healpix redux (provided)
 	add_subdirectory(libs/healpix_base)
 	list(APPEND CRPROPA_EXTRA_LIBRARIES healpix_base)
 	list(APPEND CRPROPA_EXTRA_INCLUDES libs/healpix_base/include)
 	install(DIRECTORY libs/healpix_base/include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-
-	list(APPEND CRPROPA_SWIG_DEFINES -DWITH_GALACTIC_LENSES)
-
-	list(APPEND CRPROPA_EXTRA_SOURCES src/magneticLens/MagneticLens.cpp)
-	list(APPEND CRPROPA_EXTRA_SOURCES src/magneticLens/ModelMatrix.cpp)
-	list(APPEND CRPROPA_EXTRA_SOURCES src/magneticLens/Pixelization.cpp)
-	list(APPEND CRPROPA_EXTRA_SOURCES src/magneticLens/ParticleMapsContainer.cpp)
-endif (ENABLE_GALACTICMAGETICLENS)
 
 # ROOT (optional for ROOT output)
 option(ENABLE_ROOT "ROOT Output" ON)
@@ -337,8 +290,6 @@ add_library(radiopropa SHARED
 	src/GridTools.cpp
 	src/Module.cpp
 	src/ModuleList.cpp
-	src/ParticleID.cpp
-	src/ParticleMass.cpp
 	src/ParticleState.cpp
 	src/ProgressBar.cpp
 	src/Random.cpp
@@ -350,7 +301,6 @@ add_library(radiopropa SHARED
 	src/module/HDF5Output.cpp
 	src/module/Observer.cpp
 	src/module/Output.cpp
-	src/module/OutputCRPropa2.cpp
 	src/module/OutputROOT.cpp
 	src/module/OutputShell.cpp
 	src/module/ParticleCollector.cpp

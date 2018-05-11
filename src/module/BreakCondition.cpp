@@ -1,5 +1,4 @@
 #include "radiopropa/module/BreakCondition.h"
-#include "radiopropa/ParticleID.h"
 #include "radiopropa/Units.h"
 
 #include <sstream>

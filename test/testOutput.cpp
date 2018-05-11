@@ -128,7 +128,7 @@ TEST(TextOutput, printHeader_Version) {
 	std::string captured = testing::internal::GetCapturedStdout();
 
 	// length of the prefix is 19 chars
-	size_t version_pos = captured.find("# RadioPropa version: ") + 19;
+	size_t version_pos = captured.find("# RadioPropa version: ") + 22;
 
 	EXPECT_EQ(
 		captured.substr(
@@ -150,7 +150,7 @@ TEST(ParticleCollector, size) {
 }
 
 TEST(ParticleCollector, fetchItem) {
-	ref_ptr<Candidate> c = new Candidate(nucleusId(1,1), 1*EeV);
+	ref_ptr<Candidate> c = new Candidate(1, 1*EeV);
 	ParticleCollector output;
 
 	output.process(c);
@@ -159,7 +159,7 @@ TEST(ParticleCollector, fetchItem) {
 }
 
 TEST(ParticleCollector, reprocess) {
-	ref_ptr<Candidate> c = new Candidate(nucleusId(1,1), 1*EeV);
+	ref_ptr<Candidate> c = new Candidate(1, 1*EeV);
 	ParticleCollector collector;
 	ParticleCollector output;
 
@@ -170,7 +170,7 @@ TEST(ParticleCollector, reprocess) {
 }
 
 TEST(ParticleCollector, dumpload) {
-	ref_ptr<Candidate> c = new Candidate(nucleusId(1,1), 1.234*EeV);
+	ref_ptr<Candidate> c = new Candidate(1, 1.234*EeV);
 	c->current.setPosition(Vector3d(1,2,3));
 	c->current.setDirection(Vector3d(-1,-1,-1));
 	c->setTrajectoryLength(1*Mpc);
@@ -190,7 +190,6 @@ TEST(ParticleCollector, dumpload) {
 	EXPECT_EQ(input.size(), output.size());
 	EXPECT_EQ(output[0]->current.getFrequency(), c->current.getFrequency());
 	EXPECT_EQ(output[1]->getTrajectoryLength(), c->getTrajectoryLength());
-	EXPECT_EQ(output[2]->current.getId(), c->current.getId());
 	EXPECT_EQ(output[3]->current.getAmplitude(), c->current.getAmplitude());
 }
 

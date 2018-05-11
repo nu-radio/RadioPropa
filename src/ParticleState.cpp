@@ -1,10 +1,6 @@
 #include "radiopropa/ParticleState.h"
 #include "radiopropa/Units.h"
 #include "radiopropa/Common.h"
-#include "radiopropa/ParticleID.h"
-#include "radiopropa/ParticleMass.h"
-
-#include <HepPID/ParticleIDMethods.hh>
 
 #include <stdlib.h>
 #include <sstream>
@@ -56,17 +52,7 @@ double ParticleState::getRigidity() const {
 }
 
 void ParticleState::setId(int newId) {
-	id = newId;
-	if (isNucleus(id)) {
-		pmass = nuclearMass(id);
-		charge = chargeNumber(id) * eplus;
-		if (id < 0)
-			charge *= -1; // anti-nucleus
-	} else {
-		if (abs(id) == 11)
-			pmass = mass_electron;
-		charge = HepPID::charge(id) * eplus;
-	}
+
 }
 
 int ParticleState::getId() const {

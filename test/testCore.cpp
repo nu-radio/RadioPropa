@@ -8,14 +8,11 @@
 #include "radiopropa/Candidate.h"
 #include "radiopropa/Common.h"
 #include "radiopropa/Units.h"
-#include "radiopropa/ParticleID.h"
-#include "radiopropa/ParticleMass.h"
 #include "radiopropa/Random.h"
 #include "radiopropa/Grid.h"
 #include "radiopropa/GridTools.h"
 #include "radiopropa/EmissionMap.h"
 
-#include <HepPID/ParticleIDMethods.hh>
 #include "gtest/gtest.h"
 
 namespace radiopropa {
@@ -55,45 +52,7 @@ TEST(ParticleState, momentum) {
 	EXPECT_TRUE(particle.getMomentum() == v * (particle.getFrequency() / c_light));
 }
 
-TEST(ParticleState, id) {
-	ParticleState particle;
-	particle.setId(nucleusId(12, 6));
-	EXPECT_EQ(particle.getId(), 1000060120);
-}
 
-TEST(ParticleState, idException) {
-	EXPECT_THROW(nucleusId(5, 6), std::runtime_error);
-}
-
-TEST(ParticleState, Charge) {
-	ParticleState particle;
-
-	particle.setId(nucleusId(56, 26)); // iron
-	EXPECT_DOUBLE_EQ(26 * eplus, particle.getCharge());
-
-	particle.setId(-nucleusId(56, 26)); // anti-iron
-	EXPECT_DOUBLE_EQ(-26 * eplus, particle.getCharge());
-
-	particle.setId(11); // electron
-	EXPECT_DOUBLE_EQ(-1 * eplus, particle.getCharge());
-
-	particle.setId(-11); // positron
-	EXPECT_DOUBLE_EQ(1 * eplus, particle.getCharge());
-
-	particle.setId(12); // electron neutrino
-	EXPECT_DOUBLE_EQ(0, particle.getCharge());
-
-	particle.setId(-12); // electron anti-neutrino
-	EXPECT_DOUBLE_EQ(0, particle.getCharge());
-}
-
-TEST(ParticleState, Rigidity) {
-	ParticleState particle;
-
-	particle.setId(nucleusId(1, 1)); // proton
-	particle.setFrequency(1 * EeV);
-	EXPECT_EQ(particle.getRigidity(), 1e18);
-}
 
 
 TEST(Candidate, currentStep) {
@@ -131,15 +90,13 @@ TEST(Candidate, addSecondary) {
 	Candidate c;
 	c.current.setAmplitude(5);
 	c.setTrajectoryLength(23);
-	c.current.setId(nucleusId(56,26));
 	c.current.setFrequency(1000);
 	c.current.setPosition(Vector3d(1,2,3));
 	c.current.setDirection(Vector3d(0,0,1));
 
-	c.addSecondary(nucleusId(1,1), 200);
+	c.addSecondary(1., 200);
 	Candidate s = *c.secondaries[0];
 
-	EXPECT_EQ(nucleusId(1,1), s.current.getId());
 	EXPECT_EQ(200, s.current.getFrequency());
 
 	EXPECT_EQ(5, s.current.getAmplitude());
@@ -217,24 +174,7 @@ TEST(common, interpolateEquidistant) {
 	EXPECT_EQ(9, interpolateEquidistant(3.1, 1, 3, yD));
 }
 
-TEST(NucleusId, radiopropaScheme) {
-	// test conversion to and from the RadioPropa2 naming scheme
-	EXPECT_EQ(nucleusId(56, 26), convertFromCRPropa2NucleusId(26056));
-	EXPECT_EQ(26056, convertToCRPropa2NucleusId(nucleusId(56, 26)));
-}
 
-TEST(PIDdigit, consistencyWithReferenceImplementation){
-	// Tests the performance improved version against the default one
-	unsigned long testPID = rand() % 1000000000 + 1000000000;
-	for(size_t i=1; i < 8; i++)
-	{
-		HepPID::location loc = (HepPID::location) i;
-		unsigned short newResult = HepPID::digit(loc, testPID);
-		//original implementation
-		int numerator = (int) std::pow(10.0,(loc-1));
-		EXPECT_EQ(newResult, (HepPID::abspid(testPID)/numerator)%10);
-	}
-}
 
 TEST(Random, seed) {
 	Random &a = Random::instance();

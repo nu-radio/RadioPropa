@@ -1,6 +1,5 @@
 #include "radiopropa/Source.h"
 #include "radiopropa/Units.h"
-#include "radiopropa/ParticleID.h"
 
 #include "gtest/gtest.h"
 #include <stdexcept>
@@ -72,30 +71,6 @@ TEST(SourceUniformCylinder, simpleTest) {
 	EXPECT_GE(height/2., H);
 }
 
-TEST(SourceSNRDistribution, simpleTest) {
-	double R_earth = 8.5*kpc;
-	double beta = 3.53;
-	double Z_G = 0.3*kpc;
-	SourceSNRDistribution snr(R_earth, beta, Z_G);
-	ParticleState ps;
-	snr.prepareParticle(ps);
-	Vector3d pos = ps.getPosition();
-	double R2 = pos.x*pos.x+pos.y*pos.y;
-	EXPECT_GE(20*kpc*20*kpc, R2); // radius must be smaller than 20 kpc
-	
-	double R2_mean = 0.;
-	double Z_mean = 0.;
-	for (size_t i=0; i<100000; i++) {
-		snr.prepareParticle(ps);
-		Vector3d pos = ps.getPosition();
-		R2_mean += pow(pos.x/kpc, 2.)+pow(pos.y/kpc, 2.);
-		Z_mean += pos.z/kpc;
-	}
-	R2_mean/=100000.;
-	Z_mean/=100000.;
-	EXPECT_NEAR(64.4, R2_mean, 1.);
-	EXPECT_NEAR(0., Z_mean, 0.1);
-}
 
 TEST(SourceDensityGrid, withInRange) {
 	// Create a grid with 10^3 cells ranging from (0, 0, 0) to (10, 10, 10)
@@ -209,61 +184,6 @@ TEST(SourceDensityGrid1D, OneAllowedCell) {
 		EXPECT_GE(6, pos.x);
 	}
 }
-
-
-
-TEST(SourceComposition, simpleTest) {
-	double Emin = 10;
-	double Rmax = 100;
-	double index = -1;
-	SourceComposition source(Emin, Rmax, index);
-	source.add(nucleusId(6, 3), 1);
-	ParticleState p;
-	source.prepareParticle(p);
-	EXPECT_EQ(nucleusId(6, 3), p.getId());
-	EXPECT_LE(Emin, p.getFrequency());
-	EXPECT_GE(6 * Rmax, p.getFrequency());
-}
-
-#ifdef CRPROPA_HAVE_MUPARSER
-TEST(SourceGenericComposition, simpleTest) {
-	double Emin = 10;
-	double Emax = 100;
-	SourceGenericComposition source(Emin, Emax, "E^-2");
-	int id1 = nucleusId(6, 3);
-	int id2 = nucleusId(12, 6);
-	source.add(id1, 1);
-	source.add(id2, 10);
-	ParticleState p;
-	size_t id1Count = 0, id2Count = 0;
-	size_t ElowCount = 0, EhighCount = 0;
-	size_t n = 100000;
-	for (size_t i = 0; i < n; i++) {
-		source.prepareParticle(p);
-		if (p.getId() == id1)
-			id1Count++;
-		if (p.getId() == id2)
-			id2Count++;
-		double e = p.getFrequency();
-		if ( (e >= Emin) && (e < 20))
-			ElowCount++;
-		if ( (e >= 20) && (e <= Emax))
-			EhighCount++;
-
-	}
-	EXPECT_EQ(n, id1Count + id2Count);
-	EXPECT_EQ(n, ElowCount + EhighCount);
-	EXPECT_NEAR((float)id1Count/(float)id2Count, 0.1, 0.01);
-	EXPECT_NEAR((float)ElowCount/(float)EhighCount, 1.25, 0.1);
-}
-#endif
-
-TEST(SourceComposition, throwNoIsotope) {
-	SourceComposition source(1, 10, -1);
-	ParticleState ps;
-	EXPECT_THROW(source.prepareParticle(ps), std::runtime_error);
-}
-
 
 
 

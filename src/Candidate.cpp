@@ -1,5 +1,4 @@
 #include "radiopropa/Candidate.h"
-#include "radiopropa/ParticleID.h"
 #include "radiopropa/Units.h"
 
 #include <stdexcept>

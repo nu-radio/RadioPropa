@@ -4,7 +4,6 @@
 #include "radiopropa/module/Observer.h"
 #include "radiopropa/module/Boundary.h"
 #include "radiopropa/module/Tools.h"
-#include "radiopropa/ParticleID.h"
 
 #include "gtest/gtest.h"
 

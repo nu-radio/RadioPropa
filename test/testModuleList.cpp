@@ -1,6 +1,5 @@
 #include "radiopropa/ModuleList.h"
 #include "radiopropa/Source.h"
-#include "radiopropa/ParticleID.h"
 #include "radiopropa/module/SimplePropagation.h"
 #include "radiopropa/module/BreakCondition.h"
 
@@ -49,7 +48,6 @@ TEST(ModuleList, runSource) {
 	Source source;
 	source.add(new SourcePosition(Vector3d(10, 0, 0) * Mpc));
 	source.add(new SourceIsotropicEmission());
-	source.add(new SourceParticleType(nucleusId(1, 1)));
 	modules.setShowProgress(true);
 	modules.run(&source, 100, false);
 }
@@ -63,7 +61,6 @@ TEST(ModuleList, runOpenMP) {
 	Source source;
 	source.add(new SourcePosition(Vector3d(10, 0, 0) * Mpc));
 	source.add(new SourceIsotropicEmission());
-	source.add(new SourceParticleType(nucleusId(1, 1)));
 	omp_set_num_threads(2);
 	modules.run(&source, 1000, false);
 }
