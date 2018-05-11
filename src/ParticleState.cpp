@@ -47,10 +47,6 @@ double ParticleState::getFrequency() const {
 	return frequency;
 }
 
-double ParticleState::getRigidity() const {
-	return fabs(frequency / charge);
-}
-
 void ParticleState::setId(int newId) {
 
 }
@@ -59,22 +55,6 @@ int ParticleState::getId() const {
 	return id;
 }
 
-double ParticleState::getMass() const {
-	return pmass;
-}
-
-double ParticleState::getCharge() const {
-	return charge;
-}
-
-double ParticleState::getLorentzFactor() const {
-	return frequency / (pmass * c_squared);
-}
-
-void ParticleState::setLorentzFactor(double lf) {
-	lf = std::max(0., lf); // prevent negative Lorentz factors
-	frequency = lf * pmass * c_squared;
-}
 
 Vector3d ParticleState::getVelocity() const {
 	return direction * c_light;
