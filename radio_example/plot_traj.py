@@ -34,23 +34,28 @@ d = f['Trajectory3D']
 figure()
 s1 = subplot(111)
 
-SN = set(d['SN'])
-for s in SN:
-    idx = d['SN'] == s
-    X = d['X'][idx]
-    Z = d['Z'][idx]
-    dX = X[1] - X[0]
-    dZ = Z[1] - Z[0]
-    phi0 = abs(arctan(dX/dZ))
-
-    c = cm.jet(phi0 / pi * 2)
-    print phi0
-
-    s1.plot(d['X'][idx], d['Z'][idx], c=c, label='RadioPropa')
-
-
+#SN = set(d['SN'])
+#for s in SN:
+#    idx = d['SN'] == s
+#    X = d['X'][idx]
+#    Z = d['Z'][idx]
+#    dX = X[1] - X[0]
+#    dZ = Z[1] - Z[0]
+#    phi0 = abs(arctan(dX/dZ))
+#
+#    c = cm.jet(phi0 / pi * 2)
+#    print phi0
+#
+#    s1.plot(d['X'][idx], d['Z'][idx], c=c, label='RadioPropa')
+#
+s1.scatter(d['X'], d['Z'], c=d['SN'], marker='.', s=2)
+s1.plot([d['X'][0]], [d['Z'][0]], c='r', marker='*')
+axhline(0., c='k')
+text(1500.,5, 'Air')
+text(1500.,-5, 'Ice', verticalalignment='top')
 s1.set_xlabel('X [m]')
 s1.set_ylabel('Z [m]')
+s1.set_ylim(-300,30)
 tight_layout()
 
 
