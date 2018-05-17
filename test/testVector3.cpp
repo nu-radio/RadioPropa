@@ -32,7 +32,13 @@ TEST(Vector3, division) {
 	EXPECT_DOUBLE_EQ(v.z, 5);
 }
 
-
+TEST(Vector3, mod) {
+	Vector3d v(10.1, 10.2, 10.3);
+	v %= 10.2;
+	EXPECT_NEAR(v.x, 10.1, 1e-10); // mod doesn't preserve double precision
+	EXPECT_NEAR(v.y, 0, 1e-10);
+	EXPECT_NEAR(v.z, 0.1, 1e-10);
+}
 
 TEST(Vector3, dot) {
 	double a = Vector3d(1, 0, 0).dot(Vector3d(0, 1, 0));
@@ -110,6 +116,27 @@ TEST(Vector3, rotation) {
 	EXPECT_NEAR(w.x, 5, 1e-9);
 	EXPECT_NEAR(w.y, 2, 1e-9);
 	EXPECT_NEAR(w.z, 7, 1e-9);
+
+	// rotation by zero degrees
+	v = Vector3d(1, 0, 0);
+	w = v.getRotated(Vector3d(0,1,0), 0);
+
+	EXPECT_NEAR(w.x, 1, 1e-9);
+	EXPECT_NEAR(w.y, 0, 1e-9);
+	EXPECT_NEAR(w.z, 0, 1e-9);
+
+	// rotation around zero axis 
+	v = Vector3d(1, 0, 0);
+	Vector3d a = v.cross(v);
+	w = v.getRotated(a, 0);
+
+	EXPECT_NEAR(w.x, 1, 1e-9);
+	EXPECT_NEAR(w.y, 0, 1e-9);
+	EXPECT_NEAR(w.z, 0, 1e-9);
+
+
+
+
 }
 
 TEST(Vector3, parallelPerpendicular) {
