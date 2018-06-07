@@ -27,7 +27,7 @@ const std::vector<Vector3d>& MaximumTrajectoryLength::getObserverPositions() con
 
 std::string MaximumTrajectoryLength::getDescription() const {
 	std::stringstream s;
-	s << "Maximum trajectory length: " << maxLength / Mpc << " Mpc, ";
+	s << "Maximum trajectory length: " << maxLength / meter  << " m, ";
 	s << "Flag: '" << rejectFlagKey << "' -> '" << rejectFlagValue << "', ";
 	s << "MakeInactive: " << (makeRejectedInactive ? "yes" : "no");
 	if (rejectAction.valid())
@@ -84,7 +84,7 @@ void MinimumFrequency::process(Candidate *c) const {
 
 std::string MinimumFrequency::getDescription() const {
 	std::stringstream s;
-	s << "Minimum frequency: " << minFrequency / EeV << " EeV, ";
+	s << "Minimum frequency: " << minFrequency << ", ";
 	s << "Flag: '" << rejectFlagKey << "' -> '" << rejectFlagValue << "', ";
 	s << "MakeInactive: " << (makeRejectedInactive ? "yes" : "no");
 	if (rejectAction.valid())
@@ -112,7 +112,7 @@ void MinimumAmplitude::process(Candidate *c) const {
 
 std::string MinimumAmplitude::getDescription() const {
 	std::stringstream s;
-	s << "Minimum rigidity: " << minAmplitude / EeV << " EeV, ";
+	s << "Minimum amplitude: " << minAmplitude << " [a.u.], ";
 	s << "Flag: '" << rejectFlagKey << "' -> '" << rejectFlagValue << "', ";
 	s << "MakeInactive: " << (makeRejectedInactive ? "yes" : "no");
 	if (rejectAction.valid())
@@ -139,7 +139,7 @@ double DetectionLength::getDetectionLength() const {
 
 std::string DetectionLength::getDescription() const {
 	std::stringstream s;
-	s << "Detection length: " << detLength / kpc << " kpc, ";
+	s << "Detection length: " << detLength / meter<< " m, ";
 	s << "Flag: '" << rejectFlagKey << "' -> '" << rejectFlagValue << "', ";
 	s << "MakeInactive: " << (makeRejectedInactive ? "yes" : "no");
 	if (rejectAction.valid())
