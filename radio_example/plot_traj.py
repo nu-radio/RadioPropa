@@ -48,8 +48,9 @@ s1 = subplot(111)
 #
 #    s1.plot(d['X'][idx], d['Z'][idx], c=c, label='RadioPropa')
 #
-
-s1.scatter(d['X'], d['Z'], c=abs(d['SN']), marker='.', s=2)
+A = sqrt(d['Ax']**2 + d['Ay']**2 +d['Az']**2 )
+s1.scatter(d['X'], d['Z'], c=log10(A), marker='.', s=2)
+#s1.scatter(d['X'], d['Z'], c=abs(d['SN']), marker='.', s=2)
 s1.plot([d['X'][0]], [d['Z'][0]], c='r', marker='*')
 axhline(0., c='k')
 text(1500.,5, 'Air')
