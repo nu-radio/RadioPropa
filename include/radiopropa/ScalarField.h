@@ -43,8 +43,9 @@ class GorhamIceModel: public ScalarField
 {
 		private:
 		double a,b,c;
+		double z0;
 	public:
-		GorhamIceModel(double _a = 1.325, double _b = 0.463, double _c =-0.0140);
+		GorhamIceModel(double z0 = 0, double _a = 1.325, double _b = 0.463, double _c =-0.0140);
 		virtual ~GorhamIceModel();
 		virtual double getValue(const Vector3d &position) const;
 		virtual Vector3d getGradient(const Vector3d &position) const;

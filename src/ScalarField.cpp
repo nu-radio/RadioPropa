@@ -22,7 +22,7 @@ Vector3d LinearIncrease::getGradient(const Vector3d &position) const
 
 
 
-GorhamIceModel::GorhamIceModel(double _a, double _b, double _c) : a(_a), b(_b), c(_c)
+GorhamIceModel::GorhamIceModel(double z0, double _a, double _b, double _c) : z0(z0), a(_a), b(_b), c(_c)
 {
 
 }
@@ -33,8 +33,8 @@ GorhamIceModel::~GorhamIceModel()
 
 double GorhamIceModel::getValue(const Vector3d &position) const
 {
-	if (position.z < 0)
-      return a + b * (1.0 - exp(-1.*c*position.z));
+	if (position.z-z0 < 0)
+      return a + b * (1.0 - exp(-1.*c*(position.z-z0)));
 	else
       return 1.;
 
