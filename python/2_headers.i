@@ -297,6 +297,7 @@
 %feature("director") radiopropa::Observer;
 %feature("director") radiopropa::ObserverFeature;
 %include "radiopropa/module/Observer.h"
+%include "radiopropa/module/Discontinuity.h"
 %include "radiopropa/module/SimplePropagation.h"
 %include "radiopropa/module/PropagationCK.h"
 

@@ -299,6 +299,7 @@ add_library(radiopropa SHARED
 	src/Variant.cpp
 	src/module/Boundary.cpp
 	src/module/BreakCondition.cpp
+	src/module/Discontinuity.cpp
 	src/module/HDF5Output.cpp
 	src/module/Observer.cpp
 	src/module/Output.cpp
@@ -411,6 +412,10 @@ if(ENABLE_TESTING)
 	add_executable(testBreakCondition test/testBreakCondition.cpp)
 	target_link_libraries(testBreakCondition radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
 	add_test(testBreakCondition testBreakCondition)
+
+	add_executable(testDiscontinuity test/testDiscontinuity.cpp)
+	target_link_libraries(testDiscontinuity  radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
+	add_test(testDiscontinuity testDiscontinuity)
 
 	add_executable(testSource test/testSource.cpp)
 	target_link_libraries(testSource radiopropa gtest gtest_main pthread ${COVERAGE_LIBS})
