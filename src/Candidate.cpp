@@ -6,7 +6,7 @@
 namespace radiopropa {
 
 Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, double weight) :
-		trajectoryLength(0), weight(1), currentStep(0), nextStep(0), active(true), parent(0) {
+		trajectoryLength(0), propagationTime(0), weight(1), currentStep(0), nextStep(0), active(true), parent(0) {
 	ParticleState state(id, E, pos, dir);
 	source = state;
 	created = state;
@@ -26,7 +26,7 @@ Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, dou
 }
 
 Candidate::Candidate(const ParticleState &state) :
-		source(state), created(state), current(state), previous(state), trajectoryLength(0), currentStep(0), nextStep(0), active(true), parent(0) {
+		source(state), created(state), current(state), previous(state), trajectoryLength(0), propagationTime(0), currentStep(0), nextStep(0), active(true), parent(0) {
 
 #if defined(OPENMP_3_1)
 		#pragma omp atomic capture
@@ -52,6 +52,11 @@ double Candidate::getTrajectoryLength() const {
 	return trajectoryLength;
 }
 
+
+double Candidate::getPropagationTime() const {
+	return propagationTime;
+}
+
 double Candidate::getWeight() const {
 	return weight;
 }
@@ -66,6 +71,11 @@ double Candidate::getNextStep() const {
 
 void Candidate::setTrajectoryLength(double a) {
 	trajectoryLength = a;
+}
+
+
+void Candidate::setPropagationTime(double a) {
+	propagationTime = a;
 }
 
 void Candidate::setWeight(double w) {

@@ -95,8 +95,11 @@ void PropagationCK::process(Candidate *candidate) const {
 
 	current.setPosition(yOut.x);
 	current.setDirection(yOut.u.getUnitVector());
-	candidate->setCurrentStep(step);
+	//actual step can be smaller  du to non c velocity in medium
+	Vector3d actual_step = yOut.x - yIn.x;
+	candidate->setCurrentStep(actual_step.getR());
 	candidate->setNextStep(newStep);
+	candidate->setPropagationTime(candidate->getPropagationTime() + step / c_light);
 }
 
 void PropagationCK::setField(ref_ptr<ScalarField> f) {

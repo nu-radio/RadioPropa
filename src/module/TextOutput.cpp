@@ -48,6 +48,8 @@ void TextOutput::printHeader() const {
 	*out << "#";
 	if (fields.test(TrajectoryLengthColumn))
 		*out << "\tD";
+	if (fields.test(PropagationTimeColumn))
+		*out << "\tT";
 	if (fields.test(SerialNumberColumn))
 		*out << "\tSN";
 	if (fields.test(CurrentIdColumn))
@@ -98,6 +100,8 @@ void TextOutput::printHeader() const {
 	if (fields.test(TrajectoryLengthColumn))
 		*out << "# D             Trajectory length [" << lengthScale / Mpc
 				<< " Mpc]\n";
+	if (fields.test(PropagationTimeColumn))
+		*out << "# T             Propagation Time[s]\n";
 	if (fields.test(SerialNumberColumn))
 		*out << "# SN/SN0/SN1    Serial number. Unique (within this run) id of the particle.\n";
 	if (fields.test(CurrentIdColumn) || fields.test(CreatedIdColumn)
@@ -137,7 +141,9 @@ void TextOutput::process(Candidate *c) const {
 	if (fields.test(TrajectoryLengthColumn))
 		p += std::sprintf(buffer + p, "%8.5E\t",
 				c->getTrajectoryLength() / lengthScale);
-
+	if (fields.test(PropagationTimeColumn))
+		p += std::sprintf(buffer + p, "%8.5E\t",
+				c->getPropagationTime());
 	
 
 	if (fields.test(SerialNumberColumn))

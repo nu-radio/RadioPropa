@@ -38,6 +38,7 @@ void Output::setOutputType(OutputType outputtype) {
 	modify();
 	if (outputtype == Trajectory1D) {
 		// X, ID, E
+		set(PropagationTimeColumn, true);
 		set(CurrentPositionColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
@@ -46,6 +47,7 @@ void Output::setOutputType(OutputType outputtype) {
 	} else if (outputtype == Event1D) {
 		// D, ID, E, ID0, E0
 		set(TrajectoryLengthColumn, true);
+		set(PropagationTimeColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
 		set(CurrentAmplitudeColumn, true);
@@ -56,6 +58,7 @@ void Output::setOutputType(OutputType outputtype) {
 	} else if (outputtype == Trajectory3D) {
 		// D, ID, E, X, Y, Z, Px, Py, Pz
 		set(TrajectoryLengthColumn, true);
+		set(PropagationTimeColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
 		set(CurrentAmplitudeColumn, true);
@@ -65,6 +68,7 @@ void Output::setOutputType(OutputType outputtype) {
 	} else if (outputtype == Event3D) {
 		// W, D, ID, E, X, Y, Z, Px, Py, Pz, ID0, E0, X0, Y0, Z0, P0x, P0y, P0z
 		set(TrajectoryLengthColumn, true);
+		set(PropagationTimeColumn, true);
 		set(CurrentIdColumn, true);
 		set(CurrentFrequencyColumn, true);
 		set(CurrentAmplitudeColumn, true);

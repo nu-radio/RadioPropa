@@ -39,6 +39,7 @@ private:
 	bool active; /**< Active status */
 	double weight; /**< Weight of the candidate */
 	double trajectoryLength; /**< Comoving distance [m] the candidate has traveled so far */
+	double propagationTime; /**< Duration of propagation */
 	double currentStep; /**< Size of the currently performed step in [m] comoving units */
 	double nextStep; /**< Proposed size of the next propagation step in [m] comoving units */
 
@@ -66,6 +67,9 @@ public:
 
 	void setTrajectoryLength(double length);
 	double getTrajectoryLength() const;
+
+	void setPropagationTime(double time);
+	double getPropagationTime() const;
 
 	/**
 	 Sets weight of each candidate.

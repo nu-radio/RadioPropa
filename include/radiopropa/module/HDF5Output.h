@@ -44,6 +44,7 @@ class HDF5Output: public Output {
 
 	typedef struct OutputRow {
 		double D;
+		double T;
 	  double Ax;
 		double Ay;
 		double Az;

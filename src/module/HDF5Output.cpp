@@ -81,6 +81,8 @@ void HDF5Output::open(const std::string& filename) {
 	sid = H5Tcreate(H5T_COMPOUND, sizeof(OutputRow));
 	if (fields.test(TrajectoryLengthColumn))
 		H5Tinsert(sid, "D", HOFFSET(OutputRow, D), H5T_NATIVE_DOUBLE);
+	if (fields.test(PropagationTimeColumn))
+		H5Tinsert(sid, "T", HOFFSET(OutputRow, T), H5T_NATIVE_DOUBLE);
 	if (fields.test(CurrentAmplitudeColumn))
   {
 		H5Tinsert(sid, "Ax", HOFFSET(OutputRow, Ax), H5T_NATIVE_DOUBLE);
@@ -212,6 +214,7 @@ void HDF5Output::process(Candidate* candidate) const {
 
 	OutputRow r;
 	r.D = candidate->getTrajectoryLength() / lengthScale;
+	r.T = candidate->getPropagationTime();
 	Vector3d A = candidate->current.getAmplitude();
   r.Ax = A.x;
   r.Ay = A.y;
