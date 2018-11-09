@@ -1,5 +1,4 @@
 import radiopropa
-import numpy as np
 #from ObserverPlane import ObserverPlane 
 
 

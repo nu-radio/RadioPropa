@@ -1,5 +1,4 @@
 import h5py
-from mpl_toolkits.mplot3d import axes3d
 import radiopropa 
 
 from n2linear import iceModel, n0, a

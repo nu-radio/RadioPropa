@@ -1,5 +1,4 @@
 import radiopropa
-import numpy as np
 
 n0 = 2.
 a = 1.
