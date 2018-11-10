@@ -1,5 +1,8 @@
 extraction:
   cpp:
+    prepare:
+      packages:
+        - swig
     configure:
       command:
         - mkdir build
