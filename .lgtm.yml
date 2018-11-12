@@ -1,10 +1,9 @@
 extraction:
   cpp:
-    prepare:
-      packages:
-        - swig
+    after_prepare:
+      - mkdir -p _lgtm_build_dir/CMakeFiles/git-data
+      - echo "lgtm-build-no-sha" > _lgtm_build_dir/CMakeFiles/git-data/head-ref
     configure:
       command:
-        - mkdir build
-        - cd build
+        - cd _lgtm_build_dir
         - cmake ..
