@@ -135,7 +135,12 @@ template<typename I> bool check_pixel_ring (const T_Healpix_Base<I> &b1,
   b1.pix2xyf(pix,px,py,pf);
   for (int i=0; i<fct-1; ++i) // go along the 4 edges
     {
-    I ox=fct*px, oy=fct*py;
+		// I ox=fct*px, oy=fct*py;
+		// Avoid overflow of int before conversion to long 
+    I ox=fct;
+		ox*=px;
+		I oy=fct;
+		oy*=py;
     double pz,pphi;
     b2.pix2zphi(b2.xyf2pix(ox+i,oy,pf),pz,pphi);
     if (cosdist_zphi(pz,pphi,cz,cphi)>cosrp2) // overlap
