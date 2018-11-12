@@ -1,3 +1,6 @@
+#ifndef RADIOPROPA_VERSION_H
+#define RADIOPROPA_VERSION_H
+
 #include <string>
 
 extern const char g_GIT_SHA1[];
@@ -17,3 +20,5 @@ extern const char g_GIT_DESC[];
   	print(radiopropa.__version__)   
  */
 void declare_version(const std::string);
+
+#endif // RADIOPROPA_VERSION_H
