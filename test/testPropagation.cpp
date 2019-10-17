@@ -45,7 +45,7 @@ TEST(testPropagationCK, zeroField) {
 
 	propa.process(&c);
 
-	EXPECT_DOUBLE_EQ(minStep, c.getCurrentStep());  // perform minimum step
+	EXPECT_NEAR(minStep, c.getCurrentStep(), 1E-8);  // perform minimum step
 	EXPECT_DOUBLE_EQ(5 * minStep, c.getNextStep());  // acceleration by factor 5
 }
 
