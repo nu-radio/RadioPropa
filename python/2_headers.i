@@ -270,8 +270,7 @@
 %feature("director") radiopropa::AbstractCondition;
 %include "radiopropa/Module.h"
 
-%implicitconv radiopropa::ref_ptr<radiopropa::ScalarField>;
-%template(ScalarFieldRefPtr) radiopropa::ref_ptr<radiopropa::ScalarField>;
+%feature("director") radiopropa::ScalarField;
 %include "radiopropa/ScalarField.h"
 
 %include "radiopropa/Grid.h"
@@ -284,6 +283,8 @@
 %implicitconv radiopropa::ref_ptr<radiopropa::Grid<float> >;
 %template(ScalarGridRefPtr) radiopropa::ref_ptr<radiopropa::Grid<float> >;
 %template(ScalarGrid) radiopropa::Grid<float>;
+%implicitconv radiopropa::ref_ptr<radiopropa::ScalarField>;
+%template(ScalarFieldRefPtr) radiopropa::ref_ptr<radiopropa::ScalarField>;
 
 %include "radiopropa/EmissionMap.h"
 %implicitconv radiopropa::ref_ptr<radiopropa::EmissionMap>;
