@@ -1,12 +1,30 @@
 import radiopropa
 #from ObserverPlane import ObserverPlane 
 
+class MyTestMaterial(radiopropa.ScalarField):
+    """
+    No physics in here, just a demo.
+    """
+    def __init__(self):
+        radiopropa.ScalarField.__init__(self)
+    def add(self, volume, field):
+        self.components.append([volume, field])
+
+    def getValue(self, position):
+        print 'foo'
+        return 2 + np.sin(position.x)
+
+    def getGradient(self, position):
+        print 'bar'
+        return radiopropa.Vector3d(np.cos(position.x), 0, 0)
+
+
 
 
 # simulation setup
 sim = radiopropa.ModuleList()
 
-field = radiopropa.LinearIncrease(1E9, radiopropa.Vector3d(0,0,-1) )
+field = MyTestMaterial() # It is important to declear python objects once in the code, as there will be a segfault if done directly in the constructor of another object. Stupid swig bug. 
 sim.add(radiopropa.PropagationCK(field, 1E-20, .0001, 1.))
 
 
@@ -28,7 +46,6 @@ sim.add(output)
 source = radiopropa.Source()
 
 source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, 0)))
-source.add(radiopropa.SourceParticleType(radiopropa.nucleusId(1, 1)))
 source.add(radiopropa.SourceAmplitude(1))
 
 
