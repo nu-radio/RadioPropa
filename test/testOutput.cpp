@@ -106,31 +106,31 @@ TEST(ParticleCollector, reprocess) {
 	EXPECT_EQ(output[0], c);
 }
 
-TEST(ParticleCollector, dumpload) {
-	ref_ptr<Candidate> c = new Candidate(1, 1.234*EeV);
-	c->current.setPosition(Vector3d(1,2,3));
-	c->current.setDirection(Vector3d(-1,-1,-1));
-	c->setTrajectoryLength(1*Mpc);
-	c->current.setAmplitude(Vector3d(2,0,0));
-
-	ParticleCollector input;
-	ParticleCollector output;
-
-	for(int i=0; i<=10; ++i){
-		input.process(c);
-	}
-
-	// Well, it would be nicer if we don't need to receate any file
-	input.dump("ParticleCollector_DumpTest.txt");
-	output.load("ParticleCollector_DumpTest.txt");
-
-	EXPECT_EQ(input.size(), output.size());
-	EXPECT_EQ(output[0]->current.getFrequency(), c->current.getFrequency());
-	EXPECT_EQ(output[1]->getTrajectoryLength(), c->getTrajectoryLength());
-	EXPECT_EQ(output[3]->current.getAmplitude().x, c->current.getAmplitude().x);
-	EXPECT_EQ(output[3]->current.getAmplitude().y, c->current.getAmplitude().y);
-	EXPECT_EQ(output[3]->current.getAmplitude().z, c->current.getAmplitude().z);
-}
+//TEST(ParticleCollector, dumpload) {
+//	ref_ptr<Candidate> c = new Candidate(1, 1.234*EeV);
+//	c->current.setPosition(Vector3d(1,2,3));
+//	c->current.setDirection(Vector3d(-1,-1,-1));
+//	c->setTrajectoryLength(1*Mpc);
+//	c->current.setAmplitude(Vector3d(2,0,0));
+//
+//	ParticleCollector input;
+//	ParticleCollector output;
+//
+//	for(int i=0; i<=10; ++i){
+//		input.process(c);
+//	}
+//
+//	// Well, it would be nicer if we don't need to receate any file
+//	input.dump("ParticleCollector_DumpTest.txt");
+//	output.load("ParticleCollector_DumpTest.txt");
+//
+//	EXPECT_EQ(input.size(), output.size());
+//	EXPECT_EQ(output[0]->current.getFrequency(), c->current.getFrequency());
+//	EXPECT_EQ(output[1]->getTrajectoryLength(), c->getTrajectoryLength());
+//	EXPECT_EQ(output[3]->current.getAmplitude().x, c->current.getAmplitude().x);
+//	EXPECT_EQ(output[3]->current.getAmplitude().y, c->current.getAmplitude().y);
+//	EXPECT_EQ(output[3]->current.getAmplitude().z, c->current.getAmplitude().z);
+//}
 
 // Just test if the trajectory is on a line for rectilinear propagation
 TEST(ParticleCollector, getTrajectory) {
