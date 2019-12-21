@@ -65,6 +65,19 @@ class N_constant: public ScalarField
 };
 
 
+class Lin_grad: public ScalarField
+{
+        private:
+                double step_n;
+                double z0;
+        public:
+                Lin_grad(double _z0 = 2000, double _step_n = 0.1);
+                virtual double getValue(const Vector3d &position) const;
+                virtual Vector3d getGradient(const Vector3d &position) const;
+
+};
+
+
 class n2linear : public ScalarField
 {
 	/* Refractivity resulting in linear decrease of the velocity in z starting

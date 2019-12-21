@@ -73,6 +73,31 @@ Vector3d N_constant::getGradient(const Vector3d &position) const
 }
 
 
+
+Lin_grad::Lin_grad(double _z0, double _step_n): z0(_z0), step_n(_step_n)
+{
+
+}
+
+double Lin_grad::getValue(const Vector3d &position) const
+{
+	double d = position.z - z0;
+	if (d > 0)
+                return 1.0 + d*step_n;
+        else
+                return 1.0;
+
+}
+
+Vector3d Lin_grad::getGradient(const Vector3d &position) const
+{
+       if (position.z - z0 > 0)
+	       return Vector3d(0, 0, step_n);
+       else
+	       return Vector3d(0,0,0);
+}
+
+
 n2linear::n2linear(double _n0, double _a) : n0(_n0), a(_a) { }
 
 n2linear::~n2linear() { };
