@@ -98,6 +98,75 @@ Vector3d Lin_grad::getGradient(const Vector3d &position) const
 }
 
 
+
+CloudModel1::CloudModel1(double _z0, double _T0): z0(_z0), T0(_T0)
+{
+
+}
+
+double CloudModel1::L = 6.5e-3;
+double CloudModel1::p0 = 870; //mbar Bishop is in the mountains!
+double CloudModel1::M = 0.02896; //kg/mol
+double CloudModel1::R = 8.314; //J/K/mol
+double CloudModel1::g = 9.807; //m/s**2
+double CloudModel1::D = 0.61121;
+double CloudModel1::a = 18.678;
+double CloudModel1::b = 234.5;
+double CloudModel1::c = 257.14;
+double CloudModel1::e = 0.78;
+
+
+
+double CloudModel1::getValue(const Vector3d &position) const
+{
+
+	double h = position.z;
+        double T = T0 - L*h;
+	double T_C = T - 273.15;
+        double P_air = p0*exp(-M*g*h/R/T);
+        double P_sat = D*exp((a-T_C/b)*(T_C/(c+T_C)))*10; //Bucks equation gives kPa
+
+	if (position.z - z0 > 0)
+	{
+		double N= 77.6*P_air/T + 3.73*1e5*P_sat/pow(T, 2);
+		return N*1e-6+1.0;
+	}
+	else
+	{
+		double N= 77.6*P_air/T + 3.73*1e5*e*P_sat/pow(T, 2);
+		return N*1e-6+1.0;
+	}
+
+}
+
+Vector3d CloudModel1::getGradient(const Vector3d &position) const
+{
+	double h = position.z;
+        double T = T0 - L*h;
+	double T_C = T - 273.15;
+        double P_air = p0*exp(-M*g*h/R/T);
+        double P_sat = D*exp((a-T_C/b)*(T_C/(c+T_C)))*10;
+
+	double dP_air = P_air *(-M*g/R)*T0/pow(T,2);
+	double dP_sat = -L* P_sat*T_C/(T_C+c)*(-2/b+a/T_C-(a-T_C/b)/(T_C+c));
+        double dT = -L;
+
+	if (position.z - z0 > 0)
+	{
+		double dN= 77.6*(1/T*dP_air - P_air/pow(T,2)*dT) + 3.73*1e5*(1/pow(T,2)*dP_sat-2*P_sat/pow(T,3)*dT);
+		double dn =  dN*1e-6;
+		return Vector3d(0,0,dn);
+	}
+	else
+	{
+		double dN= 77.6*(1/T*dP_air - P_air/pow(T,2)*dT) + 3.73*1e5*(1/pow(T,2)*e*dP_sat-2*e*P_sat/pow(T,3)*dT);
+                double dn =  dN*1e-6;
+		return Vector3d(0,0,dn);
+	}
+}
+
+
+
 n2linear::n2linear(double _n0, double _a) : n0(_n0), a(_a) { }
 
 n2linear::~n2linear() { };
