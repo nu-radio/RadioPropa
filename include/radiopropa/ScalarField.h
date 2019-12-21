@@ -52,6 +52,19 @@ class GorhamIceModel: public ScalarField
 };
 
 
+class N_constant: public ScalarField
+{
+	private:
+		double n;
+		double z0;
+	public:
+		N_constant(double _z0 = 0, double _n = 1.5);
+		virtual double getValue(const Vector3d &position) const;
+		virtual Vector3d getGradient(const Vector3d &position) const;
+
+};
+
+
 class n2linear : public ScalarField
 {
 	/* Refractivity resulting in linear decrease of the velocity in z starting

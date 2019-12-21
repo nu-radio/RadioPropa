@@ -54,6 +54,25 @@ Vector3d GorhamIceModel::getGradient(const Vector3d &position) const
 
 
 
+N_constant::N_constant(double _z0, double _n): z0(_z0), n(_n)
+{
+
+}
+
+double N_constant::getValue(const Vector3d &position) const
+{
+	if (position.z - z0 > 0)
+		return n;
+	else
+		return 1.0;
+}
+
+Vector3d N_constant::getGradient(const Vector3d &position) const
+{
+	return Vector3d(0,0,0);
+}
+
+
 n2linear::n2linear(double _n0, double _a) : n0(_n0), a(_a) { }
 
 n2linear::~n2linear() { };
