@@ -99,25 +99,25 @@ Vector3d Lin_grad::getGradient(const Vector3d &position) const
 
 
 
-CloudModel1::CloudModel1(double _z0, double _T0): z0(_z0), T0(_T0)
+CloudModel_atm::CloudModel_atm(double _z0, double _T0): z0(_z0), T0(_T0)
 {
 
 }
 
-double CloudModel1::L = 6.5e-3;
-double CloudModel1::p0 = 870; //mbar Bishop is in the mountains!
-double CloudModel1::M = 0.02896; //kg/mol
-double CloudModel1::R = 8.314; //J/K/mol
-double CloudModel1::g = 9.807; //m/s**2
-double CloudModel1::D = 0.61121;
-double CloudModel1::a = 18.678;
-double CloudModel1::b = 234.5;
-double CloudModel1::c = 257.14;
-double CloudModel1::e = 0.78;
+double CloudModel_atm::L = 6.5e-3;
+double CloudModel_atm::p0 = 870; //mbar Bishop is in the mountains!
+double CloudModel_atm::M = 0.02896; //kg/mol
+double CloudModel_atm::R = 8.314; //J/K/mol
+double CloudModel_atm::g = 9.807; //m/s**2
+double CloudModel_atm::D = 0.61121;
+double CloudModel_atm::a = 18.678;
+double CloudModel_atm::b = 234.5;
+double CloudModel_atm::c = 257.14;
+double CloudModel_atm::e = 0.78;
 
 
 
-double CloudModel1::getValue(const Vector3d &position) const
+double CloudModel_atm::getValue(const Vector3d &position) const
 {
 
 	double h = position.z;
@@ -139,7 +139,7 @@ double CloudModel1::getValue(const Vector3d &position) const
 
 }
 
-Vector3d CloudModel1::getGradient(const Vector3d &position) const
+Vector3d CloudModel_atm::getGradient(const Vector3d &position) const
 {
 	double h = position.z;
         double T = T0 - L*h;

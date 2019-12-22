@@ -78,7 +78,7 @@ class Lin_grad: public ScalarField
 };
 
 //atmospheric refractive index model, depending on temperature, pressure and humidity, saturated humidity as clouds
-class CloudModel1: public ScalarField
+class CloudModel_atm: public ScalarField
 {
 	private:
 		double z0;
@@ -94,7 +94,7 @@ class CloudModel1: public ScalarField
 		static double R;
 		static double g;
 	public:
-		CloudModel1(double _z0 = 2000, double _T0 = 283);
+		CloudModel_atm(double _z0 = 2000, double _T0 = 283);
 		virtual double getValue(const Vector3d &position) const;
 		virtual Vector3d getGradient(const Vector3d &position) const;
 
