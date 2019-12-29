@@ -99,13 +99,12 @@ Vector3d Lin_grad::getGradient(const Vector3d &position) const
 
 
 
-CloudModel_atm::CloudModel_atm(double _z0, double _T0): z0(_z0), T0(_T0)
+CloudModel_atm::CloudModel_atm(double _z0, double _T0, double _p0, double _e): z0(_z0), T0(_T0), p0(_p0), e(_e)
 {
 
 }
 
 double CloudModel_atm::L = 6.5e-3;
-double CloudModel_atm::p0 = 870; //mbar Bishop is in the mountains!
 double CloudModel_atm::M = 0.02896; //kg/mol
 double CloudModel_atm::R = 8.314; //J/K/mol
 double CloudModel_atm::g = 9.807; //m/s**2
@@ -113,7 +112,7 @@ double CloudModel_atm::D = 0.61121;
 double CloudModel_atm::a = 18.678;
 double CloudModel_atm::b = 234.5;
 double CloudModel_atm::c = 257.14;
-double CloudModel_atm::e = 0.78;
+
 
 
 

@@ -83,18 +83,18 @@ class CloudModel_atm: public ScalarField
 	private:
 		double z0;
 		double T0;
-		static double e;
+		double p0;
+		double e;
 		static double L;
 		static double a;
 		static double b;
 		static double c;
 		static double D;
-		static double p0;
 		static double M;
 		static double R;
 		static double g;
 	public:
-		CloudModel_atm(double _z0 = 2000, double _T0 = 283);
+		CloudModel_atm(double _z0 = 2000, double _T0 = 283, double _p0 = 870, double _e = 0.78);
 		virtual double getValue(const Vector3d &position) const;
 		virtual Vector3d getGradient(const Vector3d &position) const;
 
