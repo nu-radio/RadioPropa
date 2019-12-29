@@ -3,6 +3,7 @@
 #include "radiopropa/Cosmology.h"
 
 #include <iostream>
+#include <fstream>
 
 namespace radiopropa {
 
@@ -30,7 +31,12 @@ void Observer::paramDetection(Candidate *candidate) const{
 		Vector3d ampl = candidate -> current.getAmplitude();
 		double intensity = (pow(ampl.x,2) + pow(ampl.y, 2) + pow(ampl.z, 2))/pow(length, 2);
 		double prop_time = candidate -> getPropagationTime();
-		printf("Detected at detector (%f, %f) with angle %f rad, intensity %e, propagation time %f \n", x, z, elevation, intensity, prop_time);
+
+		//write parameters to file created by python script
+        std::ofstream param_file;
+        param_file.open ("/home/carina/Documents/2019_BA/Data/CloudReflection/temp_amp.txt", std::ios_base::app);
+        param_file << elevation << "\t" << prop_time << "\t" << intensity << "\n";
+        param_file.close();
 	}
 }
 
