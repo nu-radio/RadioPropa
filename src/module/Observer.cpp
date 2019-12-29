@@ -29,7 +29,8 @@ void Observer::paramDetection(Candidate *candidate) const{
 		double length = candidate -> getTrajectoryLength();
 		Vector3d ampl = candidate -> current.getAmplitude();
 		double intensity = (pow(ampl.x,2) + pow(ampl.y, 2) + pow(ampl.z, 2))/pow(length, 2);
-		printf("Detected at detector (%f, %f) with angle %f rad, intensity %e \n", x, z, elevation, intensity);
+		double prop_time = candidate -> getPropagationTime();
+		printf("Detected at detector (%f, %f) with angle %f rad, intensity %e, propagation time %f \n", x, z, elevation, intensity, prop_time);
 	}
 }
 
@@ -62,7 +63,7 @@ void Observer::process(Candidate *candidate) const {
 
 		if (makeInactive)
 			candidate->setActive(false);
-		
+
 		paramDetection(candidate);
 		}
 }

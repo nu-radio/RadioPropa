@@ -99,7 +99,8 @@ void PropagationCK::process(Candidate *candidate) const {
 	Vector3d actual_step = yOut.x - yIn.x;
 	candidate->setCurrentStep(actual_step.getR());
 	candidate->setNextStep(newStep);
-	candidate->setPropagationTime(candidate->getPropagationTime() + step / c_light);
+	double n = field->getValue(yOut.x);
+	candidate->setPropagationTime(candidate->getPropagationTime() + step*n / c_light);
 }
 
 void PropagationCK::setField(ref_ptr<ScalarField> f) {
