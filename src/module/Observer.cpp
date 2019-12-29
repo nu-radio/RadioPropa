@@ -20,6 +20,20 @@ void Observer::onDetection(Module *action, bool clone_) {
 	clone = clone_;
 }
 
+void Observer::paramDetection(Candidate *candidate) const{
+	double x = candidate -> current.getPosition().x;
+	double z = candidate -> current.getPosition().z;
+	if (abs(x - 17600) < 100 && abs(z - 100)){
+		Vector3d dir = candidate -> current.getDirection();
+		double elevation = - atan(dir.z/dir.x);
+		double length = candidate -> getTrajectoryLength();
+		Vector3d ampl = candidate -> current.getAmplitude();
+		double intensity = (pow(ampl.x,2) + pow(ampl.y, 2) + pow(ampl.z, 2))/pow(length, 2);
+		printf("Detected at detector (%f, %f) with angle %f rad, intensity %e \n", x, z, elevation, intensity);
+	}
+}
+
+
 void Observer::process(Candidate *candidate) const {
 	// loop over all features and have them check the particle
 	DetectionState state = NOTHING;
@@ -48,7 +62,9 @@ void Observer::process(Candidate *candidate) const {
 
 		if (makeInactive)
 			candidate->setActive(false);
-	}
+		
+		paramDetection(candidate);
+		}
 }
 
 void Observer::setFlag(std::string key, std::string value) {

@@ -47,6 +47,7 @@ public:
 	Observer();
 	void add(ObserverFeature *feature);
 	void onDetection(Module *action, bool clone = false);
+	void paramDetection(Candidate *candidate) const;
 	void process(Candidate *candidate) const;
 	std::string getDescription() const;
 	void setFlag(std::string key, std::string value);
