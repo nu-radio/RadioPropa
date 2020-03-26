@@ -15,115 +15,144 @@ namespace radiopropa {
  @class ScalarField
  @brief Abstract base class fora scalar field
  */
-class ScalarField: public Referenced {
-public:
-	virtual ~ScalarField() {
-	}
-	virtual double getValue(const Vector3d &position) const {return 1.;};
-	virtual Vector3d getGradient(const Vector3d &position) const {return Vector3d(1,0,0);};
-};
+    class ScalarField : public Referenced {
+    public:
+        virtual ~ScalarField() {
+        }
+
+        virtual double getValue(const Vector3d &position) const { return 1.; };
+
+        virtual Vector3d getGradient(const Vector3d &position) const { return Vector3d(1, 0, 0); };
+    };
 
 
-class LinearIncrease: public ScalarField {
-	private:
-		Vector3d g0;
-		double v0;
-public:
-	LinearIncrease(double _v0, const Vector3d &_g0);
-	virtual ~LinearIncrease();
-	virtual double getValue(const Vector3d &position) const;
-	virtual Vector3d getGradient(const Vector3d &position) const;
-};
+    class LinearIncrease : public ScalarField {
+    private:
+        Vector3d g0;
+        double v0;
+    public:
+        LinearIncrease(double _v0, const Vector3d &_g0);
+
+        virtual ~LinearIncrease();
+
+        virtual double getValue(const Vector3d &position) const;
+
+        virtual Vector3d getGradient(const Vector3d &position) const;
+    };
 
 /**
     Gorham Ice Model from https://icecube.wisc.edu/~mnewcomb/radio/
     n = 1.325 + 0.463 * (1.0 - math.exp(-0.0140*depth) )
 **/
-class GorhamIceModel: public ScalarField
-{
-		private:
-		double a,b,c;
-		double z0;
-	public:
-		GorhamIceModel(double z0 = 0, double _a = 1.325, double _b = 0.463, double _c =-0.0140);
-		virtual ~GorhamIceModel();
-		virtual double getValue(const Vector3d &position) const;
-		virtual Vector3d getGradient(const Vector3d &position) const;
-};
+    class GorhamIceModel : public ScalarField {
+    private:
+        double a, b, c;
+        double z0;
+    public:
+        GorhamIceModel(double z0 = 0, double _a = 1.325, double _b = 0.463, double _c = -0.0140);
+
+        virtual ~GorhamIceModel();
+
+        virtual double getValue(const Vector3d &position) const;
+
+        virtual Vector3d getGradient(const Vector3d &position) const;
+    };
 
 
-class N_constant: public ScalarField
-{
-	private:
-		double n;
-		double z0;
-	public:
-		N_constant(double _z0 = 0, double _n = 1.5);
-		virtual double getValue(const Vector3d &position) const;
-		virtual Vector3d getGradient(const Vector3d &position) const;
+    class N_constant : public ScalarField {
+    private:
+        double n;
+        double z0;
+    public:
+        N_constant(double _z0 = 0, double _n = 1.5);
 
-};
+        virtual double getValue(const Vector3d &position) const;
+
+        virtual Vector3d getGradient(const Vector3d &position) const;
+
+    };
 
 
-class Lin_grad: public ScalarField
-{
-        private:
-                double step_n;
-                double z0;
-        public:
-                Lin_grad(double _z0 = 2000, double _step_n = 0.1);
-                virtual double getValue(const Vector3d &position) const;
-                virtual Vector3d getGradient(const Vector3d &position) const;
+    class Lin_grad : public ScalarField {
+    private:
+        double step_n;
+        double z0;
+    public:
+        Lin_grad(double _z0 = 2000, double _step_n = 0.1);
 
-};
+        virtual double getValue(const Vector3d &position) const;
+
+        virtual Vector3d getGradient(const Vector3d &position) const;
+
+    };
 
 //atmospheric refractive index model, depending on temperature, pressure and humidity, saturated humidity as clouds
-class CloudModel_atm: public ScalarField
-{
-	private:
-		double z0;
-		double T0;
-		double p0;
-		double e;
-		static double L;
-		static double a;
-		static double b;
-		static double c;
-		static double D;
-		static double M;
-		static double R;
-		static double g;
-	public:
-		CloudModel_atm(double _z0 = 2000, double _T0 = 283, double _p0 = 870, double _e = 0.78);
-		virtual double getValue(const Vector3d &position) const;
-		virtual Vector3d getGradient(const Vector3d &position) const;
+    class CloudModel_atm : public ScalarField {
+    private:
+        double z_bottom;
+        double z_top;
+        double T0;
+        double p0;
+        double e;
+        static double L;
+        static double a;
+        static double b;
+        static double c;
+        static double D;
+        static double M;
+        static double R;
+        static double g;
+    public:
+        CloudModel_atm(double _z_bottom = 2000, double _z_top = 2500, double _T0 = 283, double _p0 = 870,
+                       double _e = 0.78);
 
-};
+        virtual double getValue(const Vector3d &position) const;
 
-class n2linear : public ScalarField
-{
-	/* Refractivity resulting in linear decrease of the velocity in z starting
-	 * from z=0
-	 *
-Tracing Analytic Ray Curves for Light and
-Sound Propagation in Non-linear Media
-Qi Mo* , Hengchin Yeh* , and Dinesh Manocha*
-	 * Analytic solution from
-	 *
-	 */
-	private:
-		double n0, a;
+        virtual Vector3d getGradient(const Vector3d &position) const;
 
-public:
-	n2linear(double _n0, double _a);
-
-	virtual ~n2linear();
-	virtual double getValue(const Vector3d &position) const;
-	virtual Vector3d getGradient(const Vector3d &position) const;
-};
+    };
 
 
+    class n2linear : public ScalarField {
+        /* Refractivity resulting in linear decrease of the velocity in z starting
+         * from z=0
+         *
+    Tracing Analytic Ray Curves for Light and
+    Sound Propagation in Non-linear Media
+    Qi Mo* , Hengchin Yeh* , and Dinesh Manocha*
+         * Analytic solution from
+         *
+         */
+    private:
+        double n0, a;
 
-} // namespace radiopropa
+    public:
+        n2linear(double _n0, double _a);
+
+        virtual ~n2linear();
+
+        virtual double getValue(const Vector3d &position) const;
+
+        virtual Vector3d getGradient(const Vector3d &position) const;
+    };
+
+
+    class surfaceDuct : public ScalarField {
+    public:
+        surfaceDuct();
+        virtual double getValue(const Vector3d &position) const;
+        virtual Vector3d getGradient(const Vector3d &position) const;
+    };
+
+    class elevatedDuct: public ScalarField {
+    public:
+        elevatedDuct();
+        virtual double getValue(const Vector3d &position) const;
+        virtual Vector3d getGradient(const Vector3d &position) const;
+    };
+
+}
+
+// namespace radiopropa
 
 #endif // CRPROPA_MAGNETICFIELD_H
