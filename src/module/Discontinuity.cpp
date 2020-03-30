@@ -34,6 +34,11 @@ void Discontinuity::process(Candidate *candidate) const
 				 NR = n1 / n2;
 		else
 				 NR = n2 / n1;
+		//check direction of ray
+                if (candidate -> current.getDirection().z < 0)
+                {
+			localNormal.z = -1.*localNormal.z;
+                }
 
 		// reflection according to Snell's law
 		// angle to the surface normal alpha, beta and
