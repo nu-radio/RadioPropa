@@ -51,6 +51,62 @@ class GorhamIceModel: public ScalarField
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
+/**
+ * @class N_constant
+ * @brief constant refractive index
+ */
+class N_constant : public ScalarField {
+	private:
+		double n;
+		double z0;
+	public:
+		N_constant(double _z0 = 0, double _n = 1.5);
+		virtual double getValue(const Vector3d &position) const;
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
+
+/**
+ * @class Lin_grad
+ * @brief linear refractive index change with offset
+ */
+class Lin_grad : public ScalarField {
+	private:
+		double step_n;
+		double z0;
+	public:
+		Lin_grad(double _z0 = 2000, double _step_n = 0.1);
+		virtual double getValue(const Vector3d &position) const;
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
+
+/**
+ * @class CloudModel_atm
+ * @brief atmospheric refractive index model depending on temperature, pressure, and humidity with layers of 100%
+ * humidity as cloud layers. From https://www.itu.int/rec/R-REC-P.453/en
+ */
+//atmospheric refractive index model, depending on temperature, pressure and humidity, saturated humidity as clouds
+class CloudModel_atm : public ScalarField {
+	private:
+		double z_bottom;
+		double z_top;
+		double T0;
+		double p0;
+		double e;
+		static double L;
+		static double a;
+		static double b;
+		static double c;
+		static double D;
+		static double M;
+		static double R;
+		static double g;
+	public:
+		CloudModel_atm(double _z_bottom = 2000, double _z_top = 2500, double _T0 = 283, double _p0 = 870,
+		               double _e = 0.78);
+		virtual double getValue(const Vector3d &position) const;
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
+
 
 class n2linear : public ScalarField
 {
@@ -74,7 +130,27 @@ public:
 	virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
+/**
+ * @class surfaceDuct
+ * @brief profile of a surface duct with standard parameters for Bishop. From https://www.itu.int/rec/R-REC-P.453/en
+ */
+class surfaceDuct : public ScalarField {
+	public:
+		surfaceDuct();
+		virtual double getValue(const Vector3d &position) const;
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
 
+/**
+ * @class elevatedDuct
+ * @brief profile of an elevated duct with standard parameters for Bishop. From https://www.itu.int/rec/R-REC-P.453/en
+ */
+class elevatedDuct : public ScalarField {
+	public:
+		elevatedDuct();
+		virtual double getValue(const Vector3d &position) const;
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
 
 } // namespace radiopropa
 
