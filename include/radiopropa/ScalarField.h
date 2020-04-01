@@ -132,7 +132,8 @@ public:
 
 /**
  * @class surfaceDuct
- * @brief profile of a surface duct with standard parameters for Bishop. From https://www.itu.int/rec/R-REC-P.453/en
+ * @brief profile of a surface duct. The surface duct consists of a small region with a steep N decrease topped by a
+ * regular atmospheric N-decrease. Specific values for Bishop used, from https://www.itu.int/rec/R-REC-P.453/en
  */
 class surfaceDuct : public ScalarField {
 	public:
@@ -143,7 +144,9 @@ class surfaceDuct : public ScalarField {
 
 /**
  * @class elevatedDuct
- * @brief profile of an elevated duct with standard parameters for Bishop. From https://www.itu.int/rec/R-REC-P.453/en
+ * @brief profile of an elevated duct. The elevated duct consists of a region with a steep N decrease,
+ * a small region of shallow N decrease, followed  by normal atmospheric N decrease. Specific values for Bishop used,
+ * from https://www.itu.int/rec/R-REC-P.453/en
  */
 class elevatedDuct : public ScalarField {
 	public:
