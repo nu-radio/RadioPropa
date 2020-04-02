@@ -92,10 +92,10 @@ Vector3d Lin_grad::getGradient(const Vector3d &position) const
 CloudModel_atm::CloudModel_atm(double _z_bottom, double _z_top, double _T0, double _p0, double _e) :
 		z_bottom(_z_bottom), z_top(_z_top), T0(_T0), p0(_p0), e(_e) {}
 
-	double CloudModel_atm::L = 6.5e-3; //K/m
-	double CloudModel_atm::M = 0.02896; //kg/mol
-	double CloudModel_atm::R = 8.314; //J/K/mol
-	double CloudModel_atm::g = 9.807; //m/s**2
+	double CloudModel_atm::L = 6.5e-3; //K/m, tropospheric lapse rate
+	double CloudModel_atm::M = 0.02896; //kg/mol, molar mass of air
+	double CloudModel_atm::R = 8.314; //J/K/mol, universal gas constant
+	double CloudModel_atm::g = 9.807; //m/s**2, gravitational acceleration
 	double CloudModel_atm::D = 6.1121; //constants for Bucks equation
 	double CloudModel_atm::a = 18.678;
 	double CloudModel_atm::b = 234.5;
@@ -168,13 +168,13 @@ surfaceDuct::surfaceDuct() {}
 
 double surfaceDuct::getValue(const Vector3d &position) const
 {
-	if (position.z < 64.2)
+	if (position.z < 64.2) // steep N decrease
 	{
 		double M =  300 - 8.74/64.21*position.z;
 		double N = M - 157.0/1000*position.z;
 		return N*1e-6 + 1;
 	}
-	else
+	else // regular N decrease
 	{
 		double M = 300 - 8.74 + 117.0/1000*(position.z - 64.21);
 		double N = M - 157.0/1000*position.z;
@@ -184,13 +184,13 @@ double surfaceDuct::getValue(const Vector3d &position) const
 
 Vector3d surfaceDuct::getGradient(const Vector3d &position) const
 {
-        if (position.z < 64.2)
+        if (position.z < 64.2) // steep N decrease
         {
             double dM = -8.74/64.21;
             double dN =  dM - 157.0/1000.0;
             return Vector3d(0,0,dN*1e-6);
         }
-        else
+        else // regular N decrease
         {
             double dN = -40;
             return Vector3d(0,0,dN*1e-9);
@@ -201,7 +201,7 @@ elevatedDuct::elevatedDuct(){}
 
 double elevatedDuct::getValue(const Vector3d &position) const
 {
-	double M_e = 9.29;
+	double M_e = 9.29; // constants defining slope and z value for slope change, average values for Bishop
 	double u = 1166.48;
 	double b = 1100.25;
 	double th = 147.81;
@@ -209,15 +209,15 @@ double elevatedDuct::getValue(const Vector3d &position) const
 	double M;
 	double dm_1 = M_e/(u-b);
 	double dm_2 = M_e/(b + th -u);
-	if (position.z < 1166.48)
+	if (position.z < 1166.48) // steep N decrease
 	{
 		M = 300 + dm_1*position.z;
 	}
-	else if(position.z < 1248.06)
+	else if(position.z < 1248.06) // shallow N decrease
 	{
 		M = 300 + dm_1*u - dm_2*(position.z - u);
 	}
-	else
+	else // regular N decrease
 	{
 		M = 300 + dm_1*u - dm_2*(b + th - u) + dM*(position.z - b - th);
 	}
@@ -228,15 +228,16 @@ double elevatedDuct::getValue(const Vector3d &position) const
 Vector3d elevatedDuct::getGradient(const Vector3d &position) const
 {
 	double dm;
-	if(position.z < 1166.48)
+	if(position.z < 1166.48) // steep N decrease
 	{
 		dm = 9.29/(1166.48 - 1100.25);
 	}
-	else if(position.z < 1248.06)
+	else if(position.z < 1248.06) // shallow N decrease
 	{
 		dm = -9.29/(1248.06 - 1166.48);
 	}
-	else{
+	else // regular N decrease
+	{
 		dm = 117.0/1000;
 	}
 	double dN = dm - 157.0/1000;
