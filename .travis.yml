@@ -1,19 +1,79 @@
 sudo: required
 dist: trusty
 language: cpp
+addons:
+    apt:
+      packages:
+        - gcc-6
+        - g++-6
+        - gfortran-6
+        - swig
+        - libfftw3-dev
+        - libcfitsio3-dev
+        - libmuparser-dev
+        - python-dev
+        - python-numpy
+        - python-setuptools
+        - python3-setuptools
+        - python3-dev
+        - cmake
+        - libhdf5-serial-dev
+        - python-matplotlib
+        - python3-matplotlib
+        - python-scipy
+        - python3-scipy
+        - libiomp5
+        - libiomp-dev
+        - doxygen
+        - graphviz
+      sources: &sources
+        - ubuntu-toolchain-r-test
+cache:
+  directories:
+    - $HOME/radiopropa_cache
+matrix:
+  include:
+    - os : linux
+      dist: xenial
+      compiler: gcc
+      env:
+        - COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6 FC=gfortran-6
+        - PYTHON_EXECUTABLE=/usr/bin/python3
+        - BUILD_DOC=true
+    - os : linux
+      dist: xenial
+      compiler: clang
+      env:
+        - PYTHON_EXECUTABLE=/usr/bin/python3 FC=gfortran-6
+        - LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
+    - os : linux
+      dist: xenial
+      compiler: gcc
+      env:
+         - COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6 FC=gfortran-6
+         - PYTHON_EXECUTABLE=/usr/bin/python2
+    - os : linux
+      dist: xenial
+      compiler: clang
+      env:
+        - PYTHON_EXECUTABLE=/usr/bin/python2 FC=gfortran-6
+        - LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
+    - os : osx
+      compiler: clang
+      env:
+        - CXX_COMPILER='clang++'
+        - C_COMPILER='clang++'
+        - Fortran_COMPILER='gfortran'
+        - PYTHON_EXECUTABLE=/usr/bin/python
 
 before_install:
-  - sudo add-apt-repository -y ppa:kubuntu-ppa/backports
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq swig gfortran libfftw3-dev libcfitsio3-dev libmuparser-dev python-dev python-numpy python-setuptools python3-setuptools python3-dev cmake libhdf5-serial-dev python-matplotlib python3-matplotlib python-scipy python3-scipy libiomp5 libiomp-dev
-
-compiler:
-  - gcc
-  - clang
-
-env:
-  - PYTHON_EXECUTABLE=/usr/bin/python3
-  - PYTHON_EXECUTABLE=/usr/bin/python2
+  - echo "TRAVIS_OS_NAME=$TRAVIS_OS_NAME"
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      HOMEBREW_NO_AUTO_UPDATE=1 brew install swig;
+      HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc || true;
+      HOMEBREW_NO_AUTO_UPDATE=1 brew link --overwrite gcc;
+    fi;
 
 before_script:
   - mkdir build
@@ -21,7 +81,7 @@ before_script:
   - cmake .. -DENABLE_PYTHON=True -DPYTHON_EXECUTABLE=$PYTHON_EXECUTABLE -DENABLE_TESTING=On
 
 script:
-  - make
+  - VERBOSE=1 make
   - make test
 
 after_failure:
