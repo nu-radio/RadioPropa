@@ -26,7 +26,7 @@ Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, dou
 }
 
 Candidate::Candidate(const ParticleState &state) :
-		source(state), created(state), current(state), previous(state), trajectoryLength(0), propagationTime(0), currentStep(0), nextStep(0), active(true), parent(0) {
+		pathx(0), pathy(0), pathz(0), source(state), created(state), current(state), previous(state), trajectoryLength(0), propagationTime(0), currentStep(0), nextStep(0), active(true), parent(0) {
 
 #if defined(OPENMP_3_1)
 		#pragma omp atomic capture
@@ -39,6 +39,21 @@ Candidate::Candidate(const ParticleState &state) :
 #endif
 
 }
+
+
+
+void Candidate::setPathPosition(Vector3d p) {
+        pathx.push_back(p.x);
+        pathy.push_back(p.y);
+        pathz.push_back(p.z);
+
+
+}
+
+std::vector<int>  Candidate::getPath() const {
+        return pathx;
+}
+
 
 bool Candidate::isActive() const {
 	return active;

@@ -101,6 +101,7 @@ void PropagationCK::process(Candidate *candidate) const {
 	candidate->setNextStep(newStep);
 	double n = field->getValue(yOut.x);
 	candidate->setPropagationTime(candidate->getPropagationTime() + step*n / c_light);
+	candidate->setPathPosition(yOut.x);
 }
 
 void PropagationCK::setField(ref_ptr<ScalarField> f) {
