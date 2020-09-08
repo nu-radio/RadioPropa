@@ -28,9 +28,9 @@ public:
 	ParticleState previous; /**< Particle state at the end of the previous step */
 
 	std::vector<ref_ptr<Candidate> > secondaries; /**< Secondary particles from interactions */
- 	std::vector<int> pathx;
-	std::vector<int> pathy;
-	std::vector<int> pathz;
+ 	std::vector<double> pathx;
+	std::vector<double> pathy;
+	std::vector<double> pathz;
 
 	typedef Loki::AssocVector<std::string, Variant> PropertyMap;
 	PropertyMap properties; /**< Map of property names and their values. */
@@ -65,9 +65,10 @@ public:
 	 */
 	Candidate(const ParticleState &state);
 
-	std::vector<int> getPathX() const;
-	std::vector<int> getPathY() const;
-	std::vector<int> getPathZ() const;
+	std::string getPathX() const;
+	std::string getPathY() const;
+	std::string getPathZ() const;
+	std::string getPath() const;
   void appendPathPosition(Vector3d p);
 
 	bool isActive() const;

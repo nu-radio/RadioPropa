@@ -46,20 +46,54 @@ void Candidate::appendPathPosition(Vector3d p) {
         pathx.push_back(p.x);
         pathy.push_back(p.y);
         pathz.push_back(p.z);
-
-
 }
 
-std::vector<int>  Candidate::getPathX() const {
-	return pathx;
+std::string Candidate::getPathX() const {
+	std::stringstream ss;
+	ss << "[";
+	for(int i=0; i < pathx.size(); i++){
+  	ss << std::to_string(pathx[i]) << ",";
+	}
+	std::string st = ss.str();
+	st.pop_back();
+	st += "]";
+	return st;
 }
 
-std::vector<int>  Candidate::getPathY() const {
-  return pathy;
+std::string Candidate::getPathY() const {
+	std::stringstream ss;
+	ss << "[";
+	for(int i=0; i < pathy.size(); i++){
+  	ss << std::to_string(pathy[i]) << ",";
+	}
+	std::string st = ss.str();
+	st.pop_back();
+	st += "]";
+	return st;
 }
 
-std::vector<int>  Candidate::getPathZ() const {
-  return pathz;
+std::string Candidate::getPathZ() const {
+	std::stringstream ss;
+	ss << "[";
+	for(int i=0; i < pathz.size(); i++){
+  	ss << std::to_string(pathz[i]) << ",";
+	}
+	std::string st = ss.str();
+	st.pop_back();
+	st += "]";
+	return st;
+}
+
+std::string Candidate::getPath() const {
+	std::stringstream ss;
+	ss << "[";
+	for(int i=0; i < pathz.size(); i++){
+  	ss << "[" << std::to_string(pathx[i]) << "," << std::to_string(pathy[i]) << "," << std::to_string(pathz[i]) << "],";
+	}
+	std::string st = ss.str();
+	st.pop_back();
+	st += "]";
+	return st;
 }
 
 
