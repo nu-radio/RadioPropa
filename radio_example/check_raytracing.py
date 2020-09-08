@@ -44,8 +44,8 @@ if __name__ == "__main__":
     theta = np.rad2deg(theta)
     
     obs3 = radiopropa.Observer()
-    obsz = radiopropa.ObserverSurface(radiopropa.Sphere(radiopropa.Vector3d(channel[0], channel[1], channel[2]), 10 * radiopropa.meter))
-    obs3.add(obsz)
+    obsz3 = radiopropa.ObserverSurface(radiopropa.Sphere(radiopropa.Vector3d(channel[0], channel[1], channel[2]), 10 * radiopropa.meter))
+    obs3.add(obsz3)
     obs3.setDeactivateOnDetection(True)
     sim.add(obs3)
     
@@ -87,12 +87,12 @@ if __name__ == "__main__":
             trajectory_length = candidate.getTrajectoryLength()
             Candidate = candidate.get() #candidate is a pointer to the object Candidate
             
-            detection = obsz.checkDetection(Candidate) #return {0,1,2} voor {DETECTED,VETO,NOTHING}
+            detection = obsz3.checkDetection(Candidate) #return {0,1,2} voor {DETECTED,VETO,NOTHING}
             if detection == 0:
-                #print(Candidate.getPath())
                 pathx = np.fromstring(Candidate.getPathX()[1:-1],sep=',')
                 pathy = np.fromstring(Candidate.getPathY()[1:-1],sep=',')
                 pathz = np.fromstring(Candidate.getPathZ()[1:-1],sep=',')
                 path = np.stack([pathx,pathy,pathz], axis=1)
-                print(type(path),path)
-
+                launchVector = Candidate.getLaunchVector()
+                receiveVector = Candidate.getReceiveVector()
+                print(launchVector,receiveVector)

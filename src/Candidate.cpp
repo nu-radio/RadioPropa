@@ -96,6 +96,17 @@ std::string Candidate::getPath() const {
 	return st;
 }
 
+Vector3d Candidate::getLaunchVector() const{
+	return source.getDirection();
+}
+
+Vector3d Candidate::getReceiveVector() const{
+	return current.getDirection();
+}
+float Candidate::getReclectionAngles() const{
+	return 0;
+}
+
 
 bool Candidate::isActive() const {
 	return active;

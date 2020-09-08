@@ -71,6 +71,10 @@ public:
 	std::string getPath() const;
   void appendPathPosition(Vector3d p);
 
+	Vector3d getLaunchVector() const;
+	Vector3d getReceiveVector() const;
+	float getReclectionAngles() const;
+
 	bool isActive() const;
 	void setActive(bool b);
 
