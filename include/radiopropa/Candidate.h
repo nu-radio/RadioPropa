@@ -68,7 +68,7 @@ public:
 	std::vector<int> getPathX() const;
 	std::vector<int> getPathY() const;
 	std::vector<int> getPathZ() const;
-  void setPathPosition(Vector3d p);
+  void appendPathPosition(Vector3d p);
 
 	bool isActive() const;
 	void setActive(bool b);

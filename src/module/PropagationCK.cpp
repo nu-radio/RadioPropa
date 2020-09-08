@@ -48,7 +48,7 @@ PropagationCK::Y PropagationCK::dYdt(const Y &y, ParticleState &p, double z) con
 	// normalize direction vector to prevent numerical losses
 	double n = field->getValue(y.x);
 	Vector3d velocity = y.u.getUnitVector() * c_light / n;
-	Vector3d dudt =  field->getGradient(y.x) / n/n * c_light;
+	Vector3d dudt =  field->getGradient(y.x) / n/n * c_light; 
 	return Y(velocity, dudt);
 }
 
@@ -77,7 +77,7 @@ void PropagationCK::process(Candidate *candidate) const {
 	Y yOut, yErr;
 	double newStep = step;
 	double r = 42;  // arbitrary value > 1
-	double z = 0; // RedShift to 0. 
+	double z = 0; // RedShift to 0.
 
 	// try performing step until the target error (tolerance) or the minimum step size has been reached
 	while (r > 1) {

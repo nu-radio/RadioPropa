@@ -51,15 +51,15 @@ void Candidate::appendPathPosition(Vector3d p) {
 }
 
 std::vector<int>  Candidate::getPathX() const {
-        return pathx;
+	return pathx;
 }
 
 std::vector<int>  Candidate::getPathY() const {
-        return pathy;
+  return pathy;
 }
 
 std::vector<int>  Candidate::getPathZ() const {
-        return pathz;
+  return pathz;
 }
 
 
