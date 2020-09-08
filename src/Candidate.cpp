@@ -104,7 +104,7 @@ Vector3d Candidate::getReceiveVector() const{
 	return current.getDirection();
 }
 float Candidate::getReclectionAngles() const{
-	return 0;
+	return -1;
 }
 
 
