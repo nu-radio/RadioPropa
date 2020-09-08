@@ -1,14 +1,16 @@
 import h5py
 import radiopropa 
+import matplotlib.pyplot as plt
+import numpy as np
 
 #from Ice import iceModel
 
 
 #Plot Ice model
-z = linspace(-300,0)
+z = np.linspace(-300,0)
 
-n = zeros_like(z)
-dn = zeros_like(z)
+n = np.zeros_like(z)
+dn = np.zeros_like(z)
 
 position = radiopropa.Vector3d(0,0,0) 
 
@@ -30,8 +32,8 @@ position = radiopropa.Vector3d(0,0,0)
 f = h5py.File('output_traj.h5')
 d = f['Trajectory3D']
 
-figure()
-s1 = subplot(111)
+plt.figure()
+s1 = plt.subplot(111)
 
 #SN = set(d['SN'])
 #for s in SN:
@@ -47,17 +49,18 @@ s1 = subplot(111)
 #
 #    s1.plot(d['X'][idx], d['Z'][idx], c=c, label='RadioPropa')
 #
-A = sqrt(d['Ax']**2 + d['Ay']**2 +d['Az']**2 )
-s1.scatter(d['X'], d['Z'], c=log10(A), marker='.', s=2)
+A = np.sqrt(d['Ax']**2 + d['Ay']**2 +d['Az']**2 )
+s1.scatter(d['X'], d['Z'], c=np.log10(A), marker='.', s=2)
 #s1.scatter(d['X'], d['Z'], c=abs(d['SN']), marker='.', s=2)
 s1.plot([d['X'][0]], [d['Z'][0]], c='r', marker='*')
-axhline(0., c='k')
-text(1500.,5, 'Air')
-text(1500.,-5, 'Ice', verticalalignment='top')
+plt.axhline(0., c='k')
+plt.text(1500.,5, 'Air')
+plt.text(1500.,-5, 'Ice', verticalalignment='top')
 s1.set_xlabel('X [m]')
 s1.set_ylabel('Z [m]')
 s1.set_ylim(-300,30)
-tight_layout()
+plt.tight_layout()
+plt.show()
 
 
 

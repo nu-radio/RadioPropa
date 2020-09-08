@@ -42,7 +42,7 @@ Candidate::Candidate(const ParticleState &state) :
 
 
 
-void Candidate::setPathPosition(Vector3d p) {
+void Candidate::appendPathPosition(Vector3d p) {
         pathx.push_back(p.x);
         pathy.push_back(p.y);
         pathz.push_back(p.z);
@@ -50,8 +50,16 @@ void Candidate::setPathPosition(Vector3d p) {
 
 }
 
-std::vector<int>  Candidate::getPath() const {
+std::vector<int>  Candidate::getPathX() const {
         return pathx;
+}
+
+std::vector<int>  Candidate::getPathY() const {
+        return pathy;
+}
+
+std::vector<int>  Candidate::getPathZ() const {
+        return pathz;
 }
 
 
