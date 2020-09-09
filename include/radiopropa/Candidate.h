@@ -28,9 +28,6 @@ public:
 	ParticleState previous; /**< Particle state at the end of the previous step */
 
 	std::vector<ref_ptr<Candidate> > secondaries; /**< Secondary particles from interactions */
- 	std::vector<double> pathx;
-	std::vector<double> pathy;
-	std::vector<double> pathz;
 
 	typedef Loki::AssocVector<std::string, Variant> PropertyMap;
 	PropertyMap properties; /**< Map of property names and their values. */
@@ -45,6 +42,11 @@ private:
 	double propagationTime; /**< Duration of propagation */
 	double currentStep; /**< Size of the currently performed step in [m] comoving units */
 	double nextStep; /**< Proposed size of the next propagation step in [m] comoving units */
+
+	std::vector<double> pathx;
+	std::vector<double> pathy;
+	std::vector<double> pathz;
+	std::vector<double> reflectionAngles;
 
 	static uint64_t nextSerialNumber;
 	uint64_t serialNumber;
