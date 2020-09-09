@@ -25,7 +25,7 @@ void Discontinuity::process(Candidate *candidate) const
 		Vector3d dp = candidate->current.getPosition() - candidate->previous.getPosition();
 		Vector3d intersectionPoint = candidate->previous.getPosition() + dp.getUnitVector() * px;
 
-		// surface normal in intersection point 
+		// surface normal in intersection point
 		Vector3d localNormal= surface->normal(intersectionPoint);
 
 		// correct n1, n2 ratio according to crossing direction
@@ -46,6 +46,8 @@ void Discontinuity::process(Candidate *candidate) const
 		double calpha = fabs(candidate->current.getDirection().dot(localNormal));
 		double salpha2 = 1 - calpha*calpha;
 		double sbeta2 = NR * NR * salpha2;
+
+		candidate->appendReflectionAngle(acos(calpha));
 
 		// Reflection coefficents
 		double R_perp = 1.;

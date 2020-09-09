@@ -75,7 +75,9 @@ public:
 
 	Vector3d getLaunchVector() const;
 	Vector3d getReceiveVector() const;
-	float getReclectionAngles() const;
+
+	void appendReflectionAngle(double angle);
+	std::string getReflectionAngles() const;
 
 	bool isActive() const;
 	void setActive(bool b);

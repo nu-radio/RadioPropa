@@ -15,7 +15,6 @@ class DictOutput(radiopropa.Output):
 
 
 airBoundary = radiopropa.Discontinuity(radiopropa.Plane(radiopropa.Vector3d(0,0,0), radiopropa.Vector3d(0,0,1)), 1.3, 1)
-
 iceModel = radiopropa.GorhamIceModel()
 
 if __name__ == "__main__":
@@ -23,9 +22,10 @@ if __name__ == "__main__":
     sim = radiopropa.ModuleList()
     sim.add(radiopropa.PropagationCK(iceModel, 1E-8, .001, 1.))
 
-    # Observer to stop imulation at =0m and z=300m
     sim.add(airBoundary)
 
+
+    # Observer to stop imulation at =0m and z=300m
     obs2 = radiopropa.Observer()
     obsz2 = radiopropa.ObserverSurface(radiopropa.Plane(radiopropa.Vector3d(0,0,-300), radiopropa.Vector3d(0,0,1)))
     obs2.add(obsz2)
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     sim.add(obs3)
     
     # Output
-    output = radiopropa.TextOutput('output_traj.txt', radiopropa.Output.Trajectory3D)
+    output = radiopropa.HDF5Output('output_traj.h5', radiopropa.Output.Trajectory3D)
     output.setLengthScale(radiopropa.meter)
     #output.enable(radiopropa.Output.CurrentAmplitudeColumn)
     output.enable(radiopropa.Output.SerialNumberColumn)
@@ -95,4 +95,5 @@ if __name__ == "__main__":
                 path = np.stack([pathx,pathy,pathz], axis=1)
                 launchVector = Candidate.getLaunchVector()
                 receiveVector = Candidate.getReceiveVector()
-                print(launchVector,receiveVector)
+                ra = Candidate.getReflectionAngles()
+                print(launchVector,receiveVector,ra)

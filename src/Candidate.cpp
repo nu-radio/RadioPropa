@@ -26,7 +26,7 @@ Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, dou
 }
 
 Candidate::Candidate(const ParticleState &state) :
-		pathx(0), pathy(0), pathz(0), source(state), created(state), current(state), previous(state), trajectoryLength(0), propagationTime(0), currentStep(0), nextStep(0), active(true), parent(0) {
+		pathx(0), pathy(0), pathz(0), reflectionAngles(0), source(state), created(state), current(state), previous(state), trajectoryLength(0), propagationTime(0), currentStep(0), nextStep(0), active(true), parent(0) {
 
 #if defined(OPENMP_3_1)
 		#pragma omp atomic capture
@@ -43,9 +43,9 @@ Candidate::Candidate(const ParticleState &state) :
 
 
 void Candidate::appendPathPosition(Vector3d p) {
-        pathx.push_back(p.x);
-        pathy.push_back(p.y);
-        pathz.push_back(p.z);
+  pathx.push_back(p.x);
+  pathy.push_back(p.y);
+  pathz.push_back(p.z);
 }
 
 std::string Candidate::getPathX() const {
@@ -103,8 +103,20 @@ Vector3d Candidate::getLaunchVector() const{
 Vector3d Candidate::getReceiveVector() const{
 	return current.getDirection();
 }
-float Candidate::getReclectionAngles() const{
-	return -1;
+
+void Candidate::appendReflectionAngle(double angle) {
+	reflectionAngles.push_back(angle);
+}
+
+std::string Candidate::getReflectionAngles() const{
+	std::stringstream ss;
+	ss << "[";
+	for(int i=0; i < reflectionAngles.size(); i++){
+		if (i == 0) {	ss << std::to_string(reflectionAngles[i]);
+		} else {ss << "," << std::to_string(reflectionAngles[i]);}
+	}
+	ss << "]";
+	return ss.str();
 }
 
 
