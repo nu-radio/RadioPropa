@@ -22,6 +22,36 @@ Vector3d LinearIncrease::getGradient(const Vector3d &position) const
 
 
 
+
+GreenlandIceModel::GreenlandIceModel(double z0, double _n_ice, double _delta_n, double _z_0): z0(z0), n_ice(_n_ice), delta_n(_delta_n), z_0(_z_0)
+{
+
+}
+
+GreenlandIceModel::~GreenlandIceModel()
+{
+}
+
+double GreenlandIceModel::getValue(const Vector3d &position) const
+{
+	if (position.z - z0 <0)
+	return n_ice  - delta_n  * exp(position.z / z_0);
+	else
+	return 1.;
+};
+
+Vector3d GreenlandIceModel::getGradient(const Vector3d &position) const
+{
+	Vector3d v(0,0,0);
+	if (position.z <0)
+	{
+	v.z = - delta_n / z_0 * exp(position.z/ z_0);
+	}
+	return v;
+}
+
+
+
 GorhamIceModel::GorhamIceModel(double z0, double _a, double _b, double _c) : z0(z0), a(_a), b(_b), c(_c)
 {
 

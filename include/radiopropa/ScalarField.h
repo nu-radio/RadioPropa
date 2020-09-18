@@ -51,6 +51,22 @@ class GorhamIceModel: public ScalarField
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
+class GreenlandIceModel: public ScalarField
+{
+	private:
+	double n_ice, delta_n, z_0;
+	double z0;
+	public:
+	GreenlandIceModel(double z0 = 0, double _n_ice = 1.78 , double _delta_n = 0.51, double _z_0 = 37.25);
+	virtual ~GreenlandIceModel();
+	virtual double getValue(const Vector3d &position) const; 
+	virtual Vector3d getGradient(const Vector3d &position) const;
+
+
+
+
+};
+
 /**
  * @class N_constant
  * @brief constant refractive index
