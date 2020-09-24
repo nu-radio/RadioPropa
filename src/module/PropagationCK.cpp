@@ -100,7 +100,7 @@ void PropagationCK::process(Candidate *candidate) const {
 	candidate->setCurrentStep(actual_step.getR());
 	candidate->setNextStep(newStep);
 	double n = field->getValue(yOut.x);
-	candidate->setPropagationTime(candidate->getPropagationTime() + step*n / c_light);
+	candidate->setPropagationTime(candidate->getPropagationTime() + step / c_light);
 	candidate->appendPathPosition(yOut.x);
 }
 
