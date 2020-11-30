@@ -101,7 +101,7 @@ Vector3d Candidate::getLaunchVector() const{
 }
 
 Vector3d Candidate::getReceiveVector() const{
-	return current.getDirection();
+	return Vector3d(-current.getDirection().x,-current.getDirection().y,-current.getDirection().z);
 }
 
 void Candidate::appendReflectionAngle(double angle) {
