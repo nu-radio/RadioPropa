@@ -79,8 +79,8 @@ public:
 	void appendReflectionAngle(double angle);
 	std::string getReflectionAngles() const;
 
-	Vector3d getEndPosition() const;
 	Vector3d getStartPosition() const;
+	Vector3d getEndPosition() const;
 	
 	bool isActive() const;
 	void setActive(bool b);

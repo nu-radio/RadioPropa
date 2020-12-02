@@ -119,11 +119,11 @@ std::string Candidate::getReflectionAngles() const{
 	return ss.str();
 }
 
-Vector3d Candidate::getEndPosition() const{
+Vector3d Candidate::getStartPosition() const{
 	return source.getPosition();
 }
 
-Vector3d Candidate::getStartPosition() const{
+Vector3d Candidate::getEndPosition() const{
 	return current.getPosition();
 }
 
