@@ -71,7 +71,7 @@ public:
 	std::string getPathY() const;
 	std::string getPathZ() const;
 	std::string getPath() const;
-  void appendPathPosition(Vector3d p);
+	void appendPathPosition(Vector3d p);
 
 	Vector3d getLaunchVector() const;
 	Vector3d getReceiveVector() const;
@@ -79,6 +79,9 @@ public:
 	void appendReflectionAngle(double angle);
 	std::string getReflectionAngles() const;
 
+	Vector3d getEndPosition() const;
+	Vector3d getStartPosition() const;
+	
 	bool isActive() const;
 	void setActive(bool b);
 
