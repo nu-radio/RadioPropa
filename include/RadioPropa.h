@@ -17,6 +17,7 @@
 #include "radiopropa/Referenced.h"
 #include "radiopropa/Source.h"
 #include "radiopropa/ScalarField.h"
+#include "radiopropa/IceModel.h"
 #include "radiopropa/Units.h"
 #include "radiopropa/Variant.h"
 #include "radiopropa/Vector3.h"
