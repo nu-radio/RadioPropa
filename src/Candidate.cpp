@@ -108,7 +108,11 @@ void Candidate::appendReflectionAngle(double angle) {
 	reflectionAngles.push_back(angle);
 }
 
-std::string Candidate::getReflectionAngles() const{
+std::vector<double> Candidate::getReflectionAngles() const{
+	return reflectionAngles;
+}
+
+std::string Candidate::getReflectionAngles_string() const{
 	std::stringstream ss;
 	ss << "[";
 	for(int i=0; i < reflectionAngles.size(); i++){

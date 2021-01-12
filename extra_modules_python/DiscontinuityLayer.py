@@ -32,9 +32,13 @@ class DiscontinuityLayer(radiopropa.Module):
 
             normal = self.__surface.normal(candidate.current.getPosition())
             v = candidate.current.getDirection()
-            u = normal * (v.dot(normal))
+            cos_theta = v.dot(normal)
+            u = normal * (cos_theta)
             new_direction = v - u*2 #new direction due to reflection of surface
             candidate.current.setDirection(new_direction)
+            
+            if cos_theta < 0.: candidate.appendReflectionAngle(np.pi - np.arccos(cos_theta))
+            else: candidate.appendReflectionAngle(np.arccos(cos_theta))
 
             # update position slightly to move on correct side of plane
             x = candidate.current.getPosition()

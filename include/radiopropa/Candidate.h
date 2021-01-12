@@ -77,7 +77,8 @@ public:
 	Vector3d getReceiveVector() const;
 
 	void appendReflectionAngle(double angle);
-	std::string getReflectionAngles() const;
+	std::vector<double> getReflectionAngles() const;
+	std::string getReflectionAngles_string() const;
 
 	Vector3d getStartPosition() const;
 	Vector3d getEndPosition() const;
