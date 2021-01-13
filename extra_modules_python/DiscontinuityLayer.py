@@ -13,6 +13,7 @@ class DiscontinuityLayer(radiopropa.Module):
         radiopropa.Module.__init__(self)
         self.__surface = surface
         self.__transmisionCoefficient = transmisionCoefficient
+        self.__times_reflectedoff ={}
 
     def process(self, candidate):
 
@@ -27,8 +28,8 @@ class DiscontinuityLayer(radiopropa.Module):
             # The secondary propagates further, while the candidate is
             # reflected: legacy from CRPropa interface as secondaries have same
             # direction as parents.
-            candidate.addSecondary(0, self.__transmisionCoefficient * E, 1)
-            candidate.current.setAmplitude((1-self.__transmisionCoefficient) * E)
+            candidate.addSecondary(0,E*self.__transmisionCoefficient, 1)
+            candidate.current.setAmplitude(E*(1-self.__transmisionCoefficient))
 
             normal = self.__surface.normal(candidate.current.getPosition())
             v = candidate.current.getDirection()
@@ -37,14 +38,21 @@ class DiscontinuityLayer(radiopropa.Module):
             new_direction = v - u*2 #new direction due to reflection of surface
             candidate.current.setDirection(new_direction)
             
-            if cos_theta < 0.: candidate.appendReflectionAngle(np.pi - np.arccos(cos_theta))
-            else: candidate.appendReflectionAngle(np.arccos(cos_theta))
+            #if cos_theta < 0.: candidate.appendReflectionAngle(np.pi - np.arccos(cos_theta))
+            #else: candidate.appendReflectionAngle(np.arccos(cos_theta))
 
             # update position slightly to move on correct side of plane
             x = candidate.current.getPosition()
             candidate.current.setPosition(x + new_direction * candidate.getCurrentStep())
             # update position (this is a hack to avoid double scatter)
             # candidate.previous.setPosition(candidate.current.getPosition())
+            if candidate not in self.__times_reflectedoff.keys(): 
+                self.__times_reflectedoff[candidate] = 1
+            else:
+                self.__times_reflectedoff[candidate] += 1
+
+    def get_times_reflectedoff(self, candidate):
+        return self.__times_reflectedoff[candidate]
 
 class TransmissiveLayer(radiopropa.Module):
     """
@@ -66,7 +74,7 @@ class TransmissiveLayer(radiopropa.Module):
             candidate.limitNextStep(abs(currentDistance))
         else:
             E = candidate.current.getAmplitude()
-            candidate.current.setAmplitude(self.__transmisionCoefficient * E)
+            candidate.current.setAmplitude(E*self.__transmisionCoefficient)
 
 class ReflectiveLayer(radiopropa.Module):
     """
@@ -78,6 +86,7 @@ class ReflectiveLayer(radiopropa.Module):
         radiopropa.Module.__init__(self)
         self.__surface = surface
         self.__reflectionCoefficient = reflectionCoefficient
+        self.__times_reflectedoff ={}
 
     def process(self, candidate):
 
@@ -89,16 +98,27 @@ class ReflectiveLayer(radiopropa.Module):
         else:
             E = candidate.current.getAmplitude()
 
-            candidate.current.setAmplitude(self.__reflectionCoefficient * E)
+            candidate.current.setAmplitude(E*self.__reflectionCoefficient)
 
             normal = self.__surface.normal(candidate.current.getPosition())
             v = candidate.current.getDirection()
-            u = normal * (v.dot(normal))
+            cos_theta = v.dot(normal)
+            u = normal * (cos_theta)
             new_direction = v - u*2 #new direction due to reflection of surface
             candidate.current.setDirection(new_direction)
+
+            #if cos_theta < 0.: candidate.appendReflectionAngle(np.pi - np.arccos(cos_theta))
+            #else: candidate.appendReflectionAngle(np.arccos(cos_theta))
 
             # update position slightly to move on correct side of plane
             x = candidate.current.getPosition()
             candidate.current.setPosition(x + new_direction * candidate.getCurrentStep())
             # update position (this is a hack to avoid double scatter)
             # candidate.previous.setPosition(candidate.current.getPosition())
+            if candidate not in self.__times_reflectedoff.keys(): 
+                self.__times_reflectedoff[candidate] = 1
+            else:
+                self.__times_reflectedoff[candidate] += 1
+
+    def get_times_reflectedoff(self, candidate):
+        return self.__times_reflectedoff[candidate]
