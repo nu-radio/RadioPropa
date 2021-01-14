@@ -26,35 +26,35 @@ Vector3d IceModel_Exponential::getGradient(const Vector3d &position) const
 	return v;
 }
 
-/*
-IceModel_GreenlandSimple::IceModel_GreenlandSimple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
+
+greenland_simple::greenland_simple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
 {}
-IceModel_GreenlandSimple::~IceModel_GreenlandSimple()
+greenland_simple::~greenland_simple()
 {}
 
-IceModel_SouthPoleSimple::IceModel_SouthPoleSimple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
+southpole_simple::southpole_simple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
 {}
-IceModel_SouthPoleSimple::~IceModel_SouthPoleSimple()
-{}
-
-IceModel_SouthPole2015::IceModel_SouthPole2015(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
-{}
-IceModel_SouthPole2015::~IceModel_SouthPole2015()
+southpole_simple::~southpole_simple()
 {}
 
-
-IceModel_SouthPoleARAsim::IceModel_SouthPoleARAsim(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
+southpole_2015::southpole_2015(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
 {}
-IceModel_SouthPoleARAsim::~IceModel_SouthPoleARAsim()
+southpole_2015::~southpole_2015()
 {}
 
 
-IceModel_MooresbaySimple::IceModel_MooresbaySimple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
+ARAsim_southpole::ARAsim_southpole(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
 {}
-IceModel_MooresbaySimple::~IceModel_MooresbaySimple()
+ARAsim_southpole::~ARAsim_southpole()
 {}
 
-*/
+
+mooresbay_simple::mooresbay_simple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
+{}
+mooresbay_simple::~mooresbay_simple()
+{}
+
+
 
 
 GorhamIceModel::GorhamIceModel(double z_surface, double a, double b, double c) : _z_surface(z_surface), _a(a), _b(b), _c(c)

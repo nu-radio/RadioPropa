@@ -21,38 +21,38 @@ class IceModel_Exponential: public ScalarField
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
-/*
-class IceModel_GreenlandSimple: public IceModel_Exponential
+
+class greenland_simple: public IceModel_Exponential
 {
 	public:
-		IceModel_GreenlandSimple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.51, double z_0 = 37.25*meter);
-		virtual ~IceModel_GreenlandSimple();
+		greenland_simple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.51, double z_0 = 37.25*meter);
+		virtual ~greenland_simple();
 };
-class IceModel_SouthPoleSimple: public IceModel_Exponential
+class southpole_simple: public IceModel_Exponential
 {
 	public:
-		IceModel_SouthPoleSimple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.426, double z_0 = 71*meter);
-		virtual ~IceModel_SouthPoleSimple();
+		southpole_simple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.426, double z_0 = 71*meter);
+		virtual ~southpole_simple();
 };
-class IceModel_SouthPole2015: public IceModel_Exponential
+class southpole_2015: public IceModel_Exponential
 {
 	public:
-		IceModel_SouthPole2015(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.423, double z_0 = 77*meter);
-		virtual ~IceModel_SouthPole2015();
+		southpole_2015(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.423, double z_0 = 77*meter);
+		virtual ~southpole_2015();
 };
-class IceModel_SouthPoleARAsim: public IceModel_Exponential
+class ARAsim_southpole: public IceModel_Exponential
 {
 	public:
-		IceModel_SouthPoleARAsim(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.43, double z_0 = 75.75757575757576*meter);
-		virtual ~IceModel_SouthPoleARAsim();
+		ARAsim_southpole(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.43, double z_0 = 75.75757575757576*meter);
+		virtual ~ARAsim_southpole();
 };
-class IceModel_MooresbaySimple: public IceModel_Exponential
+class mooresbay_simple: public IceModel_Exponential
 {
 	public:
-		IceModel_MooresbaySimple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.46, double z_0 = 37.25*meter);
-		virtual ~IceModel_MooresbaySimple();
+		mooresbay_simple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.46, double z_0 = 37.25*meter);
+		virtual ~mooresbay_simple();
 };
-*/
+
 
 /**
     Gorham Ice Model from https://icecube.wisc.edu/~mnewcomb/radio/
