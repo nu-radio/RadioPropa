@@ -19,7 +19,7 @@ double IceModel_Exponential::getValue(const Vector3d &position) const
 Vector3d IceModel_Exponential::getGradient(const Vector3d &position) const
 {
 	Vector3d v(0,0,0);
-	if (position.z <0)
+	if (position.z - _z_surface <0)
 	{
 	v.z = - _delta_n / _z_0 * exp(position.z/ _z_0);
 	}
