@@ -2,31 +2,82 @@
 
 namespace radiopropa {
 
-IceModel_Exponential::IceModel_Exponential(double z_surface, double n_ice, double delta_n, double z_0): _z_surface(z_surface), _n_ice(n_ice), _delta_n(delta_n), _z_0(z_0)
+ExponentialIndex::ExponentialIndex(double n_ice, double delta_n, double z_0, double z_shift): 
+	_n_ice(n_ice), 
+	_delta_n(delta_n), 
+	_z_shift(z_shift), 
+	_z_0(z_0)
 {}
-
-IceModel_Exponential::~IceModel_Exponential()
+ExponentialIndex::~ExponentialIndex()
 {}
-
-double IceModel_Exponential::getValue(const Vector3d &position) const
+double ExponentialIndex::getValue(const Vector3d &position) const
 {
-	if (position.z - _z_surface <0)
-	return _n_ice  - _delta_n  * exp(position.z / _z_0);
-	else
-	return 1.;
+	return _n_ice  - _delta_n  * exp((position.z-_z_shift) / _z_0);
 }
-
-Vector3d IceModel_Exponential::getGradient(const Vector3d &position) const
+Vector3d ExponentialIndex::getGradient(const Vector3d &position) const
 {
 	Vector3d v(0,0,0);
-	if (position.z - _z_surface <0)
-	{
-	v.z = - _delta_n / _z_0 * exp(position.z/ _z_0);
-	}
+	v.z = - _delta_n / _z_0 * exp((position.z-_z_shift)/ _z_0);
 	return v;
 }
 
 
+IceModel_Simple::IceModel_Simple(double n_ice, double delta_n, double z_0, double z_shift, double z_surface): 
+	_z_surface(z_surface),
+	_ice(n_ice, delta_n, z_0, z_shift)
+{}
+IceModel_Simple::~IceModel_Simple()
+{}
+double IceModel_Simple::getValue(const Vector3d &position) const
+{
+	if (position.z <= _z_surface) {
+		return _ice.getValue(position);
+	} else {
+		return 1.;
+	}
+}
+Vector3d IceModel_Simple::getGradient(const Vector3d &position) const
+{
+	if (position.z <= _z_surface){
+		return _ice.getGradient(position);
+	} else {
+		return Vector3d(0,0,0);
+	}
+}
+
+
+
+IceModel_Firn::IceModel_Firn(double n_ice_firn, double delta_n_firn, double z_shift_firn, double z_0_firn, 
+	double z_firn, double n_ice, double delta_n, double z_0, double z_shift, double z_surface) :
+	_firn(n_ice_firn, delta_n_firn, z_0_firn, z_shift_firn),
+	_ice(n_ice, delta_n, z_0, z_shift), 
+	_z_surface(z_surface),
+	_z_firn(z_firn)
+{}
+IceModel_Firn::~IceModel_Firn()
+{}
+double IceModel_Firn::getValue(const Vector3d &position) const
+{
+	if (position.z < _z_firn){
+		return _ice.getValue(position);
+	} else if (position.z <= _z_surface){
+		return _firn.getValue(position);
+	} else {
+		return 1.;
+	}
+}
+Vector3d IceModel_Firn::getGradient(const Vector3d &position) const
+{
+	if (position.z < _z_firn){
+		return _ice.getGradient(position);
+	} else if (position.z <= _z_surface) {
+		return _firn.getGradient(position);
+	} else {
+		return Vector3d(0,0,0);
+	}
+}
+
+/**
 greenland_simple::greenland_simple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
 {}
 greenland_simple::~greenland_simple()
@@ -53,7 +104,7 @@ mooresbay_simple::mooresbay_simple(double z_surface, double n_ice, double delta_
 {}
 mooresbay_simple::~mooresbay_simple()
 {}
-
+**/
 
 
 

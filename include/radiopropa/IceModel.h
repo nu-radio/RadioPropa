@@ -9,19 +9,53 @@
 
 namespace radiopropa {
 
-class IceModel_Exponential: public ScalarField
+class ExponentialIndex: public ScalarField
 {
 	protected:
-		double _n_ice, _delta_n, _z_0;
-		double _z_surface;
+		double _n_ice, _delta_n, _z_shift, _z_0;
 	public:
-		IceModel_Exponential(double z_surface = 0, double n_ice = 1 , double delta_n = 1, double z_0 = 1);
-		virtual ~IceModel_Exponential();
+		ExponentialIndex(double n_ice, double delta_n, double z_0, double z_shift = 0);
+		virtual ~ExponentialIndex();
 		virtual double getValue(const Vector3d &position) const; 
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
+class IceModel_Simple: public ScalarField
+{
+	protected:
+		ExponentialIndex _ice;
+		double _z_surface;
+	public:
+		IceModel_Simple(double n_ice, double delta_n, double z_0, double z_shift = 0, double z_surface = 0);
+		virtual ~IceModel_Simple();
+		virtual double getValue(const Vector3d &position) const; 
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
 
+class IceModel_Firn: public ScalarField
+{
+	protected:
+		double _z_surface, _z_firn;
+		ExponentialIndex _firn;
+		ExponentialIndex _ice;
+	public:
+		IceModel_Firn(  
+			double n_ice_firn, 
+			double delta_n_firn, 
+			double z_shift_firn, 
+			double z_0_firn,
+			double z_firn,
+			double n_ice,  
+			double delta_n, 
+			double z_0,
+			double z_shift = 0,
+			double z_surface = 0);
+		virtual ~IceModel_Firn();
+		virtual double getValue(const Vector3d &position) const; 
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
+
+/**
 class greenland_simple: public IceModel_Exponential
 {
 	public:
@@ -52,7 +86,7 @@ class mooresbay_simple: public IceModel_Exponential
 		mooresbay_simple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.46, double z_0 = 37.25*meter);
 		virtual ~mooresbay_simple();
 };
-
+**/
 
 /**
     Gorham Ice Model from https://icecube.wisc.edu/~mnewcomb/radio/
