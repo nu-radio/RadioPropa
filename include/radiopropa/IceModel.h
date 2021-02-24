@@ -16,7 +16,8 @@ class ExponentialIndex: public ScalarField
 	public:
 		ExponentialIndex(double n_ice, double delta_n, double z_0, double z_shift = 0);
 		virtual ~ExponentialIndex();
-		virtual double getValue(const Vector3d &position) const; 
+		virtual double getValue(const Vector3d &position) const;
+		virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const; 
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
@@ -28,7 +29,8 @@ class IceModel_Simple: public ScalarField
 	public:
 		IceModel_Simple(double n_ice, double delta_n, double z_0, double z_shift = 0, double z_surface = 0);
 		virtual ~IceModel_Simple();
-		virtual double getValue(const Vector3d &position) const; 
+		virtual double getValue(const Vector3d &position) const;
+		virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const; 
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
@@ -52,6 +54,7 @@ class IceModel_Firn: public ScalarField
 			double z_surface = 0);
 		virtual ~IceModel_Firn();
 		virtual double getValue(const Vector3d &position) const; 
+		virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const; 
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
