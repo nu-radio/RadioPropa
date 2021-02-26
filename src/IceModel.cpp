@@ -16,7 +16,7 @@ double ExponentialIndex::getValue(const Vector3d &position) const
 }
 double ExponentialIndex::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
 {
-	return _n_ice - _delta_n * _z_0 / (position2.z - position1.z) * (exp((position2.z-_z_shift) / _z_0) - exp((position1.z-_z_shift) / _z_0))
+	return _n_ice - _delta_n * _z_0 / (position2.z - position1.z) * (exp((position2.z-_z_shift) / _z_0) - exp((position1.z-_z_shift) / _z_0));
 }
 Vector3d ExponentialIndex::getGradient(const Vector3d &position) const
 {
@@ -42,7 +42,7 @@ double IceModel_Simple::getValue(const Vector3d &position) const
 }
 double IceModel_Simple::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
 {
-	if (position1.z <= _z_surface) and (position2.z <= _z_surface) {
+	if ((position1.z <= _z_surface) and (position2.z <= _z_surface)) {
 		return _ice.getAverageValue(position1,position2);
 	} else {
 		return 1.;
@@ -80,14 +80,14 @@ double IceModel_Firn::getValue(const Vector3d &position) const
 }
 double IceModel_Firn::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
 {
-	if (position1.z <= _z_surface) and (position2.z <= _z_surface) {
-		if (position1.z < _z_firn) and (position2.z < _z_firn){
+	if ((position1.z <= _z_surface) and (position2.z <= _z_surface)) {
+		if ((position1.z < _z_firn) and (position2.z < _z_firn)) {
 			return _ice.getAverageValue(position1,position2);
-		} else if (position1.z >= _z_firn) and (position2.z >= _z_firn){
+		} else if ((position1.z >= _z_firn) and (position2.z >= _z_firn)) {
 			return _firn.getAverageValue(position1,position2);
 		} else {
-			n1 = _ice.getAverageValue(position1,position2);
-			n2 = _firn.getAverageValue(position1,position2);
+			double n1 = _ice.getAverageValue(position1,position2);
+			double n2 = _firn.getAverageValue(position1,position2);
 			return (n1+n2)/2;
 		}
 	} else {
