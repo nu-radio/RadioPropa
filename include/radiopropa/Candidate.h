@@ -67,10 +67,10 @@ public:
 	 */
 	Candidate(const ParticleState &state);
 
-	std::string getPathX() const;
-	std::string getPathY() const;
-	std::string getPathZ() const;
-	std::string getPath() const;
+	std::vector<double> getPathX() const;
+	std::vector<double> getPathY() const;
+	std::vector<double> getPathZ() const;
+	std::vector<std::vector<double>> getPath() const;
 	void appendPathPosition(Vector3d p);
 
 	Vector3d getLaunchVector() const;
@@ -78,7 +78,6 @@ public:
 
 	void appendReflectionAngle(double angle);
 	std::vector<double> getReflectionAngles() const;
-	std::string getReflectionAngles_string() const;
 
 	Vector3d getStartPosition() const;
 	Vector3d getEndPosition() const;

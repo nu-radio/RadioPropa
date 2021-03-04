@@ -48,52 +48,24 @@ void Candidate::appendPathPosition(Vector3d p) {
   pathz.push_back(p.z);
 }
 
-std::string Candidate::getPathX() const {
-	std::stringstream ss;
-	ss << "[";
-	for(int i=0; i < pathx.size(); i++){
-  	ss << std::to_string(pathx[i]) << ",";
-	}
-	std::string st = ss.str();
-	st.pop_back();
-	st += "]";
-	return st;
+std::vector<double> Candidate::getPathX() const {
+	return pathx;
 }
 
-std::string Candidate::getPathY() const {
-	std::stringstream ss;
-	ss << "[";
-	for(int i=0; i < pathy.size(); i++){
-  	ss << std::to_string(pathy[i]) << ",";
-	}
-	std::string st = ss.str();
-	st.pop_back();
-	st += "]";
-	return st;
+std::vector<double> Candidate::getPathY() const {
+	return pathy;
 }
 
-std::string Candidate::getPathZ() const {
-	std::stringstream ss;
-	ss << "[";
-	for(int i=0; i < pathz.size(); i++){
-  	ss << std::to_string(pathz[i]) << ",";
-	}
-	std::string st = ss.str();
-	st.pop_back();
-	st += "]";
-	return st;
+std::vector<double> Candidate::getPathZ() const {
+	return pathz;
 }
 
-std::string Candidate::getPath() const {
-	std::stringstream ss;
-	ss << "[";
-	for(int i=0; i < pathz.size(); i++){
-  	ss << "[" << std::to_string(pathx[i]) << "," << std::to_string(pathy[i]) << "," << std::to_string(pathz[i]) << "],";
-	}
-	std::string st = ss.str();
-	st.pop_back();
-	st += "]";
-	return st;
+std::vector<std::vector<double>> Candidate::getPath() const {
+	std::vector<std::vector<double>> path;
+	path.push_back(pathx);
+	path.push_back(pathy);
+	path.push_back(pathz);
+	return path;
 }
 
 Vector3d Candidate::getLaunchVector() const{
@@ -110,17 +82,6 @@ void Candidate::appendReflectionAngle(double angle) {
 
 std::vector<double> Candidate::getReflectionAngles() const{
 	return reflectionAngles;
-}
-
-std::string Candidate::getReflectionAngles_string() const{
-	std::stringstream ss;
-	ss << "[";
-	for(int i=0; i < reflectionAngles.size(); i++){
-		if (i == 0) {	ss << std::to_string(reflectionAngles[i]);
-		} else {ss << "," << std::to_string(reflectionAngles[i]);}
-	}
-	ss << "]";
-	return ss.str();
 }
 
 Vector3d Candidate::getStartPosition() const{
