@@ -1,5 +1,6 @@
 #include "radiopropa/module/Discontinuity.h"
 #include <cmath>
+#include <complex>
 
 namespace radiopropa{
 
