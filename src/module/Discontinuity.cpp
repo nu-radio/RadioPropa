@@ -109,4 +109,84 @@ void Discontinuity::process(Candidate *candidate) const
 
 }
 
+		std::stringstream ss;
+		ss << "Discontinuity";
+		ss << "\n    " << surface->getDescription() << "\n";
+		ss << "    n1: " << n1 << "\n";
+		ss << "    n2: " << n2;
+
+		return ss.str();
+	}
+
+
+	TransmissiveLayer::TransmissiveLayer(Surface *surface, double transmission) : 
+		surface(surface), transmission(transmission)
+	{
+	}
+	void TransmissiveLayer::process(Candidate *candidate) const
+	{
+		double cx = surface->distance(candidate->current.getPosition());
+		double px = surface->distance(candidate->previous.getPosition());
+
+		if (std::signbit(cx) == std::signbit(px)){
+			candidate->limitNextStep(fabs(cx));
+			return;
+		} else {
+			candidate->current.setAmplitude(candidate->current.getAmplitude()*transmission);
+		}
+	}
+	std::string TransmissiveLayer::getDescription() const {
+		std::stringstream ss;
+		ss << "TransmissiveLayer";
+		ss << "\n    " << surface->getDescription() << "\n";
+		ss << "    transmission coefficent: " << transmission << "\n";
+
+		return ss.str();
+	}
+
+
+	ReflectiveLayer::ReflectiveLayer(Surface *surface, double reflection) : 
+		surface(surface), reflection(reflection)
+	{
+	}
+	void ReflectiveLayer::process(Candidate *candidate)
+	{
+		double cx = surface->distance(candidate->current.getPosition());
+		double px = surface->distance(candidate->previous.getPosition());
+
+		if (std::signbit(cx) == std::signbit(px)){
+			candidate->limitNextStep(fabs(cx));
+			return;
+		} else {
+			candidate->current.setAmplitude(candidate->current.getAmplitude()*reflection);
+
+			Vector3d normal = surface->normal(candidate->current.getPosition());
+            Vector3d v = candidate->current.getDirection();
+            double cos_theta = v.dot(normal);
+            Vector3d u = normal * (cos_theta);
+            Vector3d new_direction = v - u*2; //new direction due to reflection of surface
+            candidate->current.setDirection(new_direction);
+
+            // update position slightly to move on correct side of plane
+            Vector3d x = candidate->current.getPosition();
+            candidate->current.setPosition(x + new_direction * candidate->getCurrentStep());
+            if (times_reflectedoff.find(candidate) != times_reflectedoff.end()) {
+                times_reflectedoff[candidate] = 1;
+            } else {
+                times_reflectedoff[candidate]++;
+            }
+		}
+	}
+	std::string ReflectiveLayer::getDescription() const {
+		std::stringstream ss;
+		ss << "ReflectiveLayer";
+		ss << "\n    " << surface->getDescription() << "\n";
+		ss << "    reflection coefficent: " << reflection << "\n";
+
+		return ss.str();
+	}
+	int ReflectiveLayer::getTimesReflectedoff(Candidate *candidate){
+		return times_reflectedoff[candidate];
+	}
+	std::string Discontinuity::getDescription() const {
 }

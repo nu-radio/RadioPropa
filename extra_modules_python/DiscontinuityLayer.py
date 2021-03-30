@@ -29,7 +29,7 @@ class DiscontinuityLayer(radiopropa.Module):
             # reflected: legacy from CRPropa interface as secondaries have same
             # direction as parents.
             candidate.addSecondary(0,E*self.__transmisionCoefficient, 1)
-            candidate.current.setAmplitude(E*(1-self.__transmisionCoefficient))
+            candidate.current.setAmplitude(E*np.sqrt(1-self.__transmisionCoefficient**2))
 
             normal = self.__surface.normal(candidate.current.getPosition())
             v = candidate.current.getDirection()
