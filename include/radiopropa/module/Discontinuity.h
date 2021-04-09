@@ -20,6 +20,7 @@ private:
 public:
     Discontinuity(Surface *_surface, double _n1, double _n2); 
     void process(Candidate *candidate) const;
+    std::string getDescription() const;
 };
 
 class TransmissiveLayer: public Module {
