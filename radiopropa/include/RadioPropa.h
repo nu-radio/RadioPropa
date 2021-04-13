@@ -1,6 +1,6 @@
-/// CRPRopa public definitions
-#ifndef CRPROPA_H
-#define CRPROPA_H
+/// RadioPRopa public definitions
+#ifndef RADIOPROPA_H
+#define RADIOPROPA_H
 
 #include "radiopropa/Candidate.h"
 #include "radiopropa/Common.h"
@@ -36,4 +36,4 @@
 #include "radiopropa/module/TextOutput.h"
 #include "radiopropa/module/Tools.h"
 
-#endif // CRPROPA_H
+#endif // RADIOPROPA_H

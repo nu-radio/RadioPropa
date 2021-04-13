@@ -6,7 +6,7 @@ propagation in inhomogeneous by media ray-tracing. (22/01/2018)
 
 
 # Installation
-Be sure you have python, a C++ compiler and cmake!
+Be sure you have python, a C++ compiler with c++11 support (gcc, clang and icc are known to work), swig (3.0.4 or higher) and cmake!
 
 Create a folder "RadioPropa" in the directory where you want to install it.
 Go into this directory using a therminal.
