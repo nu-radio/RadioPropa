@@ -12,16 +12,6 @@
 
 /* Include headers */
 
-#ifdef CRPROPA_HAVE_QUIMBY
-%import (module="quimby") "quimby/Referenced.h"
-%import (module="quimby") "quimby/Vector3.h"
-//%import (module="quimby") quimby.i
-#endif
-
-#ifdef CRPROPA_HAVE_SAGA
-%import (module="saga") saga.i
-#endif
-
 %{
 #include "RadioPropa.h"
 %}
