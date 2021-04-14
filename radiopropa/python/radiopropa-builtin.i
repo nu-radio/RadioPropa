@@ -1,11 +1,10 @@
-/* CRPropa3 SWIG interface (for Python) */
+/* RadioPropa SWIG interface (for Python) */
 
 /* Content:
  *
  * 1. SWIG settings and workarounds
- * 2. SWIG and CRPropa headers
+ * 2. SWIG and RadioPropa headers
  * 3. Pretty print for Python
- * 4. Magnetic Lens and Particle Maps Container
  *
  */
 
@@ -13,7 +12,7 @@
 /* 1. SWIG settings and workarounds */
 %include "1_swig.i"
 
-/* 2: SWIG and CRPropa headers */
+/* 2: SWIG and RadioPropa headers */
 %include "2_headers.i"
 
 /* 3. Pretty print for Python */

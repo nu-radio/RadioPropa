@@ -18,7 +18,7 @@ std::string getDataPath(std::string filename) {
 	if (dataPath.size())
 		return concat_path(dataPath, filename);
 
-	const char *env_path = getenv("CRPROPA_DATA_PATH");
+	const char *env_path = getenv("RADIOPROPA_DATA_PATH");
 	if (env_path) {
 		if (is_directory(env_path)) {
 			dataPath = env_path;
@@ -28,9 +28,9 @@ std::string getDataPath(std::string filename) {
 		}
 	}
 
-#ifdef CRPROPA_INSTALL_PREFIX
+#ifdef RADIOPROPA_INSTALL_PREFIX
 	{
-		std::string _path = CRPROPA_INSTALL_PREFIX "/share/radiopropa";
+		std::string _path = RADIOPROPA_INSTALL_PREFIX "/share/radiopropa";
 		if (is_directory(_path)) {
 			dataPath = _path;
 			KISS_LOG_INFO
@@ -59,8 +59,8 @@ std::string getDataPath(std::string filename) {
 std::string getInstallPrefix()
 {
   std::string _path = "";
-  #ifdef CRPROPA_INSTALL_PREFIX
-    _path += CRPROPA_INSTALL_PREFIX;
+  #ifdef RADIOPROPA_INSTALL_PREFIX
+    _path += RADIOPROPA_INSTALL_PREFIX;
   #endif
   return _path;
 };

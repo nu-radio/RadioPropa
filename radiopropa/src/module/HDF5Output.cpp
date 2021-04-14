@@ -1,4 +1,4 @@
-#ifdef CRPROPA_HAVE_HDF5
+#ifdef RADIOPROPA_HAVE_HDF5
 
 #include "radiopropa/module/HDF5Output.h"
 #include "radiopropa/Version.h"

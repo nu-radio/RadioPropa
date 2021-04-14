@@ -1,4 +1,4 @@
-/* 2: CRPropa headers and Python extensions */
+/* 2: RadioPropa headers and Python extensions */
 
 /* Python slots */
 %feature("python:slot", "sq_length", functype="lenfunc") __len__;

@@ -1,7 +1,7 @@
 #ifndef CRPROPA_HDF5OUTPUT_H
 #define CRPROPA_HDF5OUTPUT_H
 
-#ifdef CRPROPA_HAVE_HDF5
+#ifdef RADIOPROPA_HAVE_HDF5
 
 /*
  * HDF5 structure:

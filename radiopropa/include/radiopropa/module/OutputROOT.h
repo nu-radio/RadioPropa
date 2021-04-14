@@ -3,7 +3,7 @@
 
 #include "radiopropa/Module.h"
 
-#ifdef CRPROPA_HAVE_ROOT
+#ifdef RADIOPROPA_HAVE_ROOT
 #include <TFile.h>
 #include <TNtuple.h>
 #include <TTree.h>

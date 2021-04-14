@@ -6,14 +6,18 @@ else(APPLE)
 	# allow < 2.8.12 for debian backports
 	cmake_minimum_required(VERSION 2.8.11)
 endif(APPLE)
-project(CRPropa Fortran C CXX)
+
+cmake_policy(SET CMP0048 NEW)
+
+project(RadioPropa VERSION 1.0.0 LANGUAGES C CXX)
+message(STATUS "RadioPropa version: ${PROJECT_VERSION}")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
-set(CRPROPA_EXTRA_SOURCES)
-set(CRPROPA_EXTRA_INCLUDES)
-set(CRPROPA_EXTRA_LIBRARIES)
-set(CRPROPA_SWIG_DEFINES)
+set(RADIOPROPA_EXTRA_SOURCES)
+set(RADIOPROPA_EXTRA_INCLUDES)
+set(RADIOPROPA_EXTRA_LIBRARIES)
+set(RADIOPROPA_SWIG_DEFINES)
 
 macro(USE_CXX11)
   if (CMAKE_VERSION VERSION_LESS "3.1")
@@ -46,9 +50,9 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 # ----------------------------------------------------------------------------
 # Version info from Git
 # ----------------------------------------------------------------------------
-# Embed the information about CRPropa version into the binaries for easier
+# Embed the information about RadioPropa version into the binaries for easier
 # debugging with a reproducibility in mind
-option(ENABLE_GIT "Embedding information about CRPropa version from git" ON)
+option(ENABLE_GIT "Embedding information about RadioPropa version from git" ON)
 
 if(ENABLE_GIT)
 	include(GetGitRevisionDescription)
@@ -57,12 +61,12 @@ if(ENABLE_GIT)
 else(ENABLE_GIT)
 	set(GIT_REFSPEC "")
 	set(GIT_SHA1 "")
-	set(GIT_DESC "3.0-no-git")
+	set(GIT_DESC "no-git")
 endif(ENABLE_GIT)
 
-message(STATUS "CRPropa version: ${GIT_DESC} ${GIT_SHA1} ${GIT_REFSPEC}")
+message(STATUS "RadioPropa git version: ${GIT_DESC} ${GIT_SHA1} ${GIT_REFSPEC}")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/Version.cpp.in" "${CMAKE_CURRENT_BINARY_DIR}/src/Version.cpp" @ONLY)
-list(APPEND CRPROPA_EXTRA_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/src/Version.cpp")
+list(APPEND RADIOPROPA_EXTRA_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/src/Version.cpp")
 
 
 
@@ -123,13 +127,13 @@ endif(ENABLE_COVERAGE)
 
 # kiss (provided)
 add_subdirectory(libs/kiss)
-list(APPEND CRPROPA_EXTRA_LIBRARIES kiss)
-list(APPEND CRPROPA_EXTRA_INCLUDES libs/kiss/include)
+list(APPEND RADIOPROPA_EXTRA_LIBRARIES kiss)
+list(APPEND RADIOPROPA_EXTRA_INCLUDES libs/kiss/include)
 
 	# healpix redux (provided)
 	add_subdirectory(libs/healpix_base)
-	list(APPEND CRPROPA_EXTRA_LIBRARIES healpix_base)
-	list(APPEND CRPROPA_EXTRA_INCLUDES libs/healpix_base/include)
+list(APPEND RADIOPROPA_EXTRA_LIBRARIES healpix_base)
+list(APPEND RADIOPROPA_EXTRA_INCLUDES libs/healpix_base/include)
 	install(DIRECTORY libs/healpix_base/include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 
 # OpenMP (optional for shared memory multiprocessing)
@@ -148,17 +152,17 @@ find_package(GooglePerfTools)
 set(TCMALLOC)
 if(GOOGLE_PERFTOOLS_FOUND AND NOT NO_TCMALLOC)
 	set(TCMALLOC ${TCMALLOC_LIBRARY})
-	list(APPEND CRPROPA_EXTRA_LIBRARIES profiler)
+	list(APPEND RADIOPROPA_EXTRA_LIBRARIES profiler)
 endif(GOOGLE_PERFTOOLS_FOUND AND NOT NO_TCMALLOC)
 
 # zlib / zstream-cpp (optional for compressed output files)
 find_package(ZLIB)
 if(ZLIB_FOUND)
-	list(APPEND CRPROPA_EXTRA_INCLUDES ${ZLIB_INCLUDE_DIRS})
-	list(APPEND CRPROPA_EXTRA_INCLUDES "libs/zstream-cpp")
-	list(APPEND CRPROPA_EXTRA_LIBRARIES ${ZLIB_LIBRARIES})
-	add_definitions (-DCRPROPA_HAVE_ZLIB)
-	list(APPEND CRPROPA_SWIG_DEFINES -DCRPROPA_HAVE_ZLIB)
+	list(APPEND RADIOPROPA_EXTRA_INCLUDES ${ZLIB_INCLUDE_DIRS})
+	list(APPEND RADIOPROPA_EXTRA_INCLUDES "libs/zstream-cpp")
+	list(APPEND RADIOPROPA_EXTRA_LIBRARIES ${ZLIB_LIBRARIES})
+	add_definitions (-DRADIOPROPA_HAVE_ZLIB)
+	list(APPEND RADIOPROPA_SWIG_DEFINES -DRADIOPROPA_HAVE_ZLIB)
 	list(APPEND SWIG_INCLUDE_DIRECTORIES ${ZLIB_INCLUDE_DIRS})
 endif(ZLIB_FOUND)
 
@@ -167,15 +171,15 @@ option(ENABLE_HDF5 "HDF5 Support" ON)
 if(ENABLE_HDF5)
 	find_package( HDF5 COMPONENTS C )
 	if(HDF5_FOUND)
-		# parallel version requires MPI which is not supported in CRPropa
+		# parallel version requires MPI which is not supported in RadioPropa
 		if(NOT HDF5_IS_PARALLEL)
-			list(APPEND CRPROPA_EXTRA_INCLUDES ${HDF5_INCLUDE_DIRS})
-			list(APPEND CRPROPA_EXTRA_LIBRARIES ${HDF5_LIBRARIES})
-			add_definitions (-DCRPROPA_HAVE_HDF5)
-			list(APPEND CRPROPA_SWIG_DEFINES -DCRPROPA_HAVE_HDF5)
+			list(APPEND RADIOPROPA_EXTRA_INCLUDES ${HDF5_INCLUDE_DIRS})
+			list(APPEND RADIOPROPA_EXTRA_LIBRARIES ${HDF5_LIBRARIES})
+			add_definitions (-DRADIOPROPA_HAVE_HDF5)
+			list(APPEND RADIOPROPA_SWIG_DEFINES -DRADIOPROPA_HAVE_HDF5)
 			list(APPEND SWIG_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIRS})
 			#string(REPLACE " " " -I" HDF5_INCLUDE_DIRS_SWIG ${HDF5_INCLUDE_DIRS})
-			#list(APPEND CRPROPA_SWIG_DEFINES -I${HDF5_INCLUDE_DIRS_SWIG})
+			#list(APPEND RADIOPROPA_SWIG_DEFINES -I${HDF5_INCLUDE_DIRS_SWIG})
 		endif(NOT HDF5_IS_PARALLEL)
 	endif(HDF5_FOUND)
 endif(ENABLE_HDF5)
@@ -233,8 +237,8 @@ endif(APPLE)
 # ----------------------------------------------------------------------------
 # Library and Binary
 # ----------------------------------------------------------------------------
-file(GLOB_RECURSE CRPROPA_INCLUDES RELATIVE ${CMAKE_SOURCE_DIR} include/*.h)
-include_directories(include ${CRPROPA_EXTRA_INCLUDES})
+file(GLOB_RECURSE RADIOPROPA_INCLUDES RELATIVE ${CMAKE_SOURCE_DIR} include/*.h)
+include_directories(include ${RADIOPROPA_EXTRA_INCLUDES})
 
 add_library(radiopropa SHARED
 	src/Candidate.cpp
@@ -268,9 +272,9 @@ add_library(radiopropa SHARED
 	src/module/TextOutput.cpp
 	src/module/Tools.cpp
 
-	${CRPROPA_EXTRA_SOURCES}
+	${RADIOPROPA_EXTRA_SOURCES}
 )
-target_link_libraries(radiopropa ${CRPROPA_EXTRA_LIBRARIES})
+target_link_libraries(radiopropa ${RADIOPROPA_EXTRA_LIBRARIES})
 
 # ----------------------------------------------------------------------------
 # Python
@@ -297,7 +301,7 @@ if(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 	endif(ENABLE_SWIG_BUILTIN)
 
   if(PYTHON_VERSION_STRING VERSION_GREATER 3.0)
-  	list(APPEND CRPROPA_SWIG_DEFINES -DSWIG_PYTHON3)
+  	list(APPEND RADIOPROPA_SWIG_DEFINES -DSWIG_PYTHON3)
   endif(PYTHON_VERSION_STRING VERSION_GREATER 3.0)
 
 	# tries to import numpy
@@ -305,17 +309,17 @@ if(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 	if(numpyIncludePath)
 		MESSAGE(STATUS "Found numpy headers in " ${numpyIncludePath})
 		SET(CMAKE_SWIG_FLAGS -DWITHNUMPY ${CRP})
-		list(APPEND CRPROPA_SWIG_DEFINES -DWITHNUMPY)
+		list(APPEND RADIOPROPA_SWIG_DEFINES -DWITHNUMPY)
 	include_directories(${numpyIncludePath})
 	else(numpyIncludePath)
 		MESSAGE(STATUS "Numpy not found.")
 	endif(numpyIncludePath)
 
-	file(GLOB_RECURSE CRPROPA_SWIG_INPUTS python/*.i)
+	file(GLOB_RECURSE RADIOPROPA_SWIG_INPUTS python/*.i)
 	set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx PROPERTIES GENERATED true )
 	add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx
-		COMMAND swig ${BUILTIN} -c++ -python ${PY3} -I${CMAKE_SOURCE_DIR}/include ${SWIG_INCLUDES} ${CRPROPA_SWIG_DEFINES} -dirprot -o ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx -outdir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/python/radiopropa${BUILTIN}.i
-		DEPENDS ${CRPROPA_SWIG_INPUTS} ${CRPROPA_INCLUDES} )
+		COMMAND swig ${BUILTIN} -c++ -python ${PY3} -I${CMAKE_SOURCE_DIR}/include ${SWIG_INCLUDES} ${RADIOPROPA_SWIG_DEFINES} -dirprot -o ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx -outdir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/python/radiopropa${BUILTIN}.i
+		DEPENDS ${RADIOPROPA_SWIG_INPUTS} ${RADIOPROPA_INCLUDES} )
 
 	add_library(radiopropa-swig MODULE ${CMAKE_CURRENT_BINARY_DIR}/radiopropa_wrap.cxx)
 	set_target_properties(radiopropa-swig PROPERTIES PREFIX "")
@@ -326,14 +330,14 @@ if(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 	install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/radiopropa" DESTINATION "${PYTHON_SITE_PACKAGES}")
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/radiopropa.py" DESTINATION "${PYTHON_SITE_PACKAGES}/radiopropa")
 	install(TARGETS radiopropa-swig LIBRARY DESTINATION "${PYTHON_SITE_PACKAGES}/radiopropa")
-  install(FILES ${CRPROPA_SWIG_INPUTS} DESTINATION share/radiopropa/swig_interface)
+  install(FILES ${RADIOPROPA_SWIG_INPUTS} DESTINATION share/radiopropa/swig_interface)
 endif(ENABLE_PYTHON AND PYTHONLIBS_FOUND)
 
 
 # ----------------------------------------------------------------------------
 # Install
 # ----------------------------------------------------------------------------
-add_definitions(-DCRPROPA_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
+add_definitions(-DRADIOPROPA_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
 install(TARGETS radiopropa DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY ${CMAKE_BINARY_DIR}/include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
