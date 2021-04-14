@@ -1,5 +1,5 @@
-#ifndef CRPROPA_TEXTOUTPUT_H
-#define CRPROPA_TEXTOUTPUT_H
+#ifndef RADIOPROPA_TEXTOUTPUT_H
+#define RADIOPROPA_TEXTOUTPUT_H
 
 #include "radiopropa/module/Output.h"
 #include "radiopropa/module/ParticleCollector.h"
@@ -39,4 +39,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_TEXTOUTPUT_H
+#endif // RADIOPROPA_TEXTOUTPUT_H

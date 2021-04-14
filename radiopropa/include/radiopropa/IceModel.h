@@ -1,11 +1,10 @@
-#ifndef CRPROPA_ICEMODEL_H
-#define CRPROPA_ICEMODEL_H
+#ifndef RADIOPROPA_ICEMODEL_H
+#define RADIOPROPA_ICEMODEL_H
 
 #include "radiopropa/Units.h"
 #include "radiopropa/Vector3.h"
 #include "radiopropa/ScalarField.h"
 
-#endif
 
 namespace radiopropa {
 
@@ -108,3 +107,5 @@ class GorhamIceModel: public ScalarField
 };
 
 }
+
+#endif //RADIOPROPA_ICEMODEL_H

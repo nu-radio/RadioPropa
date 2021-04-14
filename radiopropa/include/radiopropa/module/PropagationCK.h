@@ -1,5 +1,5 @@
-#ifndef CRPROPA_PROPAGATIONCK_H
-#define CRPROPA_PROPAGATIONCK_H
+#ifndef RADIOPROPA_PROPAGATIONCK_H
+#define RADIOPROPA_PROPAGATIONCK_H
 
 #include "radiopropa/Module.h"
 #include "radiopropa/Units.h"
@@ -76,4 +76,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_PROPAGATIONCK_H
+#endif // RADIOPROPA_PROPAGATIONCK_H

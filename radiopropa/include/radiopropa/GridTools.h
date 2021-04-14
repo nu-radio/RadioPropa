@@ -1,5 +1,5 @@
-#ifndef CRPROPA_GRIDTOOLS_H
-#define CRPROPA_GRIDTOOLS_H
+#ifndef RADIOPROPA_GRIDTOOLS_H
+#define RADIOPROPA_GRIDTOOLS_H
 
 #include "radiopropa/Grid.h"
 #include <string>
@@ -75,4 +75,4 @@ void dumpGridToTxt(ref_ptr<ScalarGrid> grid, std::string filename,
 
 } // namespace radiopropa
 
-#endif // CRPROPA_GRIDTOOLS_H
+#endif // RADIOPROPA_GRIDTOOLS_H

@@ -1,5 +1,5 @@
-#ifndef CRPROPA_HDF5OUTPUT_H
-#define CRPROPA_HDF5OUTPUT_H
+#ifndef RADIOPROPA_HDF5OUTPUT_H
+#define RADIOPROPA_HDF5OUTPUT_H
 
 #ifdef RADIOPROPA_HAVE_HDF5
 
@@ -112,7 +112,7 @@ public:
 };
 
 } // namespace radiopropa
-#endif // CRPROPA_HAVE_HDF5
+#endif // RADIOPROPA_HAVE_HDF5
 
-#endif // CRPROPA_HDF5OUTPUT_H
+#endif // RADIOPROPA_HDF5OUTPUT_H
 

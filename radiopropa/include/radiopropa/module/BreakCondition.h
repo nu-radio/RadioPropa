@@ -1,5 +1,5 @@
-#ifndef CRPROPA_BREAKCONDITION_H
-#define CRPROPA_BREAKCONDITION_H
+#ifndef RADIOPROPA_BREAKCONDITION_H
+#define RADIOPROPA_BREAKCONDITION_H
 
 #include "radiopropa/Module.h"
 
@@ -79,4 +79,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_BREAKCONDITION_H
+#endif // RADIOPROPA_BREAKCONDITION_H

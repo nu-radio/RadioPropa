@@ -1,5 +1,5 @@
-#ifndef CRPROPA_PROGRESSBAR_H
-#define CRPROPA_PROGRESSBAR_H
+#ifndef RADIOPROPA_PROGRESSBAR_H
+#define RADIOPROPA_PROGRESSBAR_H
 
 #include <string>
 #include <ctime>
@@ -35,4 +35,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_PROGRESSBAR_H
+#endif // RADIOPROPA_PROGRESSBAR_H

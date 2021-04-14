@@ -1,5 +1,5 @@
-#ifndef CRPROPA_GRID_H
-#define CRPROPA_GRID_H
+#ifndef RADIOPROPA_GRID_H
+#define RADIOPROPA_GRID_H
 
 #include "radiopropa/Referenced.h"
 #include "radiopropa/Vector3.h"
@@ -222,4 +222,4 @@ typedef Grid<float> ScalarGrid;
 
 } // namespace radiopropa
 
-#endif // CRPROPA_GRID_H
+#endif // RADIOPROPA_GRID_H

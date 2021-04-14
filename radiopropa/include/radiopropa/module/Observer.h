@@ -1,5 +1,5 @@
-#ifndef CRPROPA_OBSERVER_H
-#define CRPROPA_OBSERVER_H
+#ifndef RADIOPROPA_OBSERVER_H
+#define RADIOPROPA_OBSERVER_H
 
 #include <fstream>
 #include <limits>
@@ -140,4 +140,4 @@ public:
 
 }
 
-#endif // CRPROPA_OBSERVER_H
+#endif // RADIOPROPA_OBSERVER_H

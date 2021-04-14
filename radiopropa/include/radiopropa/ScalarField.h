@@ -1,5 +1,5 @@
-#ifndef CRPROPA_SCALARFIELD_H
-#define CRPROPA_SCALARFIELD_H
+#ifndef RADIOPROPA_SCALARFIELD_H
+#define RADIOPROPA_SCALARFIELD_H
 
 #include "radiopropa/Units.h"
 #include "radiopropa/Vector3.h"
@@ -137,4 +137,4 @@ class elevatedDuct : public ScalarField {
 
 } // namespace radiopropa
 
-#endif
+#endif //RADIOPROPA_SCALARFIELD_H

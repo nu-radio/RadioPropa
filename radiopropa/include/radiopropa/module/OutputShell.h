@@ -1,5 +1,5 @@
-#ifndef CRPROPA_OUTPUTSHELL_H
-#define CRPROPA_OUTPUTSHELL_H
+#ifndef RADIOPROPA_OUTPUTSHELL_H
+#define RADIOPROPA_OUTPUTSHELL_H
 
 #include "radiopropa/Module.h"
 #include "radiopropa/AssocVector.h"
@@ -40,4 +40,4 @@ public:
 
 } // namespace cprpropa
 
-#endif // CRPROPA_OUTPUTSHELL_H
+#endif // RADIOPROPA_OUTPUTSHELL_H

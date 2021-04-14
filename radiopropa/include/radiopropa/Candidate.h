@@ -1,5 +1,5 @@
-#ifndef CRPROPA_CANDIDATE_H
-#define CRPROPA_CANDIDATE_H
+#ifndef RADIOPROPA_CANDIDATE_H
+#define RADIOPROPA_CANDIDATE_H
 
 #include "radiopropa/ParticleState.h"
 #include "radiopropa/Referenced.h"
@@ -171,4 +171,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_CANDIDATE_H
+#endif // RADIOPROPA_CANDIDATE_H

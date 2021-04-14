@@ -1,5 +1,5 @@
-#ifndef CRPROPA_CLOCK_H
-#define CRPROPA_CLOCK_H
+#ifndef RADIOPROPA_CLOCK_H
+#define RADIOPROPA_CLOCK_H
 
 namespace radiopropa {
 
@@ -21,4 +21,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_CLOCK_H
+#endif // RADIOPROPA_CLOCK_H

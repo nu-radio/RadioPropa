@@ -1,5 +1,5 @@
-#ifndef CRPROPA_RESTRICTTOREGION_H
-#define CRPROPA_RESTRICTTOREGION_H
+#ifndef RADIOPROPA_RESTRICTTOREGION_H
+#define RADIOPROPA_RESTRICTTOREGION_H
 
 #include "radiopropa/Referenced.h"
 #include "radiopropa/Candidate.h"
@@ -31,4 +31,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_RESTRICTTOREGION_H
+#endif // RADIOPROPA_RESTRICTTOREGION_H

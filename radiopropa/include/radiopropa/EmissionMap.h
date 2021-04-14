@@ -1,5 +1,5 @@
-#ifndef CRPROPA_EMISSION_MAP_H
-#define CRPROPA_EMISSION_MAP_H
+#ifndef RADIOPROPA_EMISSION_MAP_H
+#define RADIOPROPA_EMISSION_MAP_H
 
 #include "Referenced.h"
 #include "Candidate.h"
@@ -134,4 +134,4 @@ protected:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_EMISSION_MAP_H
+#endif // RADIOPROPA_EMISSION_MAP_H

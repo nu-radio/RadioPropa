@@ -1,5 +1,5 @@
-#ifndef CRPROPA_MODULE_H
-#define CRPROPA_MODULE_H
+#ifndef RADIOPROPA_MODULE_H
+#define RADIOPROPA_MODULE_H
 
 #include "radiopropa/Candidate.h"
 #include "radiopropa/Referenced.h"
@@ -63,4 +63,4 @@ public:
 
 } // namespace radiopropa
 
-#endif /* CRPROPA_MODULE_H */
+#endif /* RADIOPROPA_MODULE_H */

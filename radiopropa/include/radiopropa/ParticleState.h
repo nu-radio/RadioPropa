@@ -1,5 +1,5 @@
-#ifndef CRPROPA_PARTICLE_STATE_H
-#define CRPROPA_PARTICLE_STATE_H
+#ifndef RADIOPROPA_PARTICLE_STATE_H
+#define RADIOPROPA_PARTICLE_STATE_H
 
 #include "radiopropa/Vector3.h"
 
@@ -58,4 +58,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_PARTICLE_STATE_H
+#endif // RADIOPROPA_PARTICLE_STATE_H

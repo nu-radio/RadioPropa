@@ -1,5 +1,5 @@
-#ifndef CRPROPA_SOURCE_H
-#define CRPROPA_SOURCE_H
+#ifndef RADIOPROPA_SOURCE_H
+#define RADIOPROPA_SOURCE_H
 
 #include "radiopropa/Candidate.h"
 #include "radiopropa/Grid.h"
@@ -292,4 +292,4 @@ public:
 
 }// namespace radiopropa
 
-#endif // CRPROPA_SOURCE_H
+#endif // RADIOPROPA_SOURCE_H

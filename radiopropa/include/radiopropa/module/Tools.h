@@ -1,5 +1,5 @@
-#ifndef CRPROPA_MODULETOOLS_H
-#define CRPROPA_MODULETOOLS_H
+#ifndef RADIOPROPA_MODULETOOLS_H
+#define RADIOPROPA_MODULETOOLS_H
 
 #include "radiopropa/Module.h"
 #include "radiopropa/EmissionMap.h"
@@ -53,4 +53,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_MODULETOOLS_H
+#endif // RADIOPROPA_MODULETOOLS_H

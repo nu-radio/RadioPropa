@@ -1,5 +1,5 @@
-#ifndef CRPROPA_BOUNDARY_H
-#define CRPROPA_BOUNDARY_H
+#ifndef RADIOPROPA_BOUNDARY_H
+#define RADIOPROPA_BOUNDARY_H
 
 #include "radiopropa/Module.h"
 
@@ -161,4 +161,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_BOUNDARY_H
+#endif // RADIOPROPA_BOUNDARY_H

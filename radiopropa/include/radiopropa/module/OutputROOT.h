@@ -1,5 +1,5 @@
-#ifndef CRPROPA_OUTPUTROOT_H
-#define CRPROPA_OUTPUTROOT_H
+#ifndef RADIOPROPA_OUTPUTROOT_H
+#define RADIOPROPA_OUTPUTROOT_H
 
 #include "radiopropa/Module.h"
 
@@ -173,5 +173,5 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_HAVE_ROOT
-#endif // CRPROPA_OUTPUTROOT_H
+#endif // RADIOPROPA_HAVE_ROOT
+#endif // RADIOPROPA_OUTPUTROOT_H

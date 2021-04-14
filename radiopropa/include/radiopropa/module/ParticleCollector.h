@@ -1,5 +1,5 @@
-#ifndef CRPROPA_PARTICLECOLLECTOR_H
-#define CRPROPA_PARTICLECOLLECTOR_H
+#ifndef RADIOPROPA_PARTICLECOLLECTOR_H
+#define RADIOPROPA_PARTICLECOLLECTOR_H
 #include <vector>
 #include <string>
 
@@ -59,4 +59,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_PARTICLECOLLECTOR_H
+#endif // RADIOPROPA_PARTICLECOLLECTOR_H

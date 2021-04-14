@@ -54,8 +54,9 @@
 // It would be nice to CC: rjwagner@writeme.com and Cokus@math.washington.edu
 // when you write.
 
-// Parts of this file are modified beginning in 29.10.09 for adaption in PXL.
-// Parts of this file are modified beginning in 10.02.12 for adaption in CRPropa.
+// Parts of this file are modified beginning in 29.10.2009 for adaption in PXL.
+// Parts of this file are modified beginning in 10.02.2012 for adaption in CRPropa.
+// Parts of this file are modified beginning in 22.01.2018 for adaption in RadioPropa.
 
 #include "radiopropa/Random.h"
 

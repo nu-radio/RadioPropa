@@ -1,5 +1,5 @@
-#ifndef CRPROPA_UNITS_H
-#define CRPROPA_UNITS_H
+#ifndef RADIOPROPA_UNITS_H
+#define RADIOPROPA_UNITS_H
 
 /**
  @file
@@ -113,4 +113,4 @@ static const double sec = second;
 
 } // namespace radiopropa
 
-#endif // CRPROPA_UNITS_H
+#endif // RADIOPROPA_UNITS_H

@@ -1,5 +1,5 @@
-#ifndef CRPROPA_ELASTICSCATTERING_H
-#define CRPROPA_ELASTICSCATTERING_H
+#ifndef RADIOPROPA_ELASTICSCATTERING_H
+#define RADIOPROPA_ELASTICSCATTERING_H
 
 #include "radiopropa/Module.h"
 #include "radiopropa/PhotonBackground.h"
@@ -36,4 +36,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_ELASTICSCATTERING_H
+#endif // RADIOPROPA_ELASTICSCATTERING_H

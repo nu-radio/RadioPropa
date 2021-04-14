@@ -1,5 +1,5 @@
-#ifndef CRPROPA_ABSTRACT_OUTPUT_H
-#define CRPROPA_ABSTRACT_OUTPUT_H
+#ifndef RADIOPROPA_ABSTRACT_OUTPUT_H
+#define RADIOPROPA_ABSTRACT_OUTPUT_H
 
 #include "radiopropa/Module.h"
 #include "radiopropa/Variant.h"
@@ -88,4 +88,4 @@ public:
 
 } // namespace radiopropa
 
-#endif // CRPROPA_ABSTRACT_OUTPUT_H
+#endif // RADIOPROPA_ABSTRACT_OUTPUT_H

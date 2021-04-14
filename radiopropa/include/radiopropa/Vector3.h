@@ -1,5 +1,5 @@
-#ifndef CRPROPA_VECTOR3_H
-#define CRPROPA_VECTOR3_H
+#ifndef RADIOPROPA_VECTOR3_H
+#define RADIOPROPA_VECTOR3_H
 
 #include <iostream>
 #include <cmath>
@@ -402,4 +402,4 @@ typedef Vector3<float> Vector3f;
 
 } // namespace radiopropa
 
-#endif // CRPROPA_VECTOR3_H
+#endif // RADIOPROPA_VECTOR3_H

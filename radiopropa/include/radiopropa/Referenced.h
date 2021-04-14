@@ -1,5 +1,5 @@
-#ifndef CRPROPA_REFERENCED_H
-#define CRPROPA_REFERENCED_H
+#ifndef RADIOPROPA_REFERENCED_H
+#define RADIOPROPA_REFERENCED_H
 
 #include <stddef.h>
 
@@ -232,4 +232,4 @@ template<class T, class Y> inline ref_ptr<T> const_pointer_cast(
 
 } // namespace radiopropa
 
-#endif // CRPROPA_REFERENCED_H
+#endif // RADIOPROPA_REFERENCED_H

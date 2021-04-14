@@ -1,5 +1,5 @@
-#ifndef CRPROPA_COSMOLOGY_H
-#define CRPROPA_COSMOLOGY_H
+#ifndef RADIOPROPA_COSMOLOGY_H
+#define RADIOPROPA_COSMOLOGY_H
 
 namespace radiopropa {
 
@@ -74,4 +74,4 @@ double lightTravel2ComovingDistance(double distance);
 
 } // namespace radiopropa
 
-#endif // CRPROPA_COSMOLOGY_H
+#endif // RADIOPROPA_COSMOLOGY_H

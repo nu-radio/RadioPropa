@@ -1,5 +1,5 @@
-#ifndef CRPROPA_COMMON_H
-#define CRPROPA_COMMON_H
+#ifndef RADIOPROPA_COMMON_H
+#define RADIOPROPA_COMMON_H
 
 #include <string>
 #include <vector>
@@ -49,4 +49,4 @@ size_t closestIndex(double x, const std::vector<double> &X);
 
 } // namespace radiopropa
 
-#endif // CRPROPA_COMMON_H
+#endif // RADIOPROPA_COMMON_H
