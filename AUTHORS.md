@@ -10,7 +10,7 @@ In chronological order with main contributions, see also [contributor list](http
 * Christopher Heiter -- EM interactions, EM production channels
 * Lukas Merten -- Diffusion module & infrastructure
 
-###RadioPropa 3 Developers
+###RadioPropa Developers
 * Tobias Winchen -- main developer
 * Carina Kanitz -- Clouds
 * Bob Oeyen -- Ice Models & NuRadio connection
