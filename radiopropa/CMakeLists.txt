@@ -85,56 +85,16 @@ if(ENABLE_TESTING)
 	endif(APPLE)
 endif(ENABLE_TESTING)
 
-#
-OPTION(ENABLE_COVERAGE "Add code for coverage analysis." OFF)
-if(ENABLE_COVERAGE)
-	find_program(LCOV_PATH lcov)
-	find_program(GENHTML_PATH genhtml)
-	if(LCOV_PATH AND GENHTML_PATH)
-		message("Enabling coverage report via $make coverage")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-		list(APPEND CRPROPA_EXTRA_LIBRARIES "-lgcov")
-		list(APPEND CRPROPA_EXTRA_LIBRARIES "-fprofile-arcs")
-
-		if(ENABLE_TESTING)
-			SET(COVERAGE_LIBS "-coverage -lgcov")
-			add_custom_target(coverage_clean
-				COMMAND ${LCOV_PATH} --directory . --zerocounters
-			)
-		add_custom_target(coverage
-
-				# generate coverage data
-				COMMAND ${LCOV_PATH} --directory . --capture --output-file coverage.info VERBATIM
-
-				# clean external libs
-				COMMAND ${LCOV_PATH} --remove coverage.info "/usr/include/*" "/usr/lib/*" "*/libs/gtest/*" "*/libs/eigen3/*" "*/libs/zstream-cpp/*" "*/build/*" -o coverage.info.cleaned VERBATIM
-
-				# Generate html output
-				COMMAND ${GENHTML_PATH} -o coverageReport coverage.info.cleaned VERBATIM
-				COMMAND echo "Generated coverage report in coverageReport/index.html"
-				)
-		endif(ENABLE_TESTING)
-
-	else(LCOV_PATH AND GENHTML_PATH)
-		if(NOT LCOV_PATH)
-			message(WARNING "lcov not found, coverage report generation  not possible!")
-		endif(NOT LCOV_PATH)
-		if(NOT GENHTML_PATH)
-			message(WARNING "genhtml not found, coverage report generation not possible!")
-		endif(NOT GENHTML_PATH)
-	endif(LCOV_PATH AND GENHTML_PATH)
-endif(ENABLE_COVERAGE)
-
 # kiss (provided)
 add_subdirectory(libs/kiss)
 list(APPEND RADIOPROPA_EXTRA_LIBRARIES kiss)
 list(APPEND RADIOPROPA_EXTRA_INCLUDES libs/kiss/include)
 
-	# healpix redux (provided)
-	add_subdirectory(libs/healpix_base)
+# healpix redux (provided)
+add_subdirectory(libs/healpix_base)
 list(APPEND RADIOPROPA_EXTRA_LIBRARIES healpix_base)
 list(APPEND RADIOPROPA_EXTRA_INCLUDES libs/healpix_base/include)
-	install(DIRECTORY libs/healpix_base/include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY libs/healpix_base/include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 
 # OpenMP (optional for shared memory multiprocessing)
 option(ENABLE_OPENMP "OpenMP for multithreading" ON)
@@ -210,30 +170,7 @@ endif()
 if(APPLE)
 	add_definitions(-arch x86_64)
 endif(APPLE)
-# Download data files (interaction data, masses, decay data ...)
-## ----------------------------------------------------------------------------
-#OPTION(DOWNLOAD_DATA "Download CRProap Data files" ON)
-#if(DOWNLOAD_DATA)
-#	message("-- Downloading data file from radiopropa.desy.de ~ 50 MB")
-#	file(DOWNLOAD
-#		https://www.desy.de/~radiopropa/data/interaction_data/data.tar.gz-CHECKSUM
-#		${CMAKE_BINARY_DIR}/data.tar.gz-CHECKSUM)
-#	file(STRINGS ${CMAKE_BINARY_DIR}/data.tar.gz-CHECKSUM DATA_CHECKSUM LIMIT_COUNT 1 LENGTH_MINIMUM 32 LENGTH_MAXIMUM 32)
-#	file(DOWNLOAD
-#		https://www.desy.de/~radiopropa/data/interaction_data/data.tar.gz
-#		${CMAKE_BINARY_DIR}/data.tar.gz
-#		EXPECTED_MD5 "${DATA_CHECKSUM}")
-#	message("-- Extracting data file")
-#else()
-#	message("-- Downloading of data file disabled")
-#endif(DOWNLOAD_DATA)
-#if(EXISTS ${CMAKE_BINARY_DIR}/data.tar.gz)
-#	execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_BINARY_DIR}/data.tar.gz WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-#else()
-#	message(WARNING "CRPropa data file not found at ${CMAKE_BINARY_DIR}/data.tar.gz 
-#CRPropa should compile, but will likely not work properly! Please install data file manually, or use the automatic download which is enabled by default.")
-#endif()
-#
+
 # ----------------------------------------------------------------------------
 # Library and Binary
 # ----------------------------------------------------------------------------
