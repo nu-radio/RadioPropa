@@ -9,3 +9,8 @@ In chronological order with main contributions, see also [contributor list](http
 * Marcus Wirtz -- Pshirkov GMF
 * Christopher Heiter -- EM interactions, EM production channels
 * Lukas Merten -- Diffusion module & infrastructure
+
+###RadioPropa Developers
+* Tobias Winchen -- main developer
+* Carina Kanitz -- Clouds
+* Bob Oeyen -- Ice Models & NuRadio connection
