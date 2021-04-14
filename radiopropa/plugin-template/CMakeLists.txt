@@ -8,30 +8,30 @@ find_package(PythonInterp)
 find_package(PythonLibs)
 find_package(SWIG REQUIRED)
 
-# get information on crpropa
-execute_process(COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/findCRPropa.py" swig_interface OUTPUT_VARIABLE crpropaSwigPath)
-execute_process(COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/findCRPropa.py" install_prefix OUTPUT_VARIABLE crpropaInstallPrefix)
-message(STATUS "CRPropa includes : ${crpropaInstallPrefix}")
+# get information on radiopropa
+execute_process(COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/findRadioPropa.py" swig_interface OUTPUT_VARIABLE radiopropaSwigPath)
+execute_process(COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/findRadioPropa.py" install_prefix OUTPUT_VARIABLE radiopropaInstallPrefix)
+message(STATUS "RadioPropa includes : ${radiopropaInstallPrefix}")
 
-find_path(CRPROPA_SWIG_INTERFACE_FILES
-  crpropa.i
-  HINTS crpropa/ share/crpropa python/ ${crpropaSwigPath} 
+find_path(RADIOPROPA_SWIG_INTERFACE_FILES
+  radiopropa.i
+  HINTS radiopropa/ share/radiopropa python/ ${radiopropaSwigPath} 
   )
 
-find_path(CRPROPA_INCLUDES
-  CRPropa.h
-  HINTS crpropa/ include/crpropa ${crpropaInstallPrefix}/include/
+find_path(RADIOPROPA_INCLUDES
+  RadioPropa.h
+  HINTS radiopropa/ include/radiopropa ${radiopropaInstallPrefix}/include/
   )
 
-message(STATUS "CRPropa SWIG interface files: ${CRPROPA_SWIG_INTERFACE_FILES}")
-message(STATUS "CRPropa includes : ${CRPROPA_INCLUDES}")
+message(STATUS "RadioPropa SWIG interface files: ${RADIOPROPA_SWIG_INTERFACE_FILES}")
+message(STATUS "RadioPropa includes : ${RADIOPROPA_INCLUDES}")
 
 # swig plugin
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/${PLUGINNAME}_wrap.cxx PROPERTIES GENERATED true )
 add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${PLUGINNAME}_wrap.cxx
-  COMMAND swig -builtin -c++ -python ${PY3} -I${CRPROPA_SWIG_INTERFACE_FILES} -I${CRPROPA_INCLUDES} -I${CMAKE_SOURCE_DIR}/include -I${PYTHON_INCLUDE_DIRS} ${CRPROPA_SWIG_DEFINES} -dirprot -o ${CMAKE_CURRENT_BINARY_DIR}/${PLUGINNAME}_wrap.cxx -outdir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGINNAME}.i)
+  COMMAND swig -builtin -c++ -python ${PY3} -I${RADIOPROPA_SWIG_INTERFACE_FILES} -I${RADIOPROPA_INCLUDES} -I${CMAKE_SOURCE_DIR}/include -I${PYTHON_INCLUDE_DIRS} ${RADIOPROPA_SWIG_DEFINES} -dirprot -o ${CMAKE_CURRENT_BINARY_DIR}/${PLUGINNAME}_wrap.cxx -outdir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGINNAME}.i)
 
-include_directories(include ${CMAKE_CURRENT_BINARY_DIR}/include ${CRPROPA_INCLUDES} ${PYTHON_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(include ${CMAKE_CURRENT_BINARY_DIR}/include ${RADIOPROPA_INCLUDES} ${PYTHON_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 
 # build interface and source in one library
 add_library(${PLUGINNAME} MODULE 

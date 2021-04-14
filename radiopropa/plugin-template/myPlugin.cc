@@ -5,12 +5,12 @@
 const std::string myPropertyName="counter";
 
 // The parent's constructor need to be called on initialization!
-MyModule::MyModule() : crpropa::Module()
+MyModule::MyModule() : radiopropa::Module()
 {
   setDescription("MyPlugin::MyModule");
 }
 
-void MyModule::process(crpropa::Candidate *candidate) const
+void MyModule::process(radiopropa::Candidate *candidate) const
 {
   // To enable parallelization, the modules have to be stateless - the
   // process method should thus not modify internal variables!
@@ -19,17 +19,17 @@ void MyModule::process(crpropa::Candidate *candidate) const
   {
     uint32_t v = candidate->getProperty(myPropertyName);
 	  std::cout << " My property: " << myPropertyName << " = " <<  v << std::endl;
-    candidate->setProperty(myPropertyName, crpropa::Variant::fromUInt32(v + 1));
+    candidate->setProperty(myPropertyName, radiopropa::Variant::fromUInt32(v + 1));
   }
 }
 
 // ------------------------------------------------------------------
 // The parent's constructor need to be called on initialization!
-AddMyProperty::AddMyProperty() : crpropa::SourceFeature()
+AddMyProperty::AddMyProperty() : radiopropa::SourceFeature()
 {
 	description = "AddMyProperty: Adds my property to the candidate";
 }
-void AddMyProperty::prepareCandidate(crpropa::Candidate &candidate) const
+void AddMyProperty::prepareCandidate(radiopropa::Candidate &candidate) const
 {
-  candidate.setProperty(myPropertyName, crpropa::Variant::fromUInt32(0));
+  candidate.setProperty(myPropertyName, radiopropa::Variant::fromUInt32(0));
 }

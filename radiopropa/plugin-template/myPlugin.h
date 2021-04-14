@@ -5,25 +5,25 @@
 /// plugins to CRPropa on our webpage and are happy to add a link to your
 /// project, just send us: (name of the plugin, short description, url)
 
-#include <crpropa/Module.h>
-#include <crpropa/Source.h>
+#include <radiopropa/Module.h>
+#include <radiopropa/Source.h>
 
 
 /// A custom C++ module
-class MyModule : public crpropa::Module
+class MyModule : public radiopropa::Module
 {
   public:
     /// The parent's constructor need to be called on initialization!
   	MyModule();
-  	void process(crpropa::Candidate *candidate) const;
+  	void process(radiopropa::Candidate *candidate) const;
 };
 
 
 /// A custom source feature
-class AddMyProperty: public crpropa::SourceFeature
+class AddMyProperty: public radiopropa::SourceFeature
 {
   public:
     /// The parent's constructor need to be called on initialization!
   	AddMyProperty();
-  	void prepareCandidate(crpropa::Candidate &candidate) const;
+  	void prepareCandidate(radiopropa::Candidate &candidate) const;
 };

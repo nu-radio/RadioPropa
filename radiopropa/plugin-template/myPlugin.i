@@ -5,15 +5,15 @@
 %include "exception.i"
 
 /*  define headers to include into the wrapper. These are the plugin headers
- *  and the CRPRopa headers.
+ *  and the RadioPropa headers.
  */
 %{
-#include "CRPropa.h"
+#include "RadioPropa.h"
 #include "myPlugin.h"
 %}
 
-/* import crpropa in wrapper */
-%import (module="crpropa") "crpropa.i"
+/* import radiopropa in wrapper */
+%import (module="radiopropa") "radiopropa.i"
 
 /* include plugin parts to generate wrappers for */
 %include "myPlugin.h"

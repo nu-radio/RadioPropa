@@ -1,12 +1,12 @@
-import crpropa
+import radiopropa
 import myPlugin
 
 print("My Simulation\n")
 
-ml = crpropa.ModuleList()
+ml = radiopropa.ModuleList()
 
-ml.add(crpropa.SimplePropagation(1*crpropa.parsec, 100*crpropa.parsec))
-ml.add(crpropa.MaximumTrajectoryLength(1000*crpropa.parsec))
+ml.add(radiopropa.SimplePropagation(1*radiopropa.parsec, 100*radiopropa.parsec))
+ml.add(radiopropa.MaximumTrajectoryLength(1000*radiopropa.parsec))
 ml.add(myPlugin.MyModule())
 
 print("+++ List of modules")
@@ -14,7 +14,7 @@ print(ml.getDescription())
 
 
 print("+++ Preparing source")
-source = crpropa.Source()
+source = radiopropa.Source()
 source.add(myPlugin.AddMyProperty())
 print(source.getDescription())
 
