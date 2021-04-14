@@ -4,10 +4,6 @@
 #include "radiopropa/Common.h"
 #include "radiopropa/Units.h"
 
-#ifdef CRPROPA_HAVE_MUPARSER
-#include "muParser.h"
-#endif
-
 #include <sstream>
 #include <stdexcept>
 

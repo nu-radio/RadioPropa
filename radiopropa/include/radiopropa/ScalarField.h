@@ -5,10 +5,6 @@
 #include "radiopropa/Vector3.h"
 #include "radiopropa/Referenced.h"
 
-#ifdef CRPROPA_HAVE_MUPARSER
-#include "muParser.h"
-#endif
-
 namespace radiopropa {
 
 /**

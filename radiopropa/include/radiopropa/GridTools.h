@@ -37,19 +37,6 @@ void scaleGrid(ref_ptr<ScalarGrid> grid, double a);
 /** Multiply all grid values by a given factor */
 void scaleGrid(ref_ptr<VectorGrid> grid, double a);
 
-#ifdef CRPROPA_HAVE_FFTW3F
-/**
- Create a random initialization of a turbulent field.
- @param lMin	Minimum wavelength of the turbulence
- @param lMax	Maximum wavelength of the turbulence
- @param alpha	Power law index of <B^2(k)> ~ k^alpha (alpha = -11/3 corresponds to a Kolmogorov spectrum)
- @param Brms	RMS field strength
- @param seed	Random seed
- */
-void initTurbulence(ref_ptr<VectorGrid> grid, double Brms, double lMin, double lMax, 
-	   double alpha = -11./3., int seed = 0, bool helicity = false, double H = 0);
-#endif // CRPROPA_HAVE_FFTW3F
-
 /** Analytically calculate the correlation length of a turbulent field */
 double turbulentCorrelationLength(double lMin, double lMax,
 		double alpha = (-11./3.));
