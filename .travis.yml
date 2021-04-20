@@ -74,6 +74,7 @@ before_install:
     fi;
 
 before_script:
+  - cd radiopropa
   - mkdir build
   - cd build
   - cmake .. -DENABLE_PYTHON=True -DPYTHON_EXECUTABLE=$PYTHON_EXECUTABLE -DENABLE_TESTING=On
