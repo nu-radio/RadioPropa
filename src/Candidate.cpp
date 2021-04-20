@@ -26,7 +26,7 @@ Candidate::Candidate(int id, double E, Vector3d pos, Vector3d dir, double z, dou
 }
 
 Candidate::Candidate(const ParticleState &state) :
-		source(state), created(state), current(state), previous(state), trajectoryLength(0), propagationTime(0), currentStep(0), nextStep(0), active(true), parent(0) {
+		pathx(0), pathy(0), pathz(0), reflectionAngles(0), source(state), created(state), current(state), previous(state), trajectoryLength(0), propagationTime(0), currentStep(0), nextStep(0), active(true), parent(0) {
 
 #if defined(OPENMP_3_1)
 		#pragma omp atomic capture
@@ -39,6 +39,59 @@ Candidate::Candidate(const ParticleState &state) :
 #endif
 
 }
+
+
+
+void Candidate::appendPathPosition(Vector3d p) {
+  pathx.push_back(p.x);
+  pathy.push_back(p.y);
+  pathz.push_back(p.z);
+}
+
+std::vector<double> Candidate::getPathX() const {
+	return pathx;
+}
+
+std::vector<double> Candidate::getPathY() const {
+	return pathy;
+}
+
+std::vector<double> Candidate::getPathZ() const {
+	return pathz;
+}
+
+std::vector<std::vector<double>> Candidate::getPath() const {
+	std::vector<std::vector<double>> path;
+	path.push_back(pathx);
+	path.push_back(pathy);
+	path.push_back(pathz);
+	return path;
+}
+
+Vector3d Candidate::getLaunchVector() const{
+	return source.getDirection();
+}
+
+Vector3d Candidate::getReceiveVector() const{
+	return Vector3d(-current.getDirection().x,-current.getDirection().y,-current.getDirection().z);
+}
+
+void Candidate::appendReflectionAngle(double angle) {
+	reflectionAngles.push_back(angle);
+}
+
+std::vector<double> Candidate::getReflectionAngles() const{
+	return reflectionAngles;
+}
+
+Vector3d Candidate::getStartPosition() const{
+	return source.getPosition();
+}
+
+Vector3d Candidate::getEndPosition() const{
+	return current.getPosition();
+}
+
 
 bool Candidate::isActive() const {
 	return active;

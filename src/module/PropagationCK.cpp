@@ -77,7 +77,7 @@ void PropagationCK::process(Candidate *candidate) const {
 	Y yOut, yErr;
 	double newStep = step;
 	double r = 42;  // arbitrary value > 1
-	double z = 0; // RedShift to 0. 
+	double z = 0; // RedShift to 0.
 
 	// try performing step until the target error (tolerance) or the minimum step size has been reached
 	while (r > 1) {
@@ -101,6 +101,7 @@ void PropagationCK::process(Candidate *candidate) const {
 	candidate->setNextStep(newStep);
 	double n = field->getValue(yOut.x);
 	candidate->setPropagationTime(candidate->getPropagationTime() + step / c_light);
+	candidate->appendPathPosition(yOut.x);
 }
 
 void PropagationCK::setField(ref_ptr<ScalarField> f) {

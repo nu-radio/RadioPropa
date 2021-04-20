@@ -43,6 +43,11 @@ private:
 	double currentStep; /**< Size of the currently performed step in [m] comoving units */
 	double nextStep; /**< Proposed size of the next propagation step in [m] comoving units */
 
+	std::vector<double> pathx;
+	std::vector<double> pathy;
+	std::vector<double> pathz;
+	std::vector<double> reflectionAngles;
+
 	static uint64_t nextSerialNumber;
 	uint64_t serialNumber;
 
@@ -62,6 +67,21 @@ public:
 	 */
 	Candidate(const ParticleState &state);
 
+	std::vector<double> getPathX() const;
+	std::vector<double> getPathY() const;
+	std::vector<double> getPathZ() const;
+	std::vector<std::vector<double>> getPath() const;
+	void appendPathPosition(Vector3d p);
+
+	Vector3d getLaunchVector() const;
+	Vector3d getReceiveVector() const;
+
+	void appendReflectionAngle(double angle);
+	std::vector<double> getReflectionAngles() const;
+
+	Vector3d getStartPosition() const;
+	Vector3d getEndPosition() const;
+	
 	bool isActive() const;
 	void setActive(bool b);
 
@@ -145,7 +165,7 @@ public:
 	/**
 	 Copy the source particle state to the current state
 	 and activate it if inactive, e.g. restart it
-	*/ 
+	*/
 	void restart();
 };
 

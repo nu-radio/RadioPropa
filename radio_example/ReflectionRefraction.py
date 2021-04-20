@@ -2,9 +2,10 @@ import radiopropa
 import numpy as np
 
 
-iceModel = radiopropa.GorhamIceModel(z0=-10.)
+iceModel = radiopropa.GorhamIceModel(z_surface=-10.)
 airBoundary = radiopropa.Discontinuity(radiopropa.Plane(radiopropa.Vector3d(0,0,0), radiopropa.Vector3d(0,0,1)), 1.5 , 1.)
 firnLayer = radiopropa.Discontinuity(radiopropa.Plane(radiopropa.Vector3d(0,0,-10.), radiopropa.Vector3d(0,0,1)), iceModel.getValue(radiopropa.Vector3d(0,0,-10.001)) , 1.5)
+reflective = radiopropa.ReflectiveLayer(radiopropa.Plane(radiopropa.Vector3d(0,0,-50.), radiopropa.Vector3d(0,0,1)),.5)
 
 
 if __name__ == "__main__":
@@ -14,6 +15,7 @@ if __name__ == "__main__":
 
     sim.add(airBoundary)
     sim.add(firnLayer)
+    #sim.add(reflective)
 
     sim.add(radiopropa.MinimumAmplitude(.05))
     sim.add(radiopropa.MaximumTrajectoryLength(1500 * radiopropa.meter))
@@ -53,3 +55,8 @@ if __name__ == "__main__":
         source.add(radiopropa.SourceDirection(radiopropa.Vector3d(x, 0 , z)))
         sim.setShowProgress(True)
         sim.run(source, 1)
+        '''
+        candidate = source.getCandidate()
+        for secondary in candidate.secondaries:
+            print('test')
+        '''

@@ -25,9 +25,9 @@ class TransmissiveLayer(radiopropa.Module):
         Always positive for one side of plane and negative for the other side.
         """
         # much nicer with future Vector3 ...
-        dX = [X.x - self.__x0[0], X.y - self.__x0[1], X.z - self.__x0[2]]
+        dX = [X.x - self.__x0.x, X.y - self.__x0.y, X.z - self.__x0.z]
 #        V = np.linalg.det([self.__v1, self.__v2, dX]) !np too slow!
-        D =       self.__v1[0] * self.__v2[1] * dX[2] + self.__v1[1] * self.__v2[2] * dX[0] + self.__v1[2] * self.__v2[0] * dX[1]  - self.__v1[2] * self.__v2[1] * dX[0] - self.__v1[0] * self.__v2[2] * dX[1] - self.__v1[1] * self.__v2[0] * dX[2]
+        D =       self.__v1.x * self.__v2.y * dX[2] + self.__v1.y * self.__v2.z * dX[0] + self.__v1.z * self.__v2.x * dX[1]  - self.__v1.z * self.__v2.y * dX[0] - self.__v1.x * self.__v2.z * dX[1] - self.__v1.y * self.__v2.x * dX[2]
 
         return D
 
