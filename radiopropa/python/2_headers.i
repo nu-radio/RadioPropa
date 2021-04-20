@@ -373,7 +373,6 @@
 
 %include "radiopropa/module/HDF5Output.h"
 %include "radiopropa/module/OutputShell.h"
-%include "radiopropa/module/OutputROOT.h"
 
 %template(IntSet) std::set<int>;
 %include "radiopropa/module/Tools.h"

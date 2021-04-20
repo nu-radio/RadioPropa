@@ -200,7 +200,6 @@ add_library(radiopropa SHARED
 	src/module/HDF5Output.cpp
 	src/module/Observer.cpp
 	src/module/Output.cpp
-	src/module/OutputROOT.cpp
 	src/module/OutputShell.cpp
 	src/module/ParticleCollector.cpp
 	src/module/PropagationCK.cpp

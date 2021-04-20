@@ -28,7 +28,6 @@
 #include "radiopropa/module/Discontinuity.h"
 #include "radiopropa/module/HDF5Output.h"
 #include "radiopropa/module/Observer.h"
-#include "radiopropa/module/OutputROOT.h"
 #include "radiopropa/module/OutputShell.h"
 #include "radiopropa/module/ParticleCollector.h"
 #include "radiopropa/module/PropagationCK.h"
