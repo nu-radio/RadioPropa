@@ -1,13 +1,13 @@
 .*
 !.travis.yml
+!.lgtm.yml
 
 *~
 
-doc/*
-build/*
-data/*
-data-tools/*
-data.tar.gz
+*/build/*
+*/data/*
+*/data-tools/*
+*/data.tar.gz
 
 *.png
 *.pyc

@@ -6,7 +6,6 @@ addons:
       packages:
         - gcc-6
         - g++-6
-        - gfortran-6
         - swig
         - libfftw3-dev
         - libcfitsio3-dev
@@ -37,33 +36,32 @@ matrix:
       dist: xenial
       compiler: gcc
       env:
-        - COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6 FC=gfortran-6
+        - COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6
         - PYTHON_EXECUTABLE=/usr/bin/python3
         - BUILD_DOC=true
     - os : linux
       dist: xenial
       compiler: clang
       env:
-        - PYTHON_EXECUTABLE=/usr/bin/python3 FC=gfortran-6
+        - PYTHON_EXECUTABLE=/usr/bin/python3
         - LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
     - os : linux
       dist: xenial
       compiler: gcc
       env:
-         - COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6 FC=gfortran-6
+         - COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6
          - PYTHON_EXECUTABLE=/usr/bin/python2
     - os : linux
       dist: xenial
       compiler: clang
       env:
-        - PYTHON_EXECUTABLE=/usr/bin/python2 FC=gfortran-6
+        - PYTHON_EXECUTABLE=/usr/bin/python2
         - LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
     - os : osx
       compiler: clang
       env:
         - CXX_COMPILER='clang++'
         - C_COMPILER='clang++'
-        - Fortran_COMPILER='gfortran'
         - PYTHON_EXECUTABLE=/usr/bin/python
 
 before_install:
@@ -76,6 +74,7 @@ before_install:
     fi;
 
 before_script:
+  - cd radiopropa
   - mkdir build
   - cd build
   - cmake .. -DENABLE_PYTHON=True -DPYTHON_EXECUTABLE=$PYTHON_EXECUTABLE -DENABLE_TESTING=On
