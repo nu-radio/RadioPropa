@@ -10,19 +10,22 @@ Be sure you have python, a C++ compiler with c++11 support (gcc, clang and icc a
 
 Create a folder "RadioPropa" in the directory where you want to install it.
 Go into this directory using a therminal.
-	$ cd [repository]/RadioPropa/
+
+        $ cd [repository]/RadioPropa/
 
 Clone the git repository in this directory
-	$ git clone https://github.com/NuRadio/RadioPropa
-	OR
-	$ git clone git@github.com:nu-radio/RadioPropa.git
+
+        $ git clone https://github.com/NuRadio/RadioPropa
+        OR
+        $ git clone git@github.com:nu-radio/RadioPropa.git
 
 Execute the following steps in the therminal from the radiopropa repository
-	$ cd radiopropa
-	$ mkdir build
-	$ cd build/
-	$ cmake ..
-	$ make install
+
+        $ cd radiopropa
+        $ mkdir build
+        $ cd build/
+        $ cmake ..
+        $ make install
 
 Finally add the path to the "RadioPropa" directory to your PYTHONPATH.
 
