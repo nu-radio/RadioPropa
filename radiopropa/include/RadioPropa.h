@@ -26,6 +26,7 @@
 #include "radiopropa/module/Boundary.h"
 #include "radiopropa/module/BreakCondition.h"
 #include "radiopropa/module/Discontinuity.h"
+#include "radiopropa/module/DensityPerturbation.h"
 #include "radiopropa/module/HDF5Output.h"
 #include "radiopropa/module/Observer.h"
 #include "radiopropa/module/OutputShell.h"

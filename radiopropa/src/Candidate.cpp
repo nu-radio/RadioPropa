@@ -231,6 +231,12 @@ ref_ptr<Candidate> Candidate::clone(bool recursive) const {
 	cloned->trajectoryLength = trajectoryLength;
 	cloned->currentStep = currentStep;
 	cloned->nextStep = nextStep;
+	
+	cloned->pathx = pathx;
+	cloned->pathy = pathy;
+	cloned->pathz = pathz;
+	cloned->reflectionAngles = reflectionAngles;
+
 	if (recursive) {
 		cloned->secondaries.reserve(secondaries.size());
 		for (size_t i = 0; i < secondaries.size(); i++) {

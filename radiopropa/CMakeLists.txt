@@ -197,6 +197,7 @@ add_library(radiopropa SHARED
 	src/module/Boundary.cpp
 	src/module/BreakCondition.cpp
 	src/module/Discontinuity.cpp
+	src/module/DensityPerturbation.cpp
 	src/module/HDF5Output.cpp
 	src/module/Observer.cpp
 	src/module/Output.cpp
