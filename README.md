@@ -15,7 +15,7 @@ Go into this directory using a therminal.
 
 Clone the git repository in this directory
 
-        $ git clone https://github.com/NuRadio/RadioPropa
+        $ git clone https://github.com/NuRadio/RadioPropa.git
         OR
         $ git clone git@github.com:nu-radio/RadioPropa.git
 
