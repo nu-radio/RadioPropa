@@ -137,7 +137,7 @@ namespace radiopropa{
 	                }
 				}
 
-				const Vector3d new_direction = v - u*2;c
+				const Vector3d new_direction = v - u*2;
 				candidate->current.setDirection(new_direction);
 
 				// Reflected Amplitude
