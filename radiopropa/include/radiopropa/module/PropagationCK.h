@@ -51,6 +51,9 @@ private:
 	double minStep; /*< minimum step size of the propagation */
 	double maxStep; /*< maximum step size of the propagation */
 
+
+
+
 public:
 	PropagationCK(ref_ptr<ScalarField> field = NULL, double tolerance = 1e-4,
 			double minStep = (1E-3 * meter), double maxStep = (1 * meter));
@@ -71,6 +74,12 @@ public:
 	double getTolerance() const;
 	double getMinimumStep() const;
 	double getMaximumStep() const;
+    double getdeterminant(double n, Vector3d dir, Vector3d n_vec);
+    double bisection(double a, double b, Vector3d dir, Vector3d n_vec);
+    double minFinder(double a, double b, Vector3d dir, Vector3d n_vec);
+    double getTimeDelay(double n1, double n2, double l);
+    Vector3d getPolarization(double n, Vector3d dir, Vector3d n_vec);
+	Vector3d getEffectiveIndices(Vector3d dir, Vector3d n_vec);
 	std::string getDescription() const;
 };
 

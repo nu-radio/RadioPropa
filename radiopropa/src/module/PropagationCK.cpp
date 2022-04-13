@@ -141,6 +141,110 @@ double PropagationCK::getMaximumStep() const {
 	return maxStep;
 }
 
+
+double PropagationCK::getdeterminant(double n, Vector3d dir, Vector3d n_vec) 
+{
+
+    double A = (pow(n_vec.x, 2) - pow(n, 2))*(pow(n_vec.y, 2) - pow(n, 2))*(pow(n_vec.z, 2) - pow(n, 2));
+    double B = pow(n, 2) * ( pow(dir.x, 2) *(pow(n_vec.y, 2) - pow(n, 2))*(pow(n_vec.z, 2) - pow(n, 2)) + pow(dir.y, 2) *(pow(n_vec.x, 2) - pow(n, 2))*(pow(n_vec.z, 2) - pow(n, 2)) + pow(dir.z, 2) *(pow(n_vec.x, 2) - pow(n, 2))*(pow(n_vec.y, 2) - pow(n, 2)));
+
+       return  A + B ;
+}
+
+
+double PropagationCK::bisection(double a, double b, Vector3d dir, Vector3d n_vec)
+{
+
+    double EPSILON = 0.0000000001;
+    double c = a;
+    while ((b-a) >= EPSILON)
+    {
+        c = (a+b)/2;
+
+        if (getdeterminant(c, dir,  n_vec) == 0.0)
+            break;
+
+        else if (getdeterminant(c, dir, n_vec)*getdeterminant(a,  dir,  n_vec) < 0)
+            b = c;
+        else
+            a = c;
+    }
+    return (a+b)/2;
+}
+
+
+double PropagationCK::minFinder(double a, double b, Vector3d dir, Vector3d n_vec)
+{
+
+    double EPSILON = 0.0000000001;
+    double c = a;
+    while ((b-a) >= EPSILON)
+    {
+        c = (a+b)/2;
+
+        if (getdeterminant(a,  dir,  n_vec) > getdeterminant(b,  dir,  n_vec))
+            a = c;
+
+        else if (getdeterminant(a,  dir,  n_vec) < getdeterminant(b,  dir,  n_vec))
+            b = c;
+        else if (getdeterminant(a,  dir,  n_vec) == getdeterminant(b,  dir,  n_vec))
+            break;
+    }
+    return (a+b)/2;
+}
+
+
+
+
+Vector3d PropagationCK::getEffectiveIndices(Vector3d dir, Vector3d n_vec) {
+
+    /*
+    dir.x = 1 / sqrt(3);    
+    dir.y = 1 / sqrt(3); 
+    dir.z = 1 / sqrt(3); 
+
+    n_vec.x = 1.77;    
+    n_vec.y = 1.78; 
+    n_vec.z = 1.79; 
+    */
+
+
+    double minimum = minFinder(1, 2,  dir,  n_vec);
+    double N1 = bisection(1, minimum,  dir,  n_vec);
+    double N2 = bisection(minimum, 2,  dir,  n_vec);
+
+    /*
+    std::cout.precision (15);
+    std::cout << N1<<std::endl;
+    std::cout << N2<<std::endl;
+    */
+
+    Vector3d N (N1, N2, 1);
+
+    return N;
+}
+
+
+
+double PropagationCK::getTimeDelay(double n1, double n2, double l)
+{
+    double c = 299792458;
+    return l/c * (n1 - n2);
+}
+
+Vector3d PropagationCK::getPolarization(double n, Vector3d dir, Vector3d n_vec)
+{
+    Vector3d e_v;
+    e_v.x = dir.x/(pow(n, 2) - pow(n_vec.x, 2));
+    e_v.y = dir.y/(pow(n, 2) - pow(n_vec.y, 2));
+    e_v.z = dir.z/(pow(n, 2) - pow(n_vec.z, 2));
+    return e_v;
+}
+
+
+
+
+
 std::string PropagationCK::getDescription() const {
 	std::stringstream s;
 	s << "Propagation in magnetic fields using the Cash-Karp method.";
