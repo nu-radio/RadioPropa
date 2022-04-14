@@ -51,6 +51,7 @@
 %include "radiopropa/ParticleState.h"
 %include "radiopropa/Geometry.h"
 %include "radiopropa/Version.h"
+%include "radiopropa/Trace.h"
 
 %import "radiopropa/Variant.h"
 

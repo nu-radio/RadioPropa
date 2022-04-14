@@ -16,7 +16,7 @@ private:
 	double frequency; ///< total frequency
 	Vector3d position; ///< position vector in comoving coordinates
 	Vector3d direction; ///< unit vector of velocity or momentum
-  Vector3d amplitude;
+  	Vector3d amplitude;
 
 public:
 	ParticleState(int id = 0, double frequency = 0,
