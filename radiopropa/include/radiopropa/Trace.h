@@ -47,7 +47,9 @@ protected:
 
 public:
 	ElectricField();
+	//ElectricField(const ElectricField &efield);
 
+	std::tuple<Trace, Trace, Trace> getTraces() const;
 	std::vector<std::vector<std::complex<double>>> getFrequencySpectrum() const;
 	std::vector<std::vector<double>> getFrequencySpectrum_real() const;
 	std::vector<std::vector<double>> getFrequencySpectrum_imag() const;

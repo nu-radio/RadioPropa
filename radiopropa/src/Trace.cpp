@@ -106,6 +106,18 @@ ElectricField::ElectricField():
 	phi() {
 }
 
+/*ElectricField::ElectricField(const ElectricField &efield) {
+	samplingRate = efield.getSamplingRate();
+	traceStartTime = efield.getTraceStartTime();
+	r = std::get<0>(efield.getTraces());
+	theta = std::get<1>(efield.getTraces());
+	phi = std::get<2>(efield.getTraces());
+}*/
+
+std::tuple<Trace, Trace, Trace> ElectricField::getTraces() const {
+	return {r, theta, phi};
+}
+
 std::vector<std::vector<std::complex<double>>> ElectricField::getFrequencySpectrum() const {
 	std::vector<std::vector<std::complex<double>>> spectrum;
 	spectrum.push_back(r.getFrequencySpectrum());
