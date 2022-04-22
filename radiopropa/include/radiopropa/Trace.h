@@ -7,10 +7,11 @@
 #include <limits>
 #include <complex>
 #include <tuple>
+#include "radiopropa/Referenced.h"
 
 namespace radiopropa {
 
-class Trace {
+class Trace: public Referenced{
 protected:
 	double samplingRate;
 	double traceStartTime;
@@ -36,7 +37,7 @@ public:
 	
 };
 
-class ElectricField {
+class ElectricField: public Referenced {
 protected:
 	double samplingRate;
 	double traceStartTime;

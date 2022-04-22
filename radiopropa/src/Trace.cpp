@@ -5,9 +5,9 @@
 namespace radiopropa {
 
 Trace::Trace():
-	samplingRate(NULL),
+	samplingRate(),
 	traceStartTime(0.0),
-	frequencySpectrum(NULL) {
+	frequencySpectrum() {
 }
 
 std::vector<std::complex<double>> Trace::getFrequencySpectrum() const {
@@ -99,7 +99,7 @@ void Trace::applyTimeShift(double delta_t, bool silent) {
 
 
 ElectricField::ElectricField():
-	samplingRate(NULL),
+	samplingRate(),
 	traceStartTime(0.0),
 	r(),
 	theta(),
