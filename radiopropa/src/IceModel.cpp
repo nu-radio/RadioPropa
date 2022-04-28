@@ -42,8 +42,19 @@ double IceModel_Simple::getValue(const Vector3d &position) const
 }
 double IceModel_Simple::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
 {
-	if ((position1.z <= _z_surface) and (position2.z <= _z_surface)) {
+	Vector3d p1 = position1;
+	Vector3d p2 = position2;
+	if (position1.z > position2.z){
+		p1 = position2;
+		p2 = position1;
+	}
+
+	if (p2.z <= _z_surface) {
 		return _ice.getAverageValue(position1,position2);
+	} else if (p1.z <= _z_surface) {
+		double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_surface));
+		double n2 = 1.;
+		return (n1*(_z_surface - p1.z) + n2*(p2.z - _z_surface)) / (p2.z - p1.z);
 	} else {
 		return 1.;
 	}
@@ -90,17 +101,22 @@ double IceModel_Firn::getAverageValue(const Vector3d &position1, const Vector3d 
 	if (p2.z <= _z_surface) {
 		if (p2.z < _z_firn) {
 			return _ice.getAverageValue(position1,position2);
-		} else if (p1.z >= _z_firn) {
-			return _firn.getAverageValue(position1, position2);
-		} else {
+		} else if (p1.z < _z_firn) {
 			double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_firn));
 			double n2 = _firn.getAverageValue(Vector3d(0,0,_z_firn), p2);
-			return (n1*(_z_firn - p1.z) + n2*(p2.z - _z_firn)) / 2;
+			return (n1*(_z_firn - p1.z) + n2*(p2.z - _z_firn)) / (p2.z - p1.z);
+		} else {
+			return _firn.getAverageValue(position1, position2);
 		}
+	} else if (p1.z < _z_firn){
+		double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_firn));
+		double n2 = _firn.getAverageValue(Vector3d(0,0,_z_firn), Vector3d(0,0,_z_surface));
+		double n3 = 1;
+		return (n1*(_z_firn - p1.z) + n2*(_z_surface - _z_firn) + n3*(p2.z - _z_surface)) / (p2.z - p1.z);
 	} else if (p1.z <= _z_surface) {
 		double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_surface));
 		double n2 = _firn.getAverageValue(Vector3d(0,0,_z_surface), p2);
-		return (n1*(_z_surface - p1.z) + n2*(p2.z - _z_surface)) / 2;
+		return (n1*(_z_surface - p1.z) + n2*(p2.z - _z_surface)) / (p2.z - p1.z);
 	} else {
 		return 1.;
 	}
