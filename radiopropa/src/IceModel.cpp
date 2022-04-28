@@ -80,22 +80,27 @@ double IceModel_Firn::getValue(const Vector3d &position) const
 }
 double IceModel_Firn::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
 {
-	double z1 = std::min(position1.z, position2.z)
-	double z2 = std::max(position1.z, position2.z)
-	if (z2 <= _z_surface) {
-		if (z2 < _z_firn) {
+	Vector3d p1 = position1;
+	Vector3d p2 = position2;
+	if (position1.z > position2.z){
+		p1 = position2;
+		p2 = position1;
+	}
+
+	if (p2.z <= _z_surface) {
+		if (p2.z < _z_firn) {
 			return _ice.getAverageValue(position1,position2);
-		} else if (z1 >= _z_firn) {
+		} else if (p1.z >= _z_firn) {
 			return _firn.getAverageValue(position1, position2);
 		} else {
-			double n1 = _ice.getAverageValue(z1, _z_firn);
-			double n2 = _firn.getAverageValue(_z_firn, z2);
-			return (n1*(_z_firn - z1) + n2*(z2 - _z_firn)) / 2;
+			double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_firn));
+			double n2 = _firn.getAverageValue(Vector3d(0,0,_z_firn), p2);
+			return (n1*(_z_firn - p1.z) + n2*(p2.z - _z_firn)) / 2;
 		}
-	} else if (z1 <= _z_surface) {
-		double n1 = _ice.getAverageValue(z1, _z_surface);
-		double n2 = _firn.getAverageValue(_z_surface, z2);
-		return (n1*(_z_surface - z1) + n2*(z2 - _z_surface)) / 2;
+	} else if (p1.z <= _z_surface) {
+		double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_surface));
+		double n2 = _firn.getAverageValue(Vector3d(0,0,_z_surface), p2);
+		return (n1*(_z_surface - p1.z) + n2*(p2.z - _z_surface)) / 2;
 	} else {
 		return 1.;
 	}
