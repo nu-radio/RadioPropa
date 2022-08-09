@@ -293,10 +293,15 @@
 %feature("director") radiopropa::ObserverFeature;
 %include "radiopropa/module/Observer.h"
 %include "radiopropa/module/Discontinuity.h"
+%include "radiopropa/module/RandomN.h"
+%include "radiopropa/module/RandomScattering.h"
+//%include "radiopropa/module/RandomPointScattering.h"
 %include "radiopropa/module/DensityPerturbation.h"
 %template(PerturbationLayerRefPtr) radiopropa::ref_ptr<radiopropa::PerturbationLayer>;
 %include "radiopropa/module/SimplePropagation.h"
 %include "radiopropa/module/PropagationCK.h"
+%include "radiopropa/module/HorizontalSurface.h"
+//%template(HorizontalSurfaceRefPtr) radiopropa::ref_ptr<radiopropa::HorizontalSurface>;
 
 %ignore radiopropa::Output::enableProperty(const std::string &property, const Variant& defaultValue, const std::string &comment = "");
 %extend radiopropa::Output{

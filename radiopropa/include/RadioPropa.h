@@ -35,5 +35,9 @@
 #include "radiopropa/module/SimplePropagation.h"
 #include "radiopropa/module/TextOutput.h"
 #include "radiopropa/module/Tools.h"
+#include "radiopropa/module/RandomScattering.h"
+#include "radiopropa/module/RandomN.h"
+//#include "radiopropa/module/RandomPointScattering.h"
+#include "radiopropa/module/HorizontalSurface.h"
 
 #endif // RADIOPROPA_H

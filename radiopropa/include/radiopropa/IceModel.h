@@ -82,13 +82,14 @@ class ARAsim_southpole: public IceModel_Exponential
 		ARAsim_southpole(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.43, double z_0 = 75.75757575757576*meter);
 		virtual ~ARAsim_southpole();
 };
-class mooresbay_simple: public IceModel_Exponential
+**/
+class mooresbay_simple: public IceModel_Simple
 {
 	public:
 		mooresbay_simple(double z_surface = 0, double n_ice = 1.78 , double delta_n = 0.46, double z_0 = 37.25*meter);
 		virtual ~mooresbay_simple();
 };
-**/
+
 
 /**
     Gorham Ice Model from https://icecube.wisc.edu/~mnewcomb/radio/

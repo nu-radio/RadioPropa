@@ -127,12 +127,13 @@ ARAsim_southpole::ARAsim_southpole(double z_surface, double n_ice, double delta_
 ARAsim_southpole::~ARAsim_southpole()
 {}
 
+**/
 
-mooresbay_simple::mooresbay_simple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
+mooresbay_simple::mooresbay_simple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Simple(z_surface,n_ice,delta_n,z_0)
 {}
 mooresbay_simple::~mooresbay_simple()
 {}
-**/
+
 
 
 

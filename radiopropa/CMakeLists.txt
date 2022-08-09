@@ -197,6 +197,10 @@ add_library(radiopropa SHARED
 	src/module/Boundary.cpp
 	src/module/BreakCondition.cpp
 	src/module/Discontinuity.cpp
+	src/module/RandomN.cpp	
+    src/module/RandomScattering.cpp
+	# src/module/RandomPointScattering.cpp
+	src/module/HorizontalSurface.cpp
 	src/module/DensityPerturbation.cpp
 	src/module/HDF5Output.cpp
 	src/module/Observer.cpp
@@ -208,6 +212,7 @@ add_library(radiopropa SHARED
 	src/module/SimplePropagation.cpp
 	src/module/TextOutput.cpp
 	src/module/Tools.cpp
+
 
 	${RADIOPROPA_EXTRA_SOURCES}
 )

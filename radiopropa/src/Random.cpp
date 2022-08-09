@@ -112,7 +112,19 @@ double Random::randNorm(const double& mean, const double& variance) {
 	double phi = 2.0 * 3.14159265358979323846264338328 * randExc();
 	return mean + r * cos(phi);
 }
-
+/*
+double Random::randNormMinMax(const double& mean, const double& variance, double min, double max) {
+	double r = sqrt(-2.0 * log(1.0 - randDblExc())) * variance;
+	double phi = 2.0 * 3.14159265358979323846264338328 * randExc();
+	double result = mean + r * cos(phi);
+	if (result < max and result > min) {
+		return mean + r * cos(phi);
+	}
+	else {
+		return randNormMinMax(mean, variance, min, max)
+	}
+}
+*/
 double Random::randUniform(double min, double max) {
 	return min + (max - min) * rand();
 }

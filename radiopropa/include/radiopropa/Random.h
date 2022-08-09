@@ -132,6 +132,8 @@ public:
 	double randExponential();
 	/// Normal distributed random number
 	double randNorm( const double& mean = 0.0, const double& variance = 1.0 );
+	/// Normal distribution in [min, max]
+	//double randNormMinMax(double mean, double variance, double min, double max);
 	/// Uniform distribution in [min, max]
 	double randUniform(double min, double max);
 	/// Rayleigh distributed random number	
