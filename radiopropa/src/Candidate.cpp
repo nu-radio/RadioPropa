@@ -229,6 +229,7 @@ ref_ptr<Candidate> Candidate::clone(bool recursive) const {
 	cloned->active = active;
 	cloned->weight = weight;
 	cloned->trajectoryLength = trajectoryLength;
+	cloned->propagationTime = propagationTime;
 	cloned->currentStep = currentStep;
 	cloned->nextStep = nextStep;
 	
