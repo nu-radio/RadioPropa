@@ -6,7 +6,7 @@ propagation in inhomogeneous by media ray-tracing. (22/01/2018)
 
 
 # Installation
-Be sure you have python, a C++ compiler with c++11 support (gcc, clang and icc are known to work), swig (3.0.4 or higher) and cmake!
+Be sure you have python, a C++ compiler with c++11 support (gcc, clang and icc are known to work), swig (3.0.4 or higher), cmake and HDF5!
 
 Go into the directory where you want to install it using a therminal.
 
