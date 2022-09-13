@@ -40,10 +40,12 @@ private:
     std::map<Candidate*, int> times_reflectedoff;
 public:
     ReflectiveLayer(Surface *surface, double reflection=1); 
-    void process(Candidate *candidate);
+    void process(Candidate *candidate) const;
     std::string getDescription() const;
 
-    int getTimesReflectedoff(Candidate *candidate);
+    //keeping track of the amount of reflections is currently not working
+    /*int getTimesReflectedOff(Candidate *candidate) const;
+    void setTimesReflectedOff(Candidate *candidate, int amount);*/
 };
 
 
