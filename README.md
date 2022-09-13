@@ -6,6 +6,7 @@ propagation in inhomogeneous by media ray-tracing. (22/01/2018)
 
 
 # Installation
+## General
 Be sure you have python, a C++ compiler with c++11 support (gcc, clang and icc are known to work), swig (3.0.4 or higher), cmake and HDF5!
 
 Go into the directory where you want to install it using a therminal.
@@ -31,6 +32,13 @@ Finally add the path to the "RadioPropa" directory `[software_repository]/RadioP
 
 Done! You can now `import radiopropa` into your python scripts and use this package
 
+## Resolving issues
+The installation may sometimes require some extra arguments or steps depending on your local installation. Here you will find some common issues:
+
++ For Apple users, it is possible that the compiler cannot find you python installation. You can resolve this by handing the location to your local python installation to the cmake command by adding some flags as shown here:
+
+       $ cmake -DPYTHON_LIBRARY=$(python3-config --prefix)[path to 'libpython3.10.dylib'] 
+        -DPYTHON_INCLUDE_DIR=$(python3-config --prefix)[path to '/include/python3.10'] ..
 
 
 # Examples
