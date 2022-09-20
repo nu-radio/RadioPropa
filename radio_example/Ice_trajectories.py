@@ -4,14 +4,15 @@ import numpy as np
 
 
 ice = radiopropa.ExponentialIndex(1.78, 0.51, 37.25)
-firn_bottom = radiopropa.ExponentialIndex(1.58, 0.51, 37.25)
-firn_top = radiopropa.ExponentialIndex(1.38, 0.51, 37.25)
+firn_bottom = radiopropa.ExponentialIndex(1.68, 0.51, 37.25)
+firn_top = radiopropa.ExponentialIndex(1.58, 0.51, 37.25)
 iceModel = radiopropa.IceModel_DoubleFirn(firn_top, firn_bottom, ice, -20, -50, 0)
 
 if __name__ == "__main__":
     # simulation setup
     sim = radiopropa.ModuleList()
     sim.add(radiopropa.PropagationCK(iceModel, 1E-8, .001, 1.))
+    sim.add(radiopropa.MinimumAmplitude(.001))
 
     # Observer to stop imulation at =0m and z=300m
     obs = radiopropa.Observer()
@@ -35,20 +36,20 @@ if __name__ == "__main__":
                                            ice.getValue(radiopropa.Vector3d(0,0,-50)),
                                            firn_bottom.getValue(radiopropa.Vector3d(0,0,-50)))
     sim.add(surface)
-    #sim.add(firn_top)
-    #sim.add(firn_bottom)
+    sim.add(firn_top)
+    sim.add(firn_bottom)
 
     # Output
     output = radiopropa.HDF5Output('output_traj.h5', radiopropa.Output.Trajectory3D)
     output.setLengthScale(radiopropa.meter)
     #output.enable(radiopropa.Output.CurrentAmplitudeColumn)
     output.enable(radiopropa.Output.SerialNumberColumn)
-    #sim.add(output)
+    sim.add(output)
 
     # Source
 
     #Start rays from 0 - 90 deg
-    for phi in [30]:
+    for phi in [60]:
 
         source = radiopropa.Source()
         source.add(radiopropa.SourcePosition(radiopropa.Vector3d(0, 0, -240.)))
@@ -61,4 +62,3 @@ if __name__ == "__main__":
         sim.setShowProgress(True)
         sim.run(source, 1)
 
-    
