@@ -2,6 +2,8 @@
 
 namespace radiopropa {
 
+ExponentialIndex::ExponentialIndex()
+{}
 ExponentialIndex::ExponentialIndex(double n_ice, double delta_n, double z_0, double z_shift): 
 	_n_ice(n_ice), 
 	_delta_n(delta_n), 
@@ -127,6 +129,96 @@ Vector3d IceModel_Firn::getGradient(const Vector3d &position) const
 		return _ice.getGradient(position);
 	} else if (position.z <= _z_surface) {
 		return _firn.getGradient(position);
+	} else {
+		return Vector3d(0,0,0);
+	}
+}
+
+IceModel_DoubleFirn::IceModel_DoubleFirn(ExponentialIndex firn_top, ExponentialIndex firn_bottom,
+	ExponentialIndex ice, double z_firn_top, double z_firn_bottom, double z_surface)
+{
+	_z_surface = z_surface;
+	_z_firn_top = z_firn_top;
+	_z_firn_bottom = z_firn_bottom;
+	_firn_top = firn_top;
+	_firn_bottom = firn_bottom;
+	_ice = ice;
+}
+IceModel_DoubleFirn::~IceModel_DoubleFirn()
+{}
+double IceModel_DoubleFirn::getValue(const Vector3d &position) const
+{
+	if (position.z < _z_firn_bottom){
+		return _ice.getValue(position);
+	} else if (position.z < _z_firn_top){
+		return _firn_bottom.getValue(position);
+	} else if (position.z <= _z_surface){
+		return _firn_top.getValue(position);
+	} else {
+		return 1.;
+	}
+}
+double IceModel_DoubleFirn::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
+{
+	Vector3d p1 = position1;
+	Vector3d p2 = position2;
+	if (position1.z > position2.z){
+		p1 = position2;
+		p2 = position1;
+	}
+
+	if (p2.z < _z_firn_bottom) {
+		return _ice.getAverageValue(position1,position2);
+	} else if (p1.z > _z_surface) {
+		return 1;
+	} else if (p2.z < _z_firn_top) {
+		if (p1.z >= _z_firn_bottom) {
+			return _firn_bottom.getAverageValue(position1,position2);
+		} else {
+			double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_firn_bottom));
+			double n2 = _firn_bottom.getAverageValue(Vector3d(0,0,_z_firn_bottom), p2);
+			return (n1*(_z_firn_bottom - p1.z) + n2*(p2.z - _z_firn_bottom)) / (p2.z - p1.z);	
+		}
+	} else if (p2.z <= _z_surface) {
+		if (p1.z >= _z_firn_top) {
+			return _firn_top.getAverageValue(position1,position2);
+		} else if (p1.z >= _z_firn_bottom) {
+			double n1 = _firn_bottom.getAverageValue(p1, Vector3d(0,0,_z_firn_top));
+			double n2 = _firn_top.getAverageValue(Vector3d(0,0,_z_firn_top), p2);
+			return (n1*(_z_firn_top - p1.z) + n2*(p2.z - _z_firn_top)) / (p2.z - p1.z);	
+		} else {
+			double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_firn_bottom));
+			double n2 = _firn_bottom.getAverageValue(Vector3d(0,0,_z_firn_bottom), Vector3d(0,0,_z_firn_top));
+			double n3 = _firn_top.getAverageValue(Vector3d(0,0,_z_firn_top), p2);
+			return (n1*(_z_firn_bottom - p1.z) + n2*(_z_firn_top - _z_firn_bottom) + n3*(p2.z - _z_firn_top)) / (p2.z - p1.z);
+		}
+	} else {
+		if (p1.z >= _z_firn_top) {
+			double n1 = _firn_top.getAverageValue(p1, Vector3d(0,0,_z_surface));
+			double n2 = 1;
+			return (n1*(_z_surface - p1.z) + n2*(p2.z - _z_surface)) / (p2.z - p1.z);
+		} else if (p1.z >= _z_firn_bottom) {
+			double n1 = _firn_bottom.getAverageValue(p1, Vector3d(0,0,_z_firn_top));
+			double n2 = _firn_top.getAverageValue(Vector3d(0,0,_z_firn_top), Vector3d(0,0,_z_surface));
+			double n3 = 1;
+			return (n1*(_z_firn_top - p1.z) + n2*(_z_surface - _z_firn_top) + n3*(p2.z - _z_surface)) / (p2.z - p1.z);
+		} else {
+			double n1 = _ice.getAverageValue(p1, Vector3d(0,0,_z_firn_bottom));
+			double n2 = _firn_bottom.getAverageValue(Vector3d(0,0,_z_firn_bottom), Vector3d(0,0,_z_firn_top));
+			double n3 = _firn_top.getAverageValue(Vector3d(0,0,_z_firn_top), Vector3d(0,0,_z_surface));
+			double n4 = 1;
+			return (n1*(_z_firn_bottom - p1.z) + n2*(_z_firn_top - _z_firn_bottom) + n3*(_z_surface - _z_firn_top) + n4*(p2.z - _z_surface)) / (p2.z - p1.z);
+		}
+	}
+}
+Vector3d IceModel_DoubleFirn::getGradient(const Vector3d &position) const
+{
+	if (position.z < _z_firn_bottom){
+		return _ice.getGradient(position);
+	} else if (position.z < _z_firn_top){
+		return _firn_bottom.getGradient(position);
+	} else if (position.z <= _z_surface) {
+		return _firn_top.getGradient(position);
 	} else {
 		return Vector3d(0,0,0);
 	}
