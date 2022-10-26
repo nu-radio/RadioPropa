@@ -333,19 +333,24 @@ ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d d
 }
 
 
-ElectricField PropagationCK::apply_birefringence_1(Vector3d dir, Vector3d n_vec)
+std::vector<double> PropagationCK::apply_birefringence_1(Vector3d dir, Vector3d n_vec)
 {
 
-    ElectricField Theta;
+    Trace Theta;
+    Trace Phi;
     std::vector<double> real{0,0,0,0,0,1,0,0,0,0,0};
-    std::vector<double> imag{0,0,0,0,0,1,0,0,0,0,0};
+    std::vector<double> imag{0,0,0,0,0,2,0,0,0,0,0};
     std::vector<double> realr{0,0,0,0,0,1,0,0,0,0,0};
     std::vector<double> imagr{0,0,0,0,0,1,0,0,0,0,0};
 
-    Theta.setFrequencySpectrum(realr, imagr, real, imag, real, imag, 0.001);
-    
+    Theta.setFrequencySpectrum(real, real, 0.001);
+    Phi.setFrequencySpectrum(imag, imag, 0.001);
 
-    return Theta;
+    Theta.addTraces(Phi);
+
+    Theta.multiplyConstant(5);
+
+    return Theta.getFrequencySpectrum_real();
 }
 
 

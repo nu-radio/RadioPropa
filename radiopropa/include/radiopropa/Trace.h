@@ -34,6 +34,9 @@ public:
 
     void addTraceStartTime(double start_time);
     void applyTimeShift(double delta_t, bool silent = false);
+
+    void addTraces(Trace secondTrace);
+    void multiplyConstant(double constant);
 	
 };
 

@@ -1,5 +1,7 @@
 #include "radiopropa/Trace.h"
 #include "radiopropa/Units.h"
+#include <functional> 
+#include <algorithm>
 #include <math.h>
 
 namespace radiopropa {
@@ -93,6 +95,14 @@ void Trace::applyTimeShift(double delta_t, bool silent) {
     	new_spectrum.push_back(A * phase_vector);
     }
     this->setFrequencySpectrum(new_spectrum, samplingRate);
+}
+
+void Trace::addTraces(Trace secondTrace) {
+    std::transform(frequencySpectrum.begin(), frequencySpectrum.end(), secondTrace.getFrequencySpectrum().begin(), frequencySpectrum.begin(), std::plus<std::complex<double>>());
+}
+
+void Trace::multiplyConstant(double constant) {
+    std::transform(frequencySpectrum.begin(), frequencySpectrum.end(), frequencySpectrum.begin(), [&constant](std::complex<double> element) { return element *= constant; });
 }
 
 
