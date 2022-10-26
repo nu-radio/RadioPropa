@@ -5,6 +5,7 @@
 #include "radiopropa/Units.h"
 #include "radiopropa/ScalarField.h"
 
+
 namespace radiopropa {
 
 /**
@@ -80,6 +81,8 @@ public:
     double getTimeDelay(double n1, double n2, double l);
     Vector3d getPolarization(double n, Vector3d dir, Vector3d n_vec);
 	Vector3d getEffectiveIndices(Vector3d dir, Vector3d n_vec);
+    ElectricField apply_birefringence_1(Vector3d dir, Vector3d n_vec);
+    ElectricField apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec);
 	std::string getDescription() const;
 };
 

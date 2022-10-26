@@ -1,9 +1,12 @@
 #include "radiopropa/module/PropagationCK.h"
 
+#include <functional> 
 #include <limits>
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+#include <radiopropa/Trace.h>
+
 
 namespace radiopropa {
 
@@ -239,6 +242,110 @@ Vector3d PropagationCK::getPolarization(double n, Vector3d dir, Vector3d n_vec)
     e_v.y = dir.y/(pow(n, 2) - pow(n_vec.y, 2));
     e_v.z = dir.z/(pow(n, 2) - pow(n_vec.z, 2));
     return e_v;
+}
+
+
+ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec)
+//std::vector<std::vector<double>> PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec)
+{
+
+    std::vector<std::vector<double>> Efield = Pulse.getFrequencySpectrum_real();
+
+    double rate = Pulse.getSamplingRate();
+
+    float l = 1;     /*has to be set but how? */
+
+    Vector3d N_eff = getEffectiveIndices(dir, n_vec);
+    double dt = getTimeDelay(N_eff.x, N_eff.y, l);
+    Vector3d pol_1 = getPolarization(N_eff.x, dir, n_vec);
+    Vector3d pol_2 = getPolarization(N_eff.y, dir, n_vec);
+
+    double a = pol_1.y;
+    double b = pol_1.z;
+    double c = pol_2.y;
+    double d = pol_2.z;
+
+    //Trace N1 = Efield[1] * a + Efield[2] * b;
+    //Trace N2 = Efield[1] * c + Efield[2] * d;
+
+    //std::vector<double> X = {1.1, 2.2, 3.3, 4.4};
+    //std::vector<double> Y = {10, 20, 30, 40};
+
+    //std::vector<double> pass = X;
+    //double scale = 2;
+
+    std::vector<double> Th_a = Efield[1];
+    std::vector<double> Ph_b = Efield[2];
+    std::vector<double> Th_c = Efield[1];
+    std::vector<double> Ph_d = Efield[2];
+
+    std::vector<double> N1 = Efield[1];
+    std::vector<double> N2 = Efield[1];
+
+
+    std::transform(Efield[1].begin(), Efield[1].end(), Th_a.begin(), [&a](double element) { return element *= a; });
+    std::transform(Efield[2].begin(), Efield[2].end(), Ph_b.begin(), [&b](double element) { return element *= b; });
+    std::transform(Efield[1].begin(), Efield[1].end(), Th_c.begin(), [&c](double element) { return element *= c; });
+    std::transform(Efield[2].begin(), Efield[2].end(), Ph_d.begin(), [&d](double element) { return element *= d; });
+
+    std::transform(Th_a.begin(), Th_a.end(), Ph_b.begin(), N1.begin(), std::plus<double>());
+    std::transform(Th_c.begin(), Th_c.end(), Ph_d.begin(), N2.begin(), std::plus<double>());
+
+    Trace N_shift;
+    N_shift.setFrequencySpectrum(N1, N1, rate);
+    
+    N_shift.applyTimeShift(dt);
+
+    N1 = N_shift.getFrequencySpectrum_real();
+
+    double det = a*d - b*c;
+
+    double a_inv = 1 / det * d;
+    double b_inv = -1 / det * b;
+    double c_inv = -1 / det * c;
+    double d_inv = 1 / det * a;
+
+
+    std::vector<double> N1_a = N1;
+    std::vector<double> N2_b = N2;
+    std::vector<double> N1_c = N1;
+    std::vector<double> N2_d = N2;
+
+    //std::vector<double> N1 = Efield[1];
+    //std::vector<double> N2 = Efield[1];
+
+    std::transform(N1.begin(), N1.end(), N1_a.begin(), [&a_inv](double element) { return element *= a_inv; });
+    std::transform(N2.begin(), N2.end(), N2_b.begin(), [&b_inv](double element) { return element *= b_inv; });
+    std::transform(N1.begin(), N1.end(), N1_c.begin(), [&c_inv](double element) { return element *= c_inv; });
+    std::transform(N2.begin(), N2.end(), N2_d.begin(), [&d_inv](double element) { return element *= d_inv; });
+
+    std::transform(N1_a.begin(), N1_a.end(), N2_b.begin(), Efield[1].begin(), std::plus<double>());
+    std::transform(N1_c.begin(), N1_c.end(), N2_d.begin(), Efield[2].begin(), std::plus<double>());
+
+
+    //Trace Th = N1 * a_inv + N2 * b_inv;
+    //Trace Ph = N1 * c_inv + N2 * d_inv;
+
+
+    Pulse.setFrequencySpectrum(Efield[0], Efield[0], Efield[1], Efield[1], Efield[2], Efield[2], rate);
+
+    return Pulse;
+}
+
+
+ElectricField PropagationCK::apply_birefringence_1(Vector3d dir, Vector3d n_vec)
+{
+
+    ElectricField Theta;
+    std::vector<double> real{0,0,0,0,0,1,0,0,0,0,0};
+    std::vector<double> imag{0,0,0,0,0,1,0,0,0,0,0};
+    std::vector<double> realr{0,0,0,0,0,1,0,0,0,0,0};
+    std::vector<double> imagr{0,0,0,0,0,1,0,0,0,0,0};
+
+    Theta.setFrequencySpectrum(realr, imagr, real, imag, real, imag, 0.001);
+    
+
+    return Theta;
 }
 
 
