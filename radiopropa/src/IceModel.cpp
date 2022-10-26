@@ -132,6 +132,109 @@ Vector3d IceModel_Firn::getGradient(const Vector3d &position) const
 	}
 }
 
+
+
+IceModel_Data1D::compareDataPoint(IceModel_Data1D::data_point dp1, IceModel_Data1D::data_point dp2)
+{
+	return (dp1.coord < dp2.coord);
+}
+IceModel_Data1D::IceModel_Data1D(std::string filename, std::string delimeter, std::string interpolation, int axis)
+{
+	// fill vector of data_points from reading csv
+  
+  // sort the data_points in increasing order of coordinate
+  sort(data_points.begin(), data_points.end(), IceModel_data1D::compareDataPoint);
+}
+IceModel_Data1D::~IceModel_Data1D()
+{}
+double IceModel_Data1D::getValue(const Vector3d &position) const
+{
+	std::vector<double> pos{position.x, position.y, position.z};
+	if (interpolation == 'linear'){
+		for (int i=0; i < data_points.size(); i++){
+			double x0 = data_points[i].coord;
+			double x1 = data_points[i+1].coord;
+			double y0 = data_points[i].ior;
+			double y1 = data_points[i+1].ior;
+
+			if ((x0 <= pos[axis]) and (x1 >= pos[axis])) {
+				return y0 + ((y1-y0)/(x1-x0)) * (pos[axis] - x0);
+			}
+		} 	
+	} 	
+} 
+double IceModel_Data1D::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
+{
+	std::vector<float> pos1{position1.x, position1.y, position1.z};
+	std::vector<float> pos1{position2.x, position2.y, position2.z};
+	if pos1[axis] > pos2[axis]{
+		std::vector<float> pos2{position1.x, position1.y, position1.z};
+		std::vector<float> pos1{position2.x, position2.y, position2.z};
+	}
+
+	if (interpolation == 'linear'){
+		double xp1 = pos1[axis];
+		double yp1 = 0;
+		double xp2 = pos2[axis];
+		double yp2 = 0;
+
+		double integral = 0;
+
+		for (int i=0; i < data_points.size(); i++){
+			double x0 = data_points[i].coord;
+			double y0 = data_points[i].ior;
+
+			if (xp1 > x1) or (xp2 < x0) {
+				continue;
+			}
+
+			double x1 = data_points[i+1].coord;
+			double y1 = data_points[i+1].ior;
+
+			if ((x0 <= xp1) and (x1 >= xp1)) {
+				yp1 = y0 + ((y1-y0)/(x1-x0)) * (xp1 - x0);
+				integral += ((x1 - xp1) * (y1 + yp1) / 2);
+			}
+			if ((x0 > xp1) and (x0 < xp2)){
+				integral += ((x1 - x0) * (y1 + y0) / 2);
+			}
+			if ((x0 <= xp2) and (x1 >= xp2)) {
+				yp2 = y0 + ((y1-y0)/(x1-x0)) * (xp2 - x0);
+				integral -= ((x1 - xp2) * (y1 + yp2) / 2);
+			}
+
+		return (integral / (xp2 - xp1));
+		} 	
+	}
+}
+Vector3d IceModel_Data1D::getGradient(const Vector3d &position) const
+{
+	std::vector<double> pos{position.x, position.y, position.z};
+	if (interpolation == 'linear'){
+		for (int i=0; i < data_points.size(); i++){
+			double g = 0;
+
+			if ((data_points[i].coord < pos[axis]) and (data_points[i+1].coord > pos[axis])){
+				g = (data_points[i+1].ior-data_points[i].ior)/(data_points[i+1].coord-data_points[i].coord);
+				continue;
+			} else if (data_points[i].coord == pos[axis]) {
+				g  = (data_points[i+1].ior-data_points[i].ior)/(data_points[i+1].coord-data_points[i].coord);
+				g += (data_points[i].ior-data_points[i-1].ior)/(data_points[i].coord-data_points[i-1].coord);
+				g /= 2;
+				continue;
+			}
+		}
+
+		if axis == 0 {
+			return Vector3d(g,0,0);
+		} else if axis == 1 {
+			return Vector3d(0,g,0);
+		} else if axis == 2 {
+			return Vector3d(0,0,g);
+		}
+	}
+}
+
 /**
 greenland_simple::greenland_simple(double z_surface, double n_ice, double delta_n, double z_0): IceModel_Exponential(z_surface,n_ice,delta_n,z_0)
 {}
