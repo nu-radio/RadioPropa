@@ -57,12 +57,6 @@ matrix:
       env:
         - PYTHON_EXECUTABLE=/usr/bin/python2
         - LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
-    - os : osx
-      compiler: clang
-      env:
-        - CXX_COMPILER='clang++'
-        - C_COMPILER='clang++'
-        - PYTHON_EXECUTABLE=/usr/bin/python
 
 before_install:
   - echo "TRAVIS_OS_NAME=$TRAVIS_OS_NAME"

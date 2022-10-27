@@ -57,6 +57,31 @@ class IceModel_Firn: public ScalarField
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
+
+class IceModel_Data1D: public ScalarField
+{
+	protected:
+		//coordinates of the axis specified should always be sorted so numbers go up
+		//the implementation of the get functions depend on this 
+		std::vector<double> coordinates, indices_of_refraction;
+		std::string interpolation;
+		int axis;
+
+	public:
+		IceModel_Data1D(  
+			std::string interpolation = "linear",
+			int axis = 2); //0=x, 1=y and 2=z
+		virtual ~IceModel_Data1D();
+		virtual double getValue(const Vector3d &position) const; 
+		virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const; 
+		virtual Vector3d getGradient(const Vector3d &position) const;
+
+		virtual void loadDataFromCSV(std::string filename, char delimeter = ',', int header_lineindex = 0);
+		virtual void loadDataFromVector(std::vector<double> coord, std::vector<double> ior);
+		virtual void loadDataFromVector(std::vector<std::vector<double>> data);
+};
+
+
 /**
 class greenland_simple: public IceModel_Exponential
 {
