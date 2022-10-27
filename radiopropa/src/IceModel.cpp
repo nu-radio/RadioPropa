@@ -1,4 +1,6 @@
 #include <radiopropa/IceModel.h>
+#include <algorithm>
+#include <iostream>
 
 namespace radiopropa {
 
@@ -134,45 +136,50 @@ Vector3d IceModel_Firn::getGradient(const Vector3d &position) const
 
 
 
-IceModel_Data1D::compareDataPoint(IceModel_Data1D::data_point dp1, IceModel_Data1D::data_point dp2)
-{
-	return (dp1.coord < dp2.coord);
-}
-IceModel_Data1D::IceModel_Data1D(std::string filename, std::string delimeter, std::string interpolation, int axis)
-{
-	// fill vector of data_points from reading csv
-  
-  // sort the data_points in increasing order of coordinate
-  sort(data_points.begin(), data_points.end(), IceModel_data1D::compareDataPoint);
-}
+
+IceModel_Data1D::IceModel_Data1D(std::string interpolation, int axis):
+interpolation(interpolation), axis(axis)
+{}
 IceModel_Data1D::~IceModel_Data1D()
 {}
 double IceModel_Data1D::getValue(const Vector3d &position) const
 {
-	std::vector<double> pos{position.x, position.y, position.z};
-	if (interpolation == 'linear'){
-		for (int i=0; i < data_points.size(); i++){
-			double x0 = data_points[i].coord;
-			double x1 = data_points[i+1].coord;
-			double y0 = data_points[i].ior;
-			double y1 = data_points[i+1].ior;
+	std::vector<double> pos = {position.x, position.y, position.z};
+	double n;
+
+	if ((coordinates.front() > pos[axis]) or (coordinates.back() < pos[axis])) {
+		throw std::domain_error("The position must lie inside the range of the data.");
+	}
+	if (interpolation == "linear"){
+		for (int i=0; i < coordinates.size(); i++){
+			double x0 = coordinates[i];
+			double x1 = coordinates[i+1];
+			double y0 = indices_of_refraction[i];
+			double y1 = indices_of_refraction[i+1];
 
 			if ((x0 <= pos[axis]) and (x1 >= pos[axis])) {
-				return y0 + ((y1-y0)/(x1-x0)) * (pos[axis] - x0);
+				n = y0 + ((y1-y0)/(x1-x0)) * (pos[axis] - x0);
+				continue;
 			}
-		} 	
-	} 	
+		}
+	}
+	return n;
 } 
 double IceModel_Data1D::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
 {
-	std::vector<float> pos1{position1.x, position1.y, position1.z};
-	std::vector<float> pos1{position2.x, position2.y, position2.z};
-	if pos1[axis] > pos2[axis]{
-		std::vector<float> pos2{position1.x, position1.y, position1.z};
-		std::vector<float> pos1{position2.x, position2.y, position2.z};
+	double n_avg;
+	std::vector<double> pos1 = {position1.x, position1.y, position1.z};
+	std::vector<double> pos2 = {position2.x, position2.y, position2.z};
+	if (pos1[axis] > pos2[axis]){
+		pos2 = {position1.x, position1.y, position1.z};
+		pos1 = {position2.x, position2.y, position2.z};
 	}
 
-	if (interpolation == 'linear'){
+	if ((coordinates.front() > pos1[axis]) or (coordinates.back() < pos2[axis])) {
+		throw std::domain_error("The positions must lie inside the range of the data.");
+	}
+
+	if (interpolation == "linear"){
 		double xp1 = pos1[axis];
 		double yp1 = 0;
 		double xp2 = pos2[axis];
@@ -180,16 +187,16 @@ double IceModel_Data1D::getAverageValue(const Vector3d &position1, const Vector3
 
 		double integral = 0;
 
-		for (int i=0; i < data_points.size(); i++){
-			double x0 = data_points[i].coord;
-			double y0 = data_points[i].ior;
+		for (int i=0; i < coordinates.size(); i++){
+			double x0 = coordinates[i];
+			double x1 = coordinates[i+1];
 
-			if (xp1 > x1) or (xp2 < x0) {
+			if ((xp1 > x1) or (xp2 < x0)) {
 				continue;
 			}
 
-			double x1 = data_points[i+1].coord;
-			double y1 = data_points[i+1].ior;
+			double y0 = indices_of_refraction[i];
+			double y1 = indices_of_refraction[i+1];
 
 			if ((x0 <= xp1) and (x1 >= xp1)) {
 				yp1 = y0 + ((y1-y0)/(x1-x0)) * (xp1 - x0);
@@ -202,37 +209,72 @@ double IceModel_Data1D::getAverageValue(const Vector3d &position1, const Vector3
 				yp2 = y0 + ((y1-y0)/(x1-x0)) * (xp2 - x0);
 				integral -= ((x1 - xp2) * (y1 + yp2) / 2);
 			}
+		}
 
-		return (integral / (xp2 - xp1));
-		} 	
+		n_avg = (integral / (xp2 - xp1));
 	}
+	return n_avg;
 }
 Vector3d IceModel_Data1D::getGradient(const Vector3d &position) const
 {
-	std::vector<double> pos{position.x, position.y, position.z};
-	if (interpolation == 'linear'){
-		for (int i=0; i < data_points.size(); i++){
-			double g = 0;
+	Vector3d gradient = Vector3d(0,0,0);
+	std::vector<double> pos = {position.x, position.y, position.z};
 
-			if ((data_points[i].coord < pos[axis]) and (data_points[i+1].coord > pos[axis])){
-				g = (data_points[i+1].ior-data_points[i].ior)/(data_points[i+1].coord-data_points[i].coord);
+	if ((coordinates.front() >= pos[axis]) or (coordinates.back() <= pos[axis])) {
+		throw std::domain_error("The position must lie inside the range of the data.");
+	}
+
+	if (interpolation == "linear"){
+		double g = 0;
+		for (int i=0; i < coordinates.size(); i++){
+			if ((coordinates[i] < pos[axis]) and (coordinates[i+1] > pos[axis])){
+				g = (indices_of_refraction[i+1]-indices_of_refraction[i])/(coordinates[i+1]-coordinates[i]);
 				continue;
-			} else if (data_points[i].coord == pos[axis]) {
-				g  = (data_points[i+1].ior-data_points[i].ior)/(data_points[i+1].coord-data_points[i].coord);
-				g += (data_points[i].ior-data_points[i-1].ior)/(data_points[i].coord-data_points[i-1].coord);
+			} else if (coordinates[i] == pos[axis]) {
+				g  = (indices_of_refraction[i+1]-indices_of_refraction[i])/(coordinates[i+1]-coordinates[i]);
+				g += (indices_of_refraction[i]-indices_of_refraction[i-1])/(coordinates[i]-coordinates[i-1]);
 				g /= 2;
 				continue;
 			}
 		}
 
-		if axis == 0 {
-			return Vector3d(g,0,0);
-		} else if axis == 1 {
-			return Vector3d(0,g,0);
-		} else if axis == 2 {
-			return Vector3d(0,0,g);
+		if (axis == 0) {
+			gradient.x = g;
+		} else if (axis == 1) {
+			gradient.y = g;
+		} else if (axis == 2) {
+			gradient.z = g;
 		}
 	}
+	return gradient;
+}
+
+void IceModel_Data1D::loadDataFromVectors(std::vector<double> coord, std::vector<double> ior)
+{
+	struct data_point {
+	  double coord;
+	  double ior;
+	  static bool compare(data_point dp1, data_point dp2)
+	  {
+			return (dp1.coord < dp2.coord);
+		}
+	};
+		
+	std::vector<data_point> data;
+
+	for (int i=0; i < coord.size(); i++){
+		data.push_back({coord[i],ior[i]});
+	}
+
+	std::sort(data.begin(), data.end(), data_point::compare);
+
+	for (int i=0; i < data.size(); i++){
+		coord[i] = data[i].coord;
+		ior[i] = data[i].ior;
+	}
+
+	coordinates = coord;
+	indices_of_refraction = ior;
 }
 
 /**

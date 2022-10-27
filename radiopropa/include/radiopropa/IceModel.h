@@ -61,24 +61,23 @@ class IceModel_Firn: public ScalarField
 class IceModel_Data1D: public ScalarField
 {
 	protected:
-	    struct data_point {
-	        double coord;
-	        double ior;
-	    };
-		std::vector<data_point> data_points;
+		//coordinates of the axis specified should always be sorted so numbers go up
+		//the implementation of the get functions depend on this 
+		std::vector<double> coordinates, indices_of_refraction;
+		std::string interpolation;
 		int axis;
-		bool compareDataPoint(IceModel_Data1D::data_point dp1, IceModel_Data1D::data_point dp2);
 
 	public:
 		IceModel_Data1D(  
-			std::string filename, 
-			std::string delimeter = ',',
-			std::string interpolation = 'linear',
+			std::string interpolation = "linear",
 			int axis = 2); //0=x, 1=y and 2=z
 		virtual ~IceModel_Data1D();
 		virtual double getValue(const Vector3d &position) const; 
 		virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const; 
 		virtual Vector3d getGradient(const Vector3d &position) const;
+
+		//virtual void setDataFromCSV(std::string filename, std::string delimeter);
+		virtual void loadDataFromVectors(std::vector<double> coord, std::vector<double> ior);
 };
 
 
