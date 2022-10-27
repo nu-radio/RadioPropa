@@ -76,8 +76,9 @@ class IceModel_Data1D: public ScalarField
 		virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const; 
 		virtual Vector3d getGradient(const Vector3d &position) const;
 
-		//virtual void setDataFromCSV(std::string filename, std::string delimeter);
-		virtual void loadDataFromVectors(std::vector<double> coord, std::vector<double> ior);
+		virtual void loadDataFromCSV(std::string filename, char delimeter = ',', int header_lineindex = 0);
+		virtual void loadDataFromVector(std::vector<double> coord, std::vector<double> ior);
+		virtual void loadDataFromVector(std::vector<std::vector<double>> data);
 };
 
 

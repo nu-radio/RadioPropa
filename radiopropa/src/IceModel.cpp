@@ -1,6 +1,8 @@
 #include <radiopropa/IceModel.h>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 namespace radiopropa {
 
@@ -249,7 +251,56 @@ Vector3d IceModel_Data1D::getGradient(const Vector3d &position) const
 	return gradient;
 }
 
-void IceModel_Data1D::loadDataFromVectors(std::vector<double> coord, std::vector<double> ior)
+void IceModel_Data1D::loadDataFromCSV(std::string filename, char delimeter, int header_lineindex)
+{
+	struct data_point {
+	  double coord;
+	  double ior;
+	  static bool compare(data_point dp1, data_point dp2)
+	  {
+			return (dp1.coord < dp2.coord);
+		}
+	};
+
+	std::ifstream data_file;
+	data_file.open(filename);
+	if (!data_file.is_open())
+	{
+		throw std::ios_base::failure("File failed to open.");
+	}
+
+	std::vector<data_point> data;
+	std::string line;
+	std::string temp_coord;
+	std::string temp_ior;
+	int lineindex = 0;
+	while (std::getline(data_file, line)) {
+		if ((line.empty()) or (line.front() == '#')){
+			lineindex ++;
+			continue;
+		}
+
+		if (lineindex == header_lineindex){
+			lineindex ++;
+			continue;
+		}
+
+		std::stringstream ss(line);
+		std::getline(ss,temp_coord, delimeter);
+		std::getline(ss,temp_ior,delimeter);
+		data.push_back({std::atof(temp_coord.c_str()),std::atof(temp_ior.c_str())});
+	}
+
+	std::sort(data.begin(), data.end(), data_point::compare);
+	coordinates.clear();
+	indices_of_refraction.clear();
+	for (int i=0; i < data.size(); i++){
+		coordinates.push_back(data[i].coord);
+		indices_of_refraction.push_back(data[i].ior);
+	}
+}
+
+void IceModel_Data1D::loadDataFromVector(std::vector<double> coord, std::vector<double> ior)
 {
 	struct data_point {
 	  double coord;
@@ -268,13 +319,31 @@ void IceModel_Data1D::loadDataFromVectors(std::vector<double> coord, std::vector
 
 	std::sort(data.begin(), data.end(), data_point::compare);
 
+	coordinates.clear();
+	indices_of_refraction.clear();
 	for (int i=0; i < data.size(); i++){
-		coord[i] = data[i].coord;
-		ior[i] = data[i].ior;
+		coordinates.push_back(data[i].coord);
+		indices_of_refraction.push_back(data[i].ior);
 	}
+}
 
-	coordinates = coord;
-	indices_of_refraction = ior;
+void IceModel_Data1D::loadDataFromVector(std::vector<std::vector<double>> data)
+{
+	struct data_point {
+	  static bool compare(std::vector<double> dp1, std::vector<double> dp2)
+	  {
+			return (dp1[0] < dp2[0]);
+		}
+	};
+		
+	std::sort(data.begin(), data.end(), data_point::compare);
+
+	coordinates.clear();
+	indices_of_refraction.clear();
+	for (int i=0; i < data.size(); i++){
+		coordinates.push_back(data[i][0]);
+		indices_of_refraction.push_back(data[i][1]);
+	}
 }
 
 /**
