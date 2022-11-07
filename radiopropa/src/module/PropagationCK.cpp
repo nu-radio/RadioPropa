@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <vector>
 #include <radiopropa/Trace.h>
+#include <radiopropa/IceModel.h>
 
 
 namespace radiopropa {
@@ -145,102 +146,62 @@ double PropagationCK::getMaximumStep() const {
 }
 
 
-double PropagationCK::getdeterminant(double n, Vector3d dir, Vector3d n_vec) 
-{
+std::vector<double> PropagationCK::getEffectiveIndices_analytical(Vector3d dir, Vector3d n_vec) {
 
-    double A = (pow(n_vec.x, 2) - pow(n, 2))*(pow(n_vec.y, 2) - pow(n, 2))*(pow(n_vec.z, 2) - pow(n, 2));
-    double B = pow(n, 2) * ( pow(dir.x, 2) *(pow(n_vec.y, 2) - pow(n, 2))*(pow(n_vec.z, 2) - pow(n, 2)) + pow(dir.y, 2) *(pow(n_vec.x, 2) - pow(n, 2))*(pow(n_vec.z, 2) - pow(n, 2)) + pow(dir.z, 2) *(pow(n_vec.x, 2) - pow(n, 2))*(pow(n_vec.y, 2) - pow(n, 2)));
+    double N1 = sqrt((-2 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2)) / (pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))) - sqrt(4 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.x, 2) + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.x, 2) + pow(dir.z, 2)) + pow(n_vec.x, 2) * (-1 + pow(dir.z, 2) + pow(dir.y, 2))) + pow(pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))),2 ))));
 
-       return  A + B ;
-}
+    double N2 = sqrt((-2 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2)) / (pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))) + sqrt(4 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.x, 2) + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.x, 2) + pow(dir.z, 2)) + pow(n_vec.x, 2) * (-1 + pow(dir.z, 2) + pow(dir.y, 2))) + pow(pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))),2 ))));
 
+    std::vector<double> N_vector;
+    N_vector.push_back(N1);
+    N_vector.push_back(N2);
 
-double PropagationCK::bisection(double a, double b, Vector3d dir, Vector3d n_vec)
-{
-
-    double EPSILON = 0.0000000001;
-    double c = a;
-    while ((b-a) >= EPSILON)
-    {
-        c = (a+b)/2;
-
-        if (getdeterminant(c, dir,  n_vec) == 0.0)
-            break;
-
-        else if (getdeterminant(c, dir, n_vec)*getdeterminant(a,  dir,  n_vec) < 0)
-            b = c;
-        else
-            a = c;
-    }
-    return (a+b)/2;
-}
-
-
-double PropagationCK::minFinder(double a, double b, Vector3d dir, Vector3d n_vec)
-{
-
-    double EPSILON = 0.0000000001;
-    double c = a;
-    while ((b-a) >= EPSILON)
-    {
-        c = (a+b)/2;
-
-        if (getdeterminant(a,  dir,  n_vec) > getdeterminant(b,  dir,  n_vec))
-            a = c;
-
-        else if (getdeterminant(a,  dir,  n_vec) < getdeterminant(b,  dir,  n_vec))
-            b = c;
-        else if (getdeterminant(a,  dir,  n_vec) == getdeterminant(b,  dir,  n_vec))
-            break;
-    }
-    return (a+b)/2;
+    return N_vector;
 }
 
 
 
-
-Vector3d PropagationCK::getEffectiveIndices(Vector3d dir, Vector3d n_vec) {
-
-    /*
-    dir.x = 1 / sqrt(3);    
-    dir.y = 1 / sqrt(3); 
-    dir.z = 1 / sqrt(3); 
-
-    n_vec.x = 1.77;    
-    n_vec.y = 1.78; 
-    n_vec.z = 1.79; 
-    */
-
-
-    double minimum = minFinder(1, 2,  dir,  n_vec);
-    double N1 = bisection(1, minimum,  dir,  n_vec);
-    double N2 = bisection(minimum, 2,  dir,  n_vec);
-
-    /*
-    std::cout.precision (15);
-    std::cout << N1<<std::endl;
-    std::cout << N2<<std::endl;
-    */
-
-    Vector3d N (N1, N2, 1);
-
-    return N;
-}
-
-
-
-double PropagationCK::getTimeDelay(double n1, double n2, double l)
+double PropagationCK::getTimeDelay(std::vector<double> N_vector, double l)
 {
     double c = 299792458;
-    return l/c * (n1 - n2);
+    return l/c * (N_vector[0] - N_vector[1]);
 }
 
-Vector3d PropagationCK::getPolarization(double n, Vector3d dir, Vector3d n_vec)
+Vector3d PropagationCK::getPolarization(unsigned long n, Vector3d dir, Vector3d n_vec, double prec)
 {
+
     Vector3d e_v;
-    e_v.x = dir.x/(pow(n, 2) - pow(n_vec.x, 2));
-    e_v.y = dir.y/(pow(n, 2) - pow(n_vec.y, 2));
-    e_v.z = dir.z/(pow(n, 2) - pow(n_vec.z, 2));
+    prec = 1 / prec;
+    double n_round = ceil(n * prec) / prec;
+
+    if (ceil(n_vec.x * prec) / prec == n_round)
+        {
+        e_v.x = 1;
+        e_v.y = 0;
+        e_v.z = 0;
+        }
+
+    else if (ceil(n_vec.y * prec) / prec == n_round)
+        {
+        e_v.x = 0;
+        e_v.y = 1;
+        e_v.z = 0;
+        }
+
+    else if (ceil(n_vec.z * prec) / prec == n_round)
+        {
+        e_v.x = 0;
+        e_v.y = 0;
+        e_v.z = 1;
+        }
+
+    else
+        {
+        e_v.x = dir.x/(pow(n, 2) - pow(n_vec.x, 2));
+        e_v.y = dir.y/(pow(n, 2) - pow(n_vec.y, 2));
+        e_v.z = dir.z/(pow(n, 2) - pow(n_vec.z, 2));
+        }
+
     return e_v;
 }
 
@@ -252,27 +213,58 @@ ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d d
     std::vector<std::vector<double>> Efield = Pulse.getFrequencySpectrum_real();
 
     double rate = Pulse.getSamplingRate();
+    double prec = 1e-08;
 
-    float l = 1;     /*has to be set but how? */
+    double l = 1;     /*has to be set but how? */
 
-    Vector3d N_eff = getEffectiveIndices(dir, n_vec);
-    double dt = getTimeDelay(N_eff.x, N_eff.y, l);
-    Vector3d pol_1 = getPolarization(N_eff.x, dir, n_vec);
-    Vector3d pol_2 = getPolarization(N_eff.y, dir, n_vec);
+    std::vector<double> N_eff = getEffectiveIndices_analytical(dir, n_vec);
+    Vector3d pol_1 = getPolarization(N_eff[0], dir, n_vec, prec);
+    Vector3d pol_2 = getPolarization(N_eff[1], dir, n_vec, prec);
 
-    double a = pol_1.y;
-    double b = pol_1.z;
-    double c = pol_2.y;
-    double d = pol_2.z;
 
-    //Trace N1 = Efield[1] * a + Efield[2] * b;
-    //Trace N2 = Efield[1] * c + Efield[2] * d;
+    double a;
+    double b;
+    double c;
+    double d;
 
-    //std::vector<double> X = {1.1, 2.2, 3.3, 4.4};
-    //std::vector<double> Y = {10, 20, 30, 40};
+    double a_inv;
+    double b_inv;
+    double c_inv;
+    double d_inv;
 
-    //std::vector<double> pass = X;
-    //double scale = 2;
+    double dt;
+    double det = pol_1.y * pol_2.z - pol_1.z * pol_2.y;
+
+    if (det == 0)
+
+        {
+        a = 1;
+        b = 0;
+        c = 0;
+        d = 1;
+
+        dt = 0;
+
+        a_inv = 1;
+        b_inv = 0;
+        c_inv = 0;
+        d_inv = 1;
+        }
+
+    else 
+        {
+        a = pol_1.y;
+        b = pol_1.z;
+        c = pol_2.y;
+        d = pol_2.z;
+
+        dt = getTimeDelay(N_eff, l);
+
+        a_inv = 1 / det * d;
+        b_inv = -1 / det * b;
+        c_inv = -1 / det * c;
+        d_inv = 1 / det * a;
+        }
 
     std::vector<double> Th_a = Efield[1];
     std::vector<double> Ph_b = Efield[2];
@@ -293,26 +285,13 @@ ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d d
 
     Trace N_shift;
     N_shift.setFrequencySpectrum(N1, N1, rate);
-    
     N_shift.applyTimeShift(dt);
-
     N1 = N_shift.getFrequencySpectrum_real();
-
-    double det = a*d - b*c;
-
-    double a_inv = 1 / det * d;
-    double b_inv = -1 / det * b;
-    double c_inv = -1 / det * c;
-    double d_inv = 1 / det * a;
-
 
     std::vector<double> N1_a = N1;
     std::vector<double> N2_b = N2;
     std::vector<double> N1_c = N1;
     std::vector<double> N2_d = N2;
-
-    //std::vector<double> N1 = Efield[1];
-    //std::vector<double> N2 = Efield[1];
 
     std::transform(N1.begin(), N1.end(), N1_a.begin(), [&a_inv](double element) { return element *= a_inv; });
     std::transform(N2.begin(), N2.end(), N2_b.begin(), [&b_inv](double element) { return element *= b_inv; });
@@ -322,11 +301,6 @@ ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d d
     std::transform(N1_a.begin(), N1_a.end(), N2_b.begin(), Efield[1].begin(), std::plus<double>());
     std::transform(N1_c.begin(), N1_c.end(), N2_d.begin(), Efield[2].begin(), std::plus<double>());
 
-
-    //Trace Th = N1 * a_inv + N2 * b_inv;
-    //Trace Ph = N1 * c_inv + N2 * d_inv;
-
-
     Pulse.setFrequencySpectrum(Efield[0], Efield[0], Efield[1], Efield[1], Efield[2], Efield[2], rate);
 
     return Pulse;
@@ -335,22 +309,32 @@ ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d d
 
 std::vector<double> PropagationCK::apply_birefringence_1(Vector3d dir, Vector3d n_vec)
 {
-
+    Trace tr;
     Trace Theta;
     Trace Phi;
-    std::vector<double> real{0,0,0,0,0,1,0,0,0,0,0};
+    std::vector<double> real{0,0,0,0,0,4,0,0,0,0,0};
     std::vector<double> imag{0,0,0,0,0,2,0,0,0,0,0};
     std::vector<double> realr{0,0,0,0,0,1,0,0,0,0,0};
     std::vector<double> imagr{0,0,0,0,0,1,0,0,0,0,0};
+    std::vector<double> new_real{0,0,0,0,0,4,0,0,0,0,0};
 
     Theta.setFrequencySpectrum(real, real, 0.001);
     Phi.setFrequencySpectrum(imag, imag, 0.001);
+    
 
     Theta.addTraces(Phi);
 
-    Theta.multiplyConstant(5);
+    
 
+    /*
+
+    std::transform(real.begin(), real.end(), imag.begin(), real.begin(), std::plus<std::complex<double>>());
+
+    Theta.multiplyConstant(5);
+    */
+    
     return Theta.getFrequencySpectrum_real();
+
 }
 
 

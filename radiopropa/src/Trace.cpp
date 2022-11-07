@@ -101,6 +101,8 @@ void Trace::addTraces(Trace secondTrace) {
     std::transform(frequencySpectrum.begin(), frequencySpectrum.end(), secondTrace.getFrequencySpectrum().begin(), frequencySpectrum.begin(), std::plus<std::complex<double>>());
 }
 
+
+
 void Trace::multiplyConstant(double constant) {
     std::transform(frequencySpectrum.begin(), frequencySpectrum.end(), frequencySpectrum.begin(), [&constant](std::complex<double> element) { return element *= constant; });
 }

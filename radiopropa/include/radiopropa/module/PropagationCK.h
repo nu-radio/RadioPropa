@@ -75,12 +75,9 @@ public:
 	double getTolerance() const;
 	double getMinimumStep() const;
 	double getMaximumStep() const;
-    double getdeterminant(double n, Vector3d dir, Vector3d n_vec);
-    double bisection(double a, double b, Vector3d dir, Vector3d n_vec);
-    double minFinder(double a, double b, Vector3d dir, Vector3d n_vec);
-    double getTimeDelay(double n1, double n2, double l);
-    Vector3d getPolarization(double n, Vector3d dir, Vector3d n_vec);
-	Vector3d getEffectiveIndices(Vector3d dir, Vector3d n_vec);
+    double getTimeDelay(std::vector<double> N_vector, double l);
+    Vector3d getPolarization(unsigned long n, Vector3d dir, Vector3d n_vec, double prec);
+    std::vector<double> getEffectiveIndices_analytical(Vector3d dir, Vector3d n_vec);
     std::vector<double> apply_birefringence_1(Vector3d dir, Vector3d n_vec);
     ElectricField apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec);
 	std::string getDescription() const;
