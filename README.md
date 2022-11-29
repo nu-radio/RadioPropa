@@ -40,6 +40,9 @@ The installation may sometimes require some extra arguments or steps depending o
        $ cmake -DPYTHON_LIBRARY=$(python3-config --prefix)[path to 'libpython3.10.dylib'] 
         -DPYTHON_INCLUDE_DIR=$(python3-config --prefix)[path to '/include/python3.10'] ..
 
++ If you installed python via homebrew, you can adjust cmake as follows:
+
+       $ cmake -DPYTHON_LIBRARY=/opt/homebrew/Cellar/python@3.10/3.10.8/Frameworks/Python.framework/Versions/3.10/lib/libpython3.10.dylib  -DPYTHON_INCLUDE_DIR=/opt/homebrew/Cellar/python@3.10/3.10.8/bin/python3.10 ..
 
 # Examples
 The folder `radio_example` contain some examples that can be executed:
