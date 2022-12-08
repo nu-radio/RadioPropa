@@ -138,6 +138,71 @@ Vector3d IceModel_Firn::getGradient(const Vector3d &position) const
 
 
 
+IceModel_Polynomial::IceModel_Polynomial(std::vector<double> coefficients, double z_0, double z_surface, 
+										 double z_shift, double density_units, double density_factor):
+	_coefficients(coefficients), _z_0(z_0), _z_surface(z_surface), _z_shift(z_shift), 
+	_density_units(density_units), _density_factor(density_factor)
+{}
+IceModel_Polynomial::~IceModel_Polynomial()
+{}
+double IceModel_Polynomial::getValue(const Vector3d &position) const
+{
+	if (position.z <= _z_surface){
+		double x = exp((position.z - _z_shift)/_z_0);
+		double rho = 0.;
+		unsigned int vecSize = _coefficients.size();
+		for (int i = 0; i < vecSize; i++){
+			rho += _coefficients[i] * std::pow(x,i);
+		}
+		return 1. + rho * _density_units * _density_factor;
+	} else {
+		return 1.;
+	}     
+}
+double IceModel_Polynomial::getIntegral(const double z) const
+{
+	double x = exp((z-_z_shift)/_z_0);
+	double int_rho_z = _coefficients[0] * (z-_z_shift);
+	unsigned int vecSize = _coefficients.size();
+	for (int i = 1; i < vecSize; i++){
+		int_rho_z += (_coefficients[i] * _z_0 / i) * std::pow(x,i);
+	}
+	return int_rho_z;
+}
+double IceModel_Polynomial::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
+{
+	if (((position1.z - _z_surface) <= 0) and ((position2.z - _z_surface) <= 0)) {
+		return ((getIntegral(position2.z) - getIntegral(position1.z)) / (position2.z - position1.z))*_density_units * _density_factor + 1.;
+	} else if (((position1.z - _z_surface) > 0) and ((position2.z - _z_surface) > 0)) {
+		return 1;
+	} else {
+		Vector3d pos_min = position1;
+		Vector3d pos_max = position2;
+		if (position1.z > position2.z){
+			pos_min = position2;
+			pos_max = position1;
+		}
+		double n1 = (getIntegral(_z_surface) - getIntegral(pos_min.z))*_density_units * _density_factor + 1.;
+		double n2 = 1 * (pos_max.z - _z_surface);
+		return (n1 + n2) / abs(pos_max.z - pos_min.z);
+	}
+}
+Vector3d IceModel_Polynomial::getGradient(const Vector3d &position) const
+{
+	Vector3d v(0,0,0);
+	if ((position.z - _z_surface) <= 0){
+		double x = exp((position.z-_z_shift)/_z_0);
+		double drho_dz = 0.;
+		unsigned int vecSize = _coefficients.size();
+		for (int i = 0; i < vecSize; i++){
+			drho_dz += (_coefficients[i]*i/_z_0) * std::pow(x,i);
+		}
+		v.z = (drho_dz*_density_units * _density_factor);
+	}
+	return v;
+}
+
+
 
 IceModel_Data1D::IceModel_Data1D(std::string interpolation, int axis):
 interpolation(interpolation), axis(axis)

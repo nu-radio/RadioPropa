@@ -57,6 +57,27 @@ class IceModel_Firn: public ScalarField
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
+class IceModel_Polynomial: public ScalarField
+{
+	protected:
+		double _z_surface, _z_0, _z_shift;
+		double _density_factor, _density_units;
+		std::vector<double> _coefficients;
+		virtual double getIntegral(const double z) const;
+	public:
+		IceModel_Polynomial(  
+			std::vector<double> coefficients,
+			double z_0, 
+			double z_surface=0.,
+			double z_shift=0.,
+			double density_units=(kilogram / std::pow(meter,3)),
+			double density_factor=(0.8506 * (std::pow(cm,3)/(kilogram/1000.))));
+		virtual ~IceModel_Polynomial();
+		virtual double getValue(const Vector3d &position) const; 
+		virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const; 
+		virtual Vector3d getGradient(const Vector3d &position) const;
+};
+
 
 class IceModel_Data1D: public ScalarField
 {
