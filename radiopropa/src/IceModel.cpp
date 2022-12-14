@@ -139,9 +139,13 @@ Vector3d IceModel_Firn::getGradient(const Vector3d &position) const
 
 
 IceModel_Polynomial::IceModel_Polynomial(std::vector<double> coefficients, double z_0, double z_surface, 
-										 double z_shift, double density_units, double density_factor):
-	_coefficients(coefficients), _z_0(z_0), _z_surface(z_surface), _z_shift(z_shift), 
-	_density_units(density_units), _density_factor(density_factor)
+										 double z_shift, double density_units, double density_factor) :
+	_coefficients(coefficients), 
+	_z_0(z_0), 
+	_z_surface(z_surface), 
+	_z_shift(z_shift), 
+	_density_units(density_units), 
+	_density_factor(density_factor)
 {}
 IceModel_Polynomial::~IceModel_Polynomial()
 {}
