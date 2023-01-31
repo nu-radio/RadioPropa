@@ -57,12 +57,18 @@ PropagationCK::Y PropagationCK::dYdt(const Y &y, ParticleState &p, double z) con
 }
 
 PropagationCK::PropagationCK(ref_ptr<ScalarField> field, double tolerance,
-		double minStep, double maxStep) :
+		double minStep, double maxStep, bool Birefringence):
 		minStep(0) {
 	setField(field);
 	setTolerance(tolerance);
 	setMaximumStep(maxStep);
 	setMinimumStep(minStep);
+    //setEfield(efield);
+    //setSrate(s_rate);
+    setBirefringenceState(Birefringence);
+
+    std::cout << getBirefringenceState() << std::endl;
+
 
 	// load Cash-Karp coefficients
 	a.assign(cash_karp_a, cash_karp_a + 36);
@@ -71,7 +77,10 @@ PropagationCK::PropagationCK(ref_ptr<ScalarField> field, double tolerance,
 }
 
 void PropagationCK::process(Candidate *candidate) const {
+
+    //std::cout << "propa test";
 	// save the new previous particle state
+
 	ParticleState &current = candidate->current;
 	candidate->previous = current;
 
@@ -99,13 +108,29 @@ void PropagationCK::process(Candidate *candidate) const {
 
 	current.setPosition(yOut.x);
 	current.setDirection(yOut.u.getUnitVector());
-	//actual step can be smaller  du to non c velocity in medium
+	//actual step can be smaller due to non c velocity in medium
 	Vector3d actual_step = yOut.x - yIn.x;
 	candidate->setCurrentStep(actual_step.getR());
 	candidate->setNextStep(newStep);
 	double n = field->getValue(yOut.x);
 	candidate->setPropagationTime(candidate->getPropagationTime() + step / c_light);
 	candidate->appendPathPosition(yOut.x);
+
+    //std::cout << "state : " << Birefringence_ << std::endl;
+
+    if (getBirefringenceState())
+        {
+        std::cout << 2;
+
+        ElectricField birefringenceField = current.getElectricField();
+        Vector3d birefringenceDirection = current.getDirection();
+        Vector3d birefringencePosition = current.getPosition();
+        Vector3d birefringencePreviousPosition = candidate->previous.getPosition();
+        
+        Vector3d birefringenceNindex = BirefringenceIceModel().getValue(birefringencePosition);
+        birefringenceField = apply_birefringence(birefringenceField, birefringenceDirection, birefringenceNindex, birefringencePosition, birefringencePreviousPosition);
+        current.setElectricField(birefringenceField);
+        }
 }
 
 void PropagationCK::setField(ref_ptr<ScalarField> f) {
@@ -117,6 +142,15 @@ void PropagationCK::setTolerance(double tol) {
 		throw std::runtime_error(
 				"PropagationCK: target error not in range 0-1");
 	tolerance = tol;
+}
+
+void PropagationCK::setBirefringenceState(bool bir) {
+    std::cout << "state : " << bir << std::endl;
+	Birefringence_ = bir;
+}
+
+bool PropagationCK::getBirefringenceState() const {
+	return Birefringence_;
 }
 
 void PropagationCK::setMinimumStep(double min) {
@@ -146,11 +180,12 @@ double PropagationCK::getMaximumStep() const {
 }
 
 
-std::vector<double> PropagationCK::getEffectiveIndices_analytical(Vector3d dir, Vector3d n_vec) {
-
+std::vector<double> PropagationCK::getEffectiveIndices_analytical(Vector3d dir, Vector3d n_vec) const 
+{
+    
     double N1 = sqrt((-2 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2)) / (pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))) - sqrt(4 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.x, 2) + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.x, 2) + pow(dir.z, 2)) + pow(n_vec.x, 2) * (-1 + pow(dir.z, 2) + pow(dir.y, 2))) + pow(pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))),2 ))));
-
     double N2 = sqrt((-2 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2)) / (pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))) + sqrt(4 * pow(n_vec.x, 2) * pow(n_vec.y, 2) * pow(n_vec.z, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.x, 2) + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.x, 2) + pow(dir.z, 2)) + pow(n_vec.x, 2) * (-1 + pow(dir.z, 2) + pow(dir.y, 2))) + pow(pow(n_vec.y, 2) * pow(n_vec.z, 2) * (-1 + pow(dir.x, 2)) + pow(n_vec.x, 2) * (pow(n_vec.z, 2) * (-1 + pow(dir.y, 2)) + pow(n_vec.y, 2) * (-1 + pow(dir.z, 2))),2 ))));
+
 
     std::vector<double> N_vector;
     N_vector.push_back(N1);
@@ -161,34 +196,36 @@ std::vector<double> PropagationCK::getEffectiveIndices_analytical(Vector3d dir, 
 
 
 
-double PropagationCK::getTimeDelay(std::vector<double> N_vector, double l)
+double PropagationCK::getTimeDelay(std::vector<double> N_vector, double l) const
 {
     double c = 299792458;
     return l/c * (N_vector[0] - N_vector[1]);
 }
 
-Vector3d PropagationCK::getPolarization(unsigned long n, Vector3d dir, Vector3d n_vec, double prec)
+Vector3d PropagationCK::getPolarization(double n, Vector3d dir, Vector3d n_vec, double prec) const
 {
 
     Vector3d e_v;
-    prec = 1 / prec;
-    double n_round = ceil(n * prec) / prec;
+    Vector3d e_c;
+    double p = 1 / prec;
+    double n_round = ceil(n * p) / p;
+   
 
-    if (ceil(n_vec.x * prec) / prec == n_round)
+    if (ceil(n_vec.x * p) / p == n_round)
         {
         e_v.x = 1;
         e_v.y = 0;
         e_v.z = 0;
         }
 
-    else if (ceil(n_vec.y * prec) / prec == n_round)
+    else if (ceil(n_vec.y * p) / p == n_round)
         {
         e_v.x = 0;
         e_v.y = 1;
         e_v.z = 0;
         }
 
-    else if (ceil(n_vec.z * prec) / prec == n_round)
+    else if (ceil(n_vec.z * p) / p == n_round)
         {
         e_v.x = 0;
         e_v.y = 0;
@@ -202,20 +239,29 @@ Vector3d PropagationCK::getPolarization(unsigned long n, Vector3d dir, Vector3d 
         e_v.z = dir.z/(pow(n, 2) - pow(n_vec.z, 2));
         }
 
-    return e_v;
+    double theta = acos(dir.z);
+    double phi =  atan2(dir.y, dir.x);
+
+    e_c.x = cos(theta) * cos(phi) * e_v.x + cos(theta) * sin(phi) * e_v.y - sin(theta) * e_v.z;
+    e_c.y = -sin(phi) * e_v.x + cos(phi) * e_v.y;
+    e_c.z = sin(theta) * cos(phi) * e_v.x + sin(theta) * sin(phi) * e_v.y + cos(theta) * e_v.z;
+
+    return e_c;
 }
 
 
-ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec)
+ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec, Vector3d cur_pos, Vector3d pre_pos) const
 //std::vector<std::vector<double>> PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec)
 {
 
     std::vector<std::vector<double>> Efield = Pulse.getFrequencySpectrum_real();
 
+    std::cout << 1;
+
     double rate = Pulse.getSamplingRate();
     double prec = 1e-08;
 
-    double l = 1;     /*has to be set but how? */
+    double l = sqrt(pow(pre_pos.x - cur_pos.x, 2) + pow(pre_pos.y - cur_pos.y, 2) + pow(pre_pos.z - cur_pos.z, 2));    
 
     std::vector<double> N_eff = getEffectiveIndices_analytical(dir, n_vec);
     Vector3d pol_1 = getPolarization(N_eff[0], dir, n_vec, prec);
@@ -301,9 +347,11 @@ ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d d
     std::transform(N1_a.begin(), N1_a.end(), N2_b.begin(), Efield[1].begin(), std::plus<double>());
     std::transform(N1_c.begin(), N1_c.end(), N2_d.begin(), Efield[2].begin(), std::plus<double>());
 
-    Pulse.setFrequencySpectrum(Efield[0], Efield[0], Efield[1], Efield[1], Efield[2], Efield[2], rate);
 
-    return Pulse;
+    ElectricField Pulse_new;
+    Pulse_new.setFrequencySpectrum(Efield[0], Efield[0], Efield[1], Efield[1], Efield[2], Efield[2], rate);
+
+    return Pulse_new;
 }
 
 
