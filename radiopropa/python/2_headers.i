@@ -253,6 +253,7 @@
 %template(DoubleVector_2D) std::vector<std::vector<double>>;
 
 %template(CandidateVector) std::vector< radiopropa::ref_ptr<radiopropa::Candidate> >;
+%template(TraceVector) std::vector< radiopropa::Trace>;
 %template(CandidateRefPtr) radiopropa::ref_ptr<radiopropa::Candidate>;
 %include "radiopropa/Candidate.h"
 

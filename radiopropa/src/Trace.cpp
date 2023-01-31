@@ -126,8 +126,12 @@ ElectricField::ElectricField():
 	phi = std::get<2>(efield.getTraces());
 }*/
 
-std::tuple<Trace, Trace, Trace> ElectricField::getTraces() const {
-	return {r, theta, phi};
+std::vector<Trace> ElectricField::getTraces() const {
+	std::vector<Trace> traces;
+	traces.push_back(r);
+	traces.push_back(theta);
+	traces.push_back(phi);
+	return traces;
 }
 
 std::vector<std::vector<std::complex<double>>> ElectricField::getFrequencySpectrum() const {
