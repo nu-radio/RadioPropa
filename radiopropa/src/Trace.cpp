@@ -18,16 +18,19 @@ std::vector<std::complex<double>> Trace::getFrequencySpectrum() const {
 
 
 std::vector<double> Trace::getFrequencySpectrum_real() const {
-	std::vector<double> spectrum_real;
-	for (int i=0; i < frequencySpectrum.size(); i++) {
-		spectrum_real.push_back(std::real(frequencySpectrum[i]));	}
+	int len = frequencySpectrum.size();
+	std::vector<double> spectrum_real(len);
+	for (int i=0; i < len; i++) {
+		spectrum_real[i] = std::real(frequencySpectrum[i]);
+			}
 	return spectrum_real;
 }
 
 std::vector<double> Trace::getFrequencySpectrum_imag() const {
-	std::vector<double> spectrum_imag;
+	int len = frequencySpectrum.size();
+	std::vector<double> spectrum_imag(len);
 	for (int i=0; i < frequencySpectrum.size(); i++) {
-		spectrum_imag.push_back(std::imag(frequencySpectrum[i]));
+		spectrum_imag[i] = std::imag(frequencySpectrum[i]);
 	}
 	return spectrum_imag;
 }
@@ -35,11 +38,12 @@ std::vector<double> Trace::getFrequencySpectrum_imag() const {
 std::vector<double> Trace::getFrequencies() const {
 	int length_t = this->getNumberOfSamples();
 	int length_f = (length_t / 2) + 1;
-	std::vector<double> frequencies;
-	double f0 = 1.0 / samplingRate;
+	std::vector<double> frequencies(length_f);
+	double f0 = samplingRate / double(length_t);
+	double f;
 	for (int i=0; i < length_f; i++) {
-		double f = i * f0;
-		frequencies.push_back(f);
+		f = i * f0;
+		frequencies[i] = f;
 	}
 	return frequencies;
 }
@@ -58,14 +62,19 @@ double Trace::getTraceStartTime() const {
 }
 
 void Trace::setFrequencySpectrum(std::vector<double> spectrum_real, std::vector<double> spectrum_imag, double rate) {
-	if (spectrum_real.size() != spectrum_imag.size()) {
+	int len = spectrum_real.size();
+	if (len != spectrum_imag.size()) {
 		std::cout << "Real and imaginary part of spectrum should have the same length";
 		throw std::exception();
 	}
-	for (int i=0; i < spectrum_real.size(); i++) {
-		std::complex<double> A(spectrum_real[i], spectrum_imag[i]);
-		frequencySpectrum.push_back(A);
+	std::vector<std::complex<double>> spectrum(len);
+	std::complex<double> A;
+	for (int i=0; i < len; i++) {
+		A.real(spectrum_real[i]);
+		A.imag(spectrum_imag[i]);
+		spectrum[i] = A;
 	}
+	frequencySpectrum = spectrum;
 	samplingRate = rate;
 }
 
@@ -83,31 +92,29 @@ void Trace::addTraceStartTime(double start_time) {
 }
 
 void Trace::applyTimeShift(double delta_t, bool silent) {
-	if ((delta_t > 0.1 * this->getNumberOfSamples() / this->getSamplingRate()) and not silent) {
+
+	int length_t = this->getNumberOfSamples();
+	int length_f = (length_t / 2) + 1;
+
+
+	if ((delta_t > 0.1 * length_t / this->getSamplingRate()) and not silent) {
          std::cout << "Trace is shifted by more than 10% of its length";
 	}
-    std::vector<std::complex<double>> new_spectrum;
+    std::vector<std::complex<double>> new_spectrum(length_f);
+	std::vector<double> all_frequencies = this->getFrequencies();
+	std::complex<double> A;
+	double freq;
+	double phase;
+	std::complex<double> phase_vector;
     for (int i=0; i < frequencySpectrum.size(); i++) {
-    	std::complex<double> A = frequencySpectrum[i];
-    	double freq = this->getFrequencies()[i];
-    	double phase = 2.0 * M_PI * delta_t * freq;
-    	std::complex<double> phase_vector = std::polar(1.0, phase);
-    	new_spectrum.push_back(A * phase_vector);
+    	A = frequencySpectrum[i];
+    	freq = all_frequencies[i];
+    	phase =  2.0 * M_PI * delta_t * freq;
+    	phase_vector = std::polar(1.0, phase);
+    	new_spectrum[i] = A * phase_vector;
     }
     this->setFrequencySpectrum(new_spectrum, samplingRate);
 }
-
-void Trace::addTraces(Trace secondTrace) {
-    std::transform(frequencySpectrum.begin(), frequencySpectrum.end(), secondTrace.getFrequencySpectrum().begin(), frequencySpectrum.begin(), std::plus<std::complex<double>>());
-}
-
-
-
-void Trace::multiplyConstant(double constant) {
-    std::transform(frequencySpectrum.begin(), frequencySpectrum.end(), frequencySpectrum.begin(), [&constant](std::complex<double> element) { return element *= constant; });
-}
-
-
 
 
 ElectricField::ElectricField():
@@ -127,34 +134,34 @@ ElectricField::ElectricField():
 }*/
 
 std::vector<Trace> ElectricField::getTraces() const {
-	std::vector<Trace> traces;
-	traces.push_back(r);
-	traces.push_back(theta);
-	traces.push_back(phi);
+	std::vector<Trace> traces(3);
+	traces[0] = r;
+	traces[1] = theta;
+	traces[2] = phi;
 	return traces;
 }
 
 std::vector<std::vector<std::complex<double>>> ElectricField::getFrequencySpectrum() const {
-	std::vector<std::vector<std::complex<double>>> spectrum;
-	spectrum.push_back(r.getFrequencySpectrum());
-	spectrum.push_back(theta.getFrequencySpectrum());
-	spectrum.push_back(phi.getFrequencySpectrum());
+	std::vector<std::vector<std::complex<double>>> spectrum(3);
+	spectrum[0] = r.getFrequencySpectrum();
+	spectrum[1] = theta.getFrequencySpectrum();
+	spectrum[2] = phi.getFrequencySpectrum();
 	return spectrum;
 }
 
 std::vector<std::vector<double>> ElectricField::getFrequencySpectrum_real() const {
-	std::vector<std::vector<double>> spectrum_real;
-	spectrum_real.push_back(r.getFrequencySpectrum_real());
-	spectrum_real.push_back(theta.getFrequencySpectrum_real());
-	spectrum_real.push_back(phi.getFrequencySpectrum_real());
+	std::vector<std::vector<double>> spectrum_real(3);
+	spectrum_real[0] = r.getFrequencySpectrum_real();
+	spectrum_real[1] = theta.getFrequencySpectrum_real();
+	spectrum_real[2] = phi.getFrequencySpectrum_real();
 	return spectrum_real;
 }
 
 std::vector<std::vector<double>> ElectricField::getFrequencySpectrum_imag() const {
-	std::vector<std::vector<double>> spectrum_imag;
-	spectrum_imag.push_back(r.getFrequencySpectrum_imag());
-	spectrum_imag.push_back(theta.getFrequencySpectrum_imag());
-	spectrum_imag.push_back(phi.getFrequencySpectrum_imag());
+	std::vector<std::vector<double>> spectrum_imag(3);
+	spectrum_imag[0] = r.getFrequencySpectrum_imag();
+	spectrum_imag[1] = theta.getFrequencySpectrum_imag();
+	spectrum_imag[2] = phi.getFrequencySpectrum_imag();
 	return spectrum_imag;
 }
 
@@ -167,7 +174,6 @@ std::vector<double> ElectricField::getFrequencies() const {
 		std::cout << "The r, theta and phi component should have the same amount of frequencies be the same";
 		throw std::exception();
 	}
-
 	return r.getFrequencies();
 }
 

@@ -6,6 +6,7 @@
 #include "radiopropa/ScalarField.h"
 
 
+
 namespace radiopropa {
 
 /**
@@ -70,22 +71,17 @@ public:
 	void setTolerance(double tolerance);
 	void setMinimumStep(double minStep);
 	void setMaximumStep(double maxStep);
-	//void setEfield(std::vector<std::vector<double>> efield);
-	//void setSrate(double s_rate);
 	void setBirefringenceState(bool Birefringence);
 
 
 	bool getBirefringenceState() const;
-	//std::vector<std::vector<double>> setEfield() const;
-	//xrsd4m52tbvqan3double setSrate() const;
 
 	double getTolerance() const;
 	double getMinimumStep() const;
 	double getMaximumStep() const;
-    double getTimeDelay(std::vector<double> N_vector, double l) const;
+    double getTimeDelay(std::vector<double> N_vector,double l) const;
     Vector3d getPolarization(double n, Vector3d dir, Vector3d n_vec, double prec) const;
     std::vector<double> getEffectiveIndices_analytical(Vector3d dir, Vector3d n_vec) const;
-    std::vector<double> apply_birefringence_1(Vector3d dir, Vector3d n_vec);
     ElectricField apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec, Vector3d cur_pos, Vector3d pre_pos) const;
 	std::string getDescription() const;
 };
