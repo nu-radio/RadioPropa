@@ -146,10 +146,10 @@ namespace radiopropa{
 
 
 	ReflectiveLayer::ReflectiveLayer(Surface *surface, double reflection) : 
-		surface(surface), reflection(reflection)
+		surface(surface), reflection(reflection), times_reflectedoff()
 	{
 	}
-	void ReflectiveLayer::process(Candidate *candidate)
+	void ReflectiveLayer::process(Candidate *candidate) const
 	{
 		double cx = surface->distance(candidate->current.getPosition());
 		double px = surface->distance(candidate->previous.getPosition());
@@ -170,11 +170,15 @@ namespace radiopropa{
             // update position slightly to move on correct side of plane
             Vector3d x = candidate->current.getPosition();
             candidate->current.setPosition(x + new_direction * candidate->getCurrentStep());
+
+            //keeping track of the amount of reflections is currently not working
+            /*int amount = 0;
             if (times_reflectedoff.find(candidate) != times_reflectedoff.end()) {
-                times_reflectedoff[candidate] = 1;
+               amount = 1;
             } else {
-                times_reflectedoff[candidate]++;
+                amount = this->getTimesReflectedOff(candidate) + 1;
             }
+            this->setTimesReflectedOff(candidate, amount);*/
 		}
 	}
 	std::string ReflectiveLayer::getDescription() const {
@@ -185,7 +189,12 @@ namespace radiopropa{
 
 		return ss.str();
 	}
-	int ReflectiveLayer::getTimesReflectedoff(Candidate *candidate){
-		return times_reflectedoff[candidate];
+	
+	//keeping track of the amount of reflections is currently not working
+	/*int ReflectiveLayer::getTimesReflectedOff(Candidate *candidate) const{
+		return times_reflectedoff.at(candidate);
 	}
+	void ReflectiveLayer::setTimesReflectedOff(Candidate *candidate, int amount){
+		times_reflectedoff[candidate] = amount;	
+	}*/
 }
