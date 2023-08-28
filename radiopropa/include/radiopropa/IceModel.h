@@ -149,12 +149,12 @@ class BirefringenceIceModel: public Referenced
 	public:
 		BirefringenceIceModel(double n_ice = 1.78, double delta_n = 0.423, double z_0 =77);
 		virtual ~BirefringenceIceModel();
-		virtual Vector3d getValue(Vector3d &position);
+		virtual Vector3d getValue(Vector3d &position, char bire_model);
 
         virtual double BSpline(double x, std::vector<double> t, const std::vector<double> c, const int k);
-        virtual double Xindex(double x);
-        virtual double Yindex(double x);
-        virtual double Zindex(double x);
+        virtual double A_Xindex(double x);
+        virtual double A_Yindex(double x);
+        virtual double A_Zindex(double x);
 };
 
 

@@ -478,7 +478,7 @@ BirefringenceIceModel::~BirefringenceIceModel()
   }
 
 
-  double BirefringenceIceModel::Xindex(double x) 
+  double BirefringenceIceModel::A_Xindex(double x) 
   {
     static const double t[] = {0.     ,      73.01301301 ,  91.23123123 , 109.44944945 , 114.07407407,
   118.55855856 , 127.66766767 , 136.77677678 , 138.03803804  ,139.15915916,
@@ -494,7 +494,7 @@ BirefringenceIceModel::~BirefringenceIceModel()
   }
 
 
-  double BirefringenceIceModel::Yindex(double x) 
+  double BirefringenceIceModel::A_Yindex(double x) 
   {
     static const double t[] = { 0.      ,     73.01301301 ,  91.23123123  ,109.44944945 , 118.55855856,
   127.66766767,  132.29229229 , 136.77677678  ,320.    ,      480.,
@@ -509,7 +509,7 @@ BirefringenceIceModel::~BirefringenceIceModel()
     return BSpline(x, knots, coeffs, 3);
   }
 
-  double BirefringenceIceModel::Zindex(double x) 
+  double BirefringenceIceModel::A_Zindex(double x) 
   {
     static const double t[] = {  0.    ,       73.01301301 , 109.44944945, 127.66766767 , 136.77677678,
   320.     ,     957.   ,      1953.45345345, 2135.63563564, 2500.         };
@@ -523,17 +523,17 @@ BirefringenceIceModel::~BirefringenceIceModel()
 
 
 
-Vector3d BirefringenceIceModel::getValue(Vector3d &position) 
+Vector3d BirefringenceIceModel::getValue(Vector3d &position, char bire_model) 
 {
 
-      
-       double n = _n_ice - _delta_n * (exp(position.z / _z_0));
-       double nx = n + Xindex( - position.z)  - 1.78 ;
-       double ny = n + Yindex( - position.z)  - 1.78;
-       double nz = n + Zindex( - position.z)  - 1.78;
+	double n = _n_ice - _delta_n * (exp(position.z / _z_0));
 
-   
-    Vector3d nv (nx, ny, nz);
+	double nx = n + A_Xindex( - position.z)  - 1.78;
+	double ny = n + A_Yindex( - position.z)  - 1.78;
+	double nz = n + A_Zindex( - position.z)  - 1.78;
+
+
+	Vector3d nv (nx, ny, nz);
 
        return nv;
         

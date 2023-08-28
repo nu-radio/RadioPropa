@@ -52,12 +52,12 @@ private:
 	double tolerance; /*< target relative error of the numerical integration */
 	double minStep; /*< minimum step size of the propagation */
 	double maxStep; /*< maximum step size of the propagation */
-	bool Birefringence_;
+	char Birefringence_;
 
 
 public:
 	PropagationCK(ref_ptr<ScalarField> field = NULL, double tolerance = 1e-4,
-			double minStep = (1E-3 * meter), double maxStep = (1 * meter), bool Birefringence = false);
+			double minStep = (1E-3 * meter), double maxStep = (1 * meter), char Birefringence = '0');
 	void process(Candidate *candidate) const;
 
 	// derivative of phase point, dY/dt = d/dt(x, u) = (v, du/dt)
@@ -71,10 +71,10 @@ public:
 	void setTolerance(double tolerance);
 	void setMinimumStep(double minStep);
 	void setMaximumStep(double maxStep);
-	void setBirefringenceState(bool Birefringence);
+	void setBirefringenceState(char Birefringence);
 
 
-	bool getBirefringenceState() const;
+	char getBirefringenceState() const;
 
 	double getTolerance() const;
 	double getMinimumStep() const;

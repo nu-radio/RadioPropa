@@ -61,7 +61,7 @@ PropagationCK::Y PropagationCK::dYdt(const Y &y, ParticleState &p, double z) con
 }
 
 PropagationCK::PropagationCK(ref_ptr<ScalarField> field, double tolerance,
-		double minStep, double maxStep, bool Birefringence):
+		double minStep, double maxStep, char Birefringence):
 		minStep(0) {
 	setField(field);
 	setTolerance(tolerance);
@@ -115,13 +115,13 @@ void PropagationCK::process(Candidate *candidate) const {
 	candidate->setPropagationTime(candidate->getPropagationTime() + step / c_light);
 	candidate->appendPathPosition(yOut.x);
 
-    if (getBirefringenceState())
+    if (getBirefringenceState() != '0')
         {
         ElectricField birefringenceField = current.getElectricField();
         Vector3d birefringenceDirection = current.getDirection();
         Vector3d birefringencePosition = current.getPosition();
         Vector3d birefringencePreviousPosition = candidate->previous.getPosition();
-        Vector3d birefringenceNindex = BirefringenceIceModel().getValue(birefringencePosition);
+        Vector3d birefringenceNindex = BirefringenceIceModel().getValue(birefringencePosition, getBirefringenceState());
         birefringenceField = apply_birefringence(birefringenceField, birefringenceDirection, birefringenceNindex, birefringencePosition, birefringencePreviousPosition);
         candidate->current.setElectricField(birefringenceField);
         }
@@ -138,11 +138,11 @@ void PropagationCK::setTolerance(double tol) {
 	tolerance = tol;
 }
 
-void PropagationCK::setBirefringenceState(bool bir) {
+void PropagationCK::setBirefringenceState(char bir) {
 	Birefringence_ = bir;
 }
 
-bool PropagationCK::getBirefringenceState() const {
+char PropagationCK::getBirefringenceState() const {
 	return Birefringence_;
 }
 
@@ -262,13 +262,6 @@ ElectricField PropagationCK::apply_birefringence(ElectricField Pulse, Vector3d d
 
     double dt;
   
-    /*
-    std::ofstream log_l;
-    log_l.open("Propa_l.txt", std::ofstream::app);
-    log_l << l << std::endl;
-    log_l.close();
-    */
-
     if (isnan(pol_1.y) or isnan(pol_1.z) or isnan(pol_2.y) or isnan(pol_2.z)) 
     {
     return Pulse;
