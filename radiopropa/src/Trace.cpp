@@ -1,0 +1,285 @@
+#include "radiopropa/Trace.h"
+#include "radiopropa/Units.h"
+#include <functional> 
+#include <algorithm>
+#include <math.h>
+
+namespace radiopropa {
+
+Trace::Trace():
+	samplingRate(),
+	traceStartTime(0.0),
+	frequencySpectrum() {
+}
+
+std::vector<std::complex<double>> Trace::getFrequencySpectrum() const {
+	return frequencySpectrum;
+}
+
+
+std::vector<double> Trace::getFrequencySpectrum_real() const {
+	int len = frequencySpectrum.size();
+	std::vector<double> spectrum_real(len);
+	for (int i=0; i < len; i++) {
+		spectrum_real[i] = std::real(frequencySpectrum[i]);
+			}
+	return spectrum_real;
+}
+
+std::vector<double> Trace::getFrequencySpectrum_imag() const {
+	int len = frequencySpectrum.size();
+	std::vector<double> spectrum_imag(len);
+	for (int i=0; i < frequencySpectrum.size(); i++) {
+		spectrum_imag[i] = std::imag(frequencySpectrum[i]);
+	}
+	return spectrum_imag;
+}
+
+std::vector<double> Trace::getFrequencies() const {
+	int length_t = this->getNumberOfSamples();
+	int length_f = (length_t / 2) + 1;
+	std::vector<double> frequencies(length_f);
+	double f0 = samplingRate / double(length_t);
+	double f;
+	for (int i=0; i < length_f; i++) {
+		f = i * f0;
+		frequencies[i] = f;
+	}
+	return frequencies;
+}
+
+double Trace::getSamplingRate() const {
+	return samplingRate;
+}
+
+int Trace::getNumberOfSamples() const {
+	int length = (frequencySpectrum.size() - 1) * 2;    
+	return length;
+}
+
+double Trace::getTraceStartTime() const {
+	return traceStartTime;
+}
+
+void Trace::setFrequencySpectrum(std::vector<double> spectrum_real, std::vector<double> spectrum_imag, double rate) {
+	int len = spectrum_real.size();
+	if (len != spectrum_imag.size()) {
+		std::cout << "Real and imaginary part of spectrum should have the same length";
+		throw std::exception();
+	}
+	std::vector<std::complex<double>> spectrum(len);
+	std::complex<double> A;
+	for (int i=0; i < len; i++) {
+		A.real(spectrum_real[i]);
+		A.imag(spectrum_imag[i]);
+		spectrum[i] = A;
+	}
+	frequencySpectrum = spectrum;
+	samplingRate = rate;
+}
+
+void Trace::setFrequencySpectrum(std::vector<std::complex<double>> spectrum, double rate) {
+	frequencySpectrum = spectrum;
+    samplingRate = rate;
+}
+
+void Trace::setTraceStartTime(double start_time) {
+	traceStartTime = start_time;
+}
+
+void Trace::addTraceStartTime(double start_time) {
+	traceStartTime += start_time;
+}
+
+void Trace::applyTimeShift(double delta_t, bool silent) {
+
+	int length_t = this->getNumberOfSamples();
+	int length_f = (length_t / 2) + 1;
+
+
+	if ((delta_t > 0.1 * length_t / this->getSamplingRate()) and not silent) {
+         std::cout << "Trace is shifted by more than 10% of its length";
+	}
+    std::vector<std::complex<double>> new_spectrum(length_f);
+	std::vector<double> all_frequencies = this->getFrequencies();
+	std::complex<double> A;
+	double freq;
+	double phase;
+	std::complex<double> phase_vector;
+    for (int i=0; i < frequencySpectrum.size(); i++) {
+    	A = frequencySpectrum[i];
+    	freq = all_frequencies[i];
+    	phase =  2.0 * M_PI * delta_t * freq;
+    	phase_vector = std::polar(1.0, phase);
+    	new_spectrum[i] = A * phase_vector;
+    }
+    this->setFrequencySpectrum(new_spectrum, samplingRate);
+}
+
+
+ElectricField::ElectricField():
+	samplingRate(),
+	traceStartTime(0.0),
+	r(),
+	theta(),
+	phi() {
+}
+
+/*ElectricField::ElectricField(const ElectricField &efield) {
+	samplingRate = efield.getSamplingRate();
+	traceStartTime = efield.getTraceStartTime();
+	r = std::get<0>(efield.getTraces());
+	theta = std::get<1>(efield.getTraces());
+	phi = std::get<2>(efield.getTraces());
+}*/
+
+std::vector<Trace> ElectricField::getTraces() const {
+	std::vector<Trace> traces(3);
+	traces[0] = r;
+	traces[1] = theta;
+	traces[2] = phi;
+	return traces;
+}
+
+std::vector<std::vector<std::complex<double>>> ElectricField::getFrequencySpectrum() const {
+	std::vector<std::vector<std::complex<double>>> spectrum(3);
+	spectrum[0] = r.getFrequencySpectrum();
+	spectrum[1] = theta.getFrequencySpectrum();
+	spectrum[2] = phi.getFrequencySpectrum();
+	return spectrum;
+}
+
+std::vector<std::vector<double>> ElectricField::getFrequencySpectrum_real() const {
+	std::vector<std::vector<double>> spectrum_real(3);
+	spectrum_real[0] = r.getFrequencySpectrum_real();
+	spectrum_real[1] = theta.getFrequencySpectrum_real();
+	spectrum_real[2] = phi.getFrequencySpectrum_real();
+	return spectrum_real;
+}
+
+std::vector<std::vector<double>> ElectricField::getFrequencySpectrum_imag() const {
+	std::vector<std::vector<double>> spectrum_imag(3);
+	spectrum_imag[0] = r.getFrequencySpectrum_imag();
+	spectrum_imag[1] = theta.getFrequencySpectrum_imag();
+	spectrum_imag[2] = phi.getFrequencySpectrum_imag();
+	return spectrum_imag;
+}
+
+std::vector<double> ElectricField::getFrequencies() const {
+	if ((not (r.getSamplingRate() == theta.getSamplingRate())) or (not (r.getSamplingRate() == phi.getSamplingRate()))) {
+		std::cout << "Sampling rates of r, theta and phi component should be the same";
+		throw std::exception();
+	}
+	if ((not (r.getFrequencies().size() == theta.getFrequencies().size())) or (not (r.getFrequencies().size() == phi.getFrequencies().size()))) {
+		std::cout << "The r, theta and phi component should have the same amount of frequencies be the same";
+		throw std::exception();
+	}
+	return r.getFrequencies();
+}
+
+double ElectricField::getSamplingRate() const {
+	return samplingRate;
+}
+
+int ElectricField::getNumberOfSamples() const {
+	int length_r = (r.getFrequencySpectrum().size() - 1) * 2;
+	int length_theta = (theta.getFrequencySpectrum().size() - 1) * 2;
+	int length_phi = (phi.getFrequencySpectrum().size() - 1) * 2;   
+	if ((length_r != length_theta) and (length_r != length_phi)) {
+		throw std::exception();
+	}
+	return length_r;
+}
+
+double ElectricField::getTraceStartTime() const {
+	return traceStartTime;
+}
+
+void ElectricField::setFrequencySpectrumComponent(std::string component, std::vector<double> spectrum_real, std::vector<double> spectrum_imag, double rate) {
+	if (spectrum_real.size() != spectrum_imag.size()) {
+		std::cout << "Real and imaginary part of spectrum should have the same length";
+		throw std::exception();
+	} 
+
+	if (component == "r") {
+		r.setFrequencySpectrum(spectrum_real, spectrum_imag, rate);
+	} else if (component == "theta") {
+		theta.setFrequencySpectrum(spectrum_real, spectrum_imag, rate);
+	} else if (component == "phi") {
+		phi.setFrequencySpectrum(spectrum_real, spectrum_imag, rate);
+	} else {
+		std::cout << "Component should be r, theta or phi";
+		throw std::exception();
+	}
+	samplingRate = rate;
+}
+
+void ElectricField::setFrequencySpectrumComponent(std::string component, std::vector<std::complex<double>> spectrum, double rate) {
+	if (component == "r") {
+		r.setFrequencySpectrum(spectrum, rate);
+	} else if (component == "theta") {
+		theta.setFrequencySpectrum(spectrum, rate);
+	} else if (component == "phi") {
+		phi.setFrequencySpectrum(spectrum, rate);
+	} else {
+		std::cout << "Component should be r, theta or phi";
+		throw std::exception();
+	}
+	samplingRate = rate;
+}
+
+void ElectricField::setFrequencySpectrum(std::vector<double> spectrum_r_real, std::vector<double> spectrum_r_imag, 
+							 	  std::vector<double> spectrum_theta_real, std::vector<double> spectrum_theta_imag, 
+								  std::vector<double> spectrum_phi_real, std::vector<double> spectrum_phi_imag, 
+								  double rate) {
+	if ((not (spectrum_r_real.size() == spectrum_r_imag.size())) or (not (spectrum_theta_real.size() == spectrum_theta_imag.size())) or (not (spectrum_phi_real.size() == spectrum_phi_imag.size()))) {
+		std::cout << "Real and imaginary part of spectrum should have the same length";
+		throw std::exception();
+	} 
+
+	if ((not (spectrum_r_real.size() == spectrum_theta_real.size())) or (not (spectrum_r_real.size() == spectrum_phi_real.size()))) {
+		std::cout << "The r, theta and phi component of spectrum should have the same length";
+		throw std::exception();
+	}
+
+	r.setFrequencySpectrum(spectrum_r_real, spectrum_r_imag, rate);
+	theta.setFrequencySpectrum(spectrum_theta_real, spectrum_theta_imag, rate);
+	phi.setFrequencySpectrum(spectrum_phi_real, spectrum_phi_imag, rate);
+	samplingRate = rate;
+}
+
+void ElectricField::setFrequencySpectrum(std::vector<std::complex<double>> spectrum_r, 
+							  	  std::vector<std::complex<double>> spectrum_theta,
+								  std::vector<std::complex<double>> spectrum_phi,
+								  double rate) {
+	if ((not (spectrum_r.size() == spectrum_theta.size())) or (not (spectrum_r.size() == spectrum_phi.size()))) {
+		std::cout << "The r, theta and phi component should have the same length";
+		throw std::exception();
+	}
+	r.setFrequencySpectrum(spectrum_r, rate);
+	theta.setFrequencySpectrum(spectrum_theta, rate);
+	phi.setFrequencySpectrum(spectrum_phi, rate);
+	samplingRate = rate;
+}
+
+void ElectricField::setTraceStartTime(double start_time) {
+	traceStartTime = start_time;
+	r.setTraceStartTime(start_time);
+	theta.setTraceStartTime(start_time);
+	phi.setTraceStartTime(start_time);
+}
+
+void ElectricField::addTraceStartTime(double start_time) {
+	traceStartTime += start_time;
+	r.addTraceStartTime(start_time);
+	theta.addTraceStartTime(start_time);
+	phi.addTraceStartTime(start_time);
+}
+
+void ElectricField::applyTimeShift(double delta_t, bool silent) {
+    r.applyTimeShift(delta_t, silent);
+    theta.applyTimeShift(delta_t, silent);
+    phi.applyTimeShift(delta_t, silent);
+}
+
+} // namespace radiopropa

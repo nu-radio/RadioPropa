@@ -2,6 +2,8 @@
 #define RADIOPROPA_PARTICLE_STATE_H
 
 #include "radiopropa/Vector3.h"
+#include "radiopropa/Trace.h"
+#include "radiopropa/Referenced.h"
 
 namespace radiopropa {
 
@@ -16,13 +18,15 @@ private:
 	double frequency; ///< total frequency
 	Vector3d position; ///< position vector in comoving coordinates
 	Vector3d direction; ///< unit vector of velocity or momentum
-  Vector3d amplitude;
+  	Vector3d amplitude;
+  	radiopropa::ElectricField efield;
 
 public:
 	ParticleState(int id = 0, double frequency = 0,
 			Vector3d position = Vector3d(0, 0, 0),
 			Vector3d direction = Vector3d(-1, 0, 0),
-			Vector3d amplitude = Vector3d(0, 1, 1)
+			Vector3d amplitude = Vector3d(0, 1, 1),
+			radiopropa::ElectricField efield = radiopropa::ElectricField()
       );
 
 	/// Set position in comoving coordinates
@@ -42,6 +46,9 @@ public:
 	void setFrequency(double newFrequency);
 	/// Get frequency in [J]
 	double getFrequency() const;
+
+	void setElectricField(radiopropa::ElectricField newEfield);
+	radiopropa::ElectricField getElectricField() const;
 
 	/// Set particle ID
 	void setId(int);

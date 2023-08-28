@@ -5,6 +5,9 @@
 #include "radiopropa/Vector3.h"
 #include "radiopropa/ScalarField.h"
 
+#include <iostream>
+#include <fstream>
+
 
 namespace radiopropa {
 
@@ -129,8 +132,48 @@ class GorhamIceModel: public ScalarField
 		virtual ~GorhamIceModel();
 		virtual double getValue(const Vector3d &position) const;
 		virtual Vector3d getGradient(const Vector3d &position) const;
+
 };
 
+
+
+
+
+/*class BirefringenceIceModel: public VectorField */
+class BirefringenceIceModel: public Referenced
+{
+	private:
+
+		double _n_ice,_delta_n,_z_0;
+
+	public:
+		BirefringenceIceModel(double n_ice = 1.78, double delta_n = 0.423, double z_0 =77);
+		virtual ~BirefringenceIceModel();
+		virtual Vector3d getValue(Vector3d &position, char bire_model);
+
+        virtual double BSpline(double x, std::vector<double> t, const std::vector<double> c, const int k);
+        virtual double A_Xindex(double x);
+        virtual double A_Yindex(double x);
+        virtual double A_Zindex(double x);
+};
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif //RADIOPROPA_ICEMODEL_H

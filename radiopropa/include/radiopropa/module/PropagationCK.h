@@ -5,6 +5,8 @@
 #include "radiopropa/Units.h"
 #include "radiopropa/ScalarField.h"
 
+
+
 namespace radiopropa {
 
 /**
@@ -50,10 +52,12 @@ private:
 	double tolerance; /*< target relative error of the numerical integration */
 	double minStep; /*< minimum step size of the propagation */
 	double maxStep; /*< maximum step size of the propagation */
+	char Birefringence_;
+
 
 public:
 	PropagationCK(ref_ptr<ScalarField> field = NULL, double tolerance = 1e-4,
-			double minStep = (1E-3 * meter), double maxStep = (1 * meter));
+			double minStep = (1E-3 * meter), double maxStep = (1 * meter), char Birefringence = '0');
 	void process(Candidate *candidate) const;
 
 	// derivative of phase point, dY/dt = d/dt(x, u) = (v, du/dt)
@@ -67,10 +71,18 @@ public:
 	void setTolerance(double tolerance);
 	void setMinimumStep(double minStep);
 	void setMaximumStep(double maxStep);
+	void setBirefringenceState(char Birefringence);
+
+
+	char getBirefringenceState() const;
 
 	double getTolerance() const;
 	double getMinimumStep() const;
 	double getMaximumStep() const;
+    double getTimeDelay(std::vector<double> N_vector,double l) const;
+    Vector3d getPolarization(double n, Vector3d dir, Vector3d n_vec, double prec) const;
+    std::vector<double> getEffectiveIndices_analytical(Vector3d dir, Vector3d n_vec) const;
+    ElectricField apply_birefringence(ElectricField Pulse, Vector3d dir, Vector3d n_vec, Vector3d cur_pos, Vector3d pre_pos) const;
 	std::string getDescription() const;
 };
 
