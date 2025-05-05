@@ -83,6 +83,23 @@ void SourceFrequency::setDescription() {
 }
 
 
+// ----------------------------------------------------------------------------
+SourceElectricField::SourceElectricField(radiopropa::ElectricField _efield) {
+	efield = _efield;
+	setDescription();
+}
+
+void SourceElectricField::prepareParticle(ParticleState& p) const {
+	p.setElectricField(efield);
+}
+
+void SourceElectricField::setDescription() {
+	std::stringstream ss;
+	ss << "SourceElectricField: sampling rate" << efield.getSamplingRate() / hertz << " Hz and start time" << efield.getTraceStartTime() / ns << "ns\n";
+	description = ss.str();
+}
+
+
 
 // ----------------------------------------------------------------------------
 SourcePosition::SourcePosition(Vector3d position) :

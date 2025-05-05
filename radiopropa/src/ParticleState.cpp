@@ -1,18 +1,20 @@
 #include "radiopropa/ParticleState.h"
 #include "radiopropa/Units.h"
 #include "radiopropa/Common.h"
+#include "radiopropa/Trace.h"
 
 #include <stdlib.h>
 #include <sstream>
 
 namespace radiopropa {
 
-ParticleState::ParticleState(int id, double E, Vector3d pos, Vector3d dir, Vector3d amplitude) {
+ParticleState::ParticleState(int id, double E, Vector3d pos, Vector3d dir, Vector3d amplitude, radiopropa::ElectricField efield) {
 	setId(id);
 	setFrequency(E);
 	setPosition(pos);
 	setDirection(dir);
 	setAmplitude(amplitude);
+	setElectricField(efield);
 }
 
 void ParticleState::setPosition(const Vector3d &pos) {
@@ -57,6 +59,14 @@ void ParticleState::setFrequency(double newFrequency) {
 
 double ParticleState::getFrequency() const {
 	return frequency;
+}
+
+void ParticleState::setElectricField(ElectricField newEfield) {
+	efield = newEfield;
+}
+
+ElectricField ParticleState::getElectricField() const {
+	return efield;
 }
 
 void ParticleState::setId(int newId) {

@@ -87,6 +87,7 @@ public:
 	void setDescription();
 };
 
+
 /**
  @class SourceAmplitude
  @brief Sets the initial frequency to a given value
@@ -99,6 +100,18 @@ public:
 	void setDescription();
 };
 
+
+/**
+ @class SourceElectricField
+ @brief Sets the initial frequency to a given value
+ */
+class SourceElectricField : public SourceFeature {
+	radiopropa::ElectricField efield;
+public:
+	SourceElectricField(radiopropa::ElectricField _efield);
+	void prepareParticle(ParticleState &particle) const;
+	void setDescription();
+};
 
 
 /**
