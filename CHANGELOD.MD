@@ -2,6 +2,14 @@
 
 please update the categories "new features", "adjustments" and "bugfixes" before a pull request merge!
 
+##version 1.1.2 - 2025/10/09
+### New features 
+- Add 3 part exponential ice model
+
+### Adjustments 
+
+### Bugfixes
+
 ## version 1.1.1
 ### New features
 - Add exponential polynomial ice model

@@ -193,6 +193,7 @@ add_library(radiopropa SHARED
 	src/Source.cpp
   src/ScalarField.cpp
   src/IceModel.cpp
+  	src/IceModel_exp3.cpp
 	src/Variant.cpp
 	src/module/Boundary.cpp
 	src/module/BreakCondition.cpp
