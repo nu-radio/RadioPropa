@@ -18,7 +18,6 @@
 #include "radiopropa/Source.h"
 #include "radiopropa/ScalarField.h"
 #include "radiopropa/IceModel.h"
-#include "radiopropa/IceModel_exp3.h"
 #include "radiopropa/Units.h"
 #include "radiopropa/Variant.h"
 #include "radiopropa/Vector3.h"

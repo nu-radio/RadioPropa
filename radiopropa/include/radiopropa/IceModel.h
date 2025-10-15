@@ -57,6 +57,35 @@ class IceModel_Firn: public ScalarField
 		virtual Vector3d getGradient(const Vector3d &position) const;
 };
 
+class IceModel_Exp3 : public ScalarField
+{
+        protected:
+		double n_snow, delta_n_snow, z_shift_snow;
+    		double n_firn, delta_n_firn, z_shift_firn;
+    		double n_bubbly, delta_n_bubbly, z_shift_bubbly;
+    		double z_firn, z_bubbly;
+                double gradient_snow(double z) const;
+                double gradient_firn(double z) const;
+                double gradient_bubbly(double z) const;
+        public:
+                IceModel_Exp3(
+			double n_snow, 
+			double delta_n_snow, 
+			double z_shift_snow, 
+			double n_firn, 
+			double delta_n_firn, 
+			double z_shift_firn, 
+			double n_bubbly, 
+			double delta_n_bubbly, 
+			double z_shift_bubbly,
+			double z_firn, 
+			double z_bubbly);
+                virtual ~IceModel_Exp3();
+                virtual double getValue(const Vector3d &position) const;
+                virtual double getAverageValue(const Vector3d &position1, const Vector3d &position2) const;
+                virtual Vector3d getGradient(const Vector3d &position) const;
+};
+
 class IceModel_Polynomial: public ScalarField
 {
 	protected:

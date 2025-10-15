@@ -266,7 +266,6 @@
 %feature("director") radiopropa::ScalarField;
 %include "radiopropa/ScalarField.h"
 %include "radiopropa/IceModel.h"
-%include "radiopropa/IceModel_exp3.h"
 
 %include "radiopropa/Grid.h"
 %include "radiopropa/GridTools.h"
