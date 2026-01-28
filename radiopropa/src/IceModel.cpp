@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 namespace radiopropa {
 
@@ -140,7 +141,13 @@ IceModel_Exp3::IceModel_Exp3(double n_snow, double delta_n_snow, double z_shift_
       n_firn(n_firn), delta_n_firn(delta_n_firn), z_shift_firn(z_shift_firn),
       n_bubbly(n_bubbly), delta_n_bubbly(delta_n_bubbly), z_shift_bubbly(z_shift_bubbly),
       z_firn(z_firn), z_bubbly(z_bubbly)
-{}
+{
+    if (z_firn <= z_bubbly) {
+        throw std::invalid_argument(
+            "IceModel_Exp3: z_firn must be greater than z_bubbly"
+        );
+    }
+}
 IceModel_Exp3::~IceModel_Exp3()
 {}
 double IceModel_Exp3::getValue(const Vector3d &position) const
