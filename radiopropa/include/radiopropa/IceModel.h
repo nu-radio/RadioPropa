@@ -64,6 +64,11 @@ class IceModel_Exp3 : public ScalarField
     		double n_firn, delta_n_firn, z_shift_firn;
     		double n_bubbly, delta_n_bubbly, z_shift_bubbly;
     		double z_firn, z_bubbly;
+		
+		ExponentialIndex _snow;
+    		ExponentialIndex _firn;
+    		ExponentialIndex _bubbly;
+
                 double gradient_snow(double z) const;
                 double gradient_firn(double z) const;
                 double gradient_bubbly(double z) const;
