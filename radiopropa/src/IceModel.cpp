@@ -151,7 +151,6 @@ IceModel_Exp3::IceModel_Exp3(double n_snow, double delta_n_snow, double z_shift_
         );
     }
 }
-
 IceModel_Exp3::~IceModel_Exp3()
 {}
 double IceModel_Exp3::getValue(const Vector3d &position) const
