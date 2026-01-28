@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 namespace radiopropa {
 
@@ -136,7 +137,119 @@ Vector3d IceModel_Firn::getGradient(const Vector3d &position) const
 	}
 }
 
+IceModel_Exp3::IceModel_Exp3(double n_snow, double delta_n_snow, double z_shift_snow, double n_firn, double delta_n_firn, double z_shift_firn, double n_bubbly, double delta_n_bubbly, double z_shift_bubbly,double z_firn, double z_bubbly): n_snow(n_snow), delta_n_snow(delta_n_snow), z_shift_snow(z_shift_snow),
+      n_firn(n_firn), delta_n_firn(delta_n_firn), z_shift_firn(z_shift_firn),
+      n_bubbly(n_bubbly), delta_n_bubbly(delta_n_bubbly), z_shift_bubbly(z_shift_bubbly),
+      z_firn(z_firn), z_bubbly(z_bubbly), 
+	_snow(n_snow, delta_n_snow, z_shift_snow),
+        _firn(n_firn, delta_n_firn, z_firn, z_shift_firn),
+	_bubbly(n_bubbly, delta_n_bubbly, z_bubbly, z_shift_bubbly)
+{
+    if (z_firn <= z_bubbly) {
+        throw std::invalid_argument(
+            "IceModel_Exp3: z_firn must be greater than z_bubbly"
+        );
+    }
+}
+IceModel_Exp3::~IceModel_Exp3()
+{}
+double IceModel_Exp3::getValue(const Vector3d &position) const
+{
+        if (position.z > 0) {
+                return 1.0;
+        }
+        else if (position.z > z_firn) {
+                return n_snow - delta_n_snow * std::exp(z_shift_snow * position.z);
+        }
+        else if (position.z > z_bubbly) {
+                return n_firn - delta_n_firn * std::exp(z_shift_firn * position.z);
+        }
+        else {
+                return n_bubbly - delta_n_bubbly * std::exp(z_shift_bubbly * position.z);
+        }
+}
+double IceModel_Exp3::getAverageValue(const Vector3d &position1, const Vector3d &position2) const
+{
+        Vector3d p1 = position1;
+        Vector3d p2 = position2;
+        if (position1.z > position2.z){
+                p1 = position2;
+                p2 = position1;
+        }
+        double n1 = getValue(position1);
+        double n2 = getValue(position2);
+        double n_z2 = getValue(Vector3d(0,0,z_bubbly));
+        double n_z1 = getValue(Vector3d(0,0,z_firn));
 
+        if (p2.z <= 0) {
+                if (p2.z <= z_bubbly) {
+			return _bubbly.getAverageValue(p1,p2);
+                } else if (p1.z <= z_bubbly) {
+                        if (p2.z > z_bubbly && p2.z <= z_firn) {
+				double avg1 = _bubbly.getAverageValue(p1, Vector3d(0,0,z_bubbly));
+                                double avg2 = _firn.getAverageValue(Vector3d(0,0,z_bubbly), p2);
+                                return (avg1*(z_bubbly - p1.z) + avg2*(p2.z - z_bubbly)) / (p2.z - p1.z);
+                        } else {
+                                double avg1 = _bubbly.getAverageValue(p1, Vector3d(0,0,z_bubbly));
+                                double avg2 = _firn.getAverageValue(Vector3d(0,0,z_bubbly), Vector3d(0,0,z_firn));
+                                double avg3 = _snow.getAverageValue(Vector3d(0,0,z_firn), p2);
+                                return (avg1*(z_bubbly - p1.z) + avg2*(z_firn - z_bubbly) + avg3*(p2.z - z_firn)) / (p2.z - p1.z);
+                        }
+                } else if (p1.z > z_bubbly && p1.z <= z_firn) {
+                        if (p2.z > z_bubbly && p2.z <= z_firn) {
+                                return _firn.getAverageValue(p1, p2);
+                        } else {
+                                double avg1 = _firn.getAverageValue(p1, Vector3d(0,0,z_bubbly));
+                                double avg2 = _snow.getAverageValue(Vector3d(0,0,z_bubbly), p2);
+                                return (avg1*(z_firn - p1.z) + avg2*(p2.z - z_firn)) / (p2.z - p1.z);
+                        }
+                } else {
+                       return _snow.getAverageValue(p1, p2);
+                }
+        } else if (p1.z <= z_bubbly) {
+                double avg1 = _bubbly.getAverageValue(p1, Vector3d(0,0,z_bubbly));
+                double avg2 = _firn.getAverageValue(Vector3d(0,0,z_bubbly), Vector3d(0,0,z_firn));
+                double avg3 = _snow.getAverageValue(Vector3d(0,0,z_firn), Vector3d(0,0,0));
+                double avg4 = (1.0 + n2)/2.0;
+                return (avg1*(z_bubbly - p1.z) + avg2*(z_firn - z_bubbly) + avg3*(0 - z_firn) + avg4*(p2.z))/(p2.z - p1.z);
+        } else if (p1.z > z_bubbly && p1.z <= z_firn) {
+                double avg1 = _firn.getAverageValue(p1,Vector3d(0,0,z_firn));
+                double avg2 = _snow.getAverageValue(Vector3d(0,0,z_firn), Vector3d(0,0,0));
+                double avg3 = (1.0 + n2)/2.0;
+                return (avg1*(z_firn - p1.z) + avg2*(0 - z_firn) + avg3*(p2.z))/(p2.z - p1.z);
+        } else if (p1.z > z_firn && p1.z <= 0) {
+                double avg1 = _snow.getAverageValue(p1, Vector3d(0,0,0));
+                double avg2 = (1.0 + n2)/2.0;
+                return (avg1*(0 - p1.z) + avg2*(p2.z))/(p2.z - p1.z);
+        } else {
+                return 1.0;
+        }
+}
+
+double IceModel_Exp3::gradient_snow(double z) const {
+    return -delta_n_snow * z_shift_snow * std::exp(z_shift_snow * z);
+}
+
+double IceModel_Exp3::gradient_firn(double z) const {
+    return -delta_n_firn * z_shift_firn * std::exp(z_shift_firn * z);
+}
+
+double IceModel_Exp3::gradient_bubbly(double z) const {
+    return -delta_n_bubbly * z_shift_bubbly * std::exp(z_shift_bubbly * z);
+}
+
+Vector3d IceModel_Exp3::getGradient(const Vector3d &position) const
+{
+        if (position.z <= z_bubbly) {
+                return Vector3d(0,0,gradient_bubbly(position.z));
+        } else if (position.z > z_bubbly && position.z <= z_firn) {
+                return Vector3d(0,0,gradient_firn(position.z));
+        } else if (position.z > z_firn && position.z <= 0) {
+                return Vector3d(0,0,gradient_snow(position.z));
+        } else {
+                return Vector3d(0,0,0);
+        }
+}
 
 IceModel_Polynomial::IceModel_Polynomial(std::vector<double> coefficients, double z_0, double z_surface, 
 										 double z_shift, double density_factor) :
